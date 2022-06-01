@@ -1,14 +1,13 @@
-import Layout from '@/components/student/Layout'
-import Navbar from '@/components/student/Header'
 import Head from 'next/head'
-import Image from 'next/image'
 import { ToastContainer } from 'react-toastify'
-import SignIn from '@/components/SignIn'
+import Sidebar from '@/components/admin/Sidebar'
 
-export default function Home({
+export default function Layout({
   title = 'IIT Patna Placement Portal',
   keywords = '',
   description = '',
+  heading = '',
+  children,
 }) {
   return (
     <>
@@ -20,6 +19,7 @@ export default function Home({
       <div className='overflow-hidden'>
         {/*  Page content */}
         <main className='flex-grow'>
+          <Sidebar heading={heading}>{children}</Sidebar>
           <ToastContainer
             position='top-right'
             autoClose={5000}
@@ -31,7 +31,6 @@ export default function Home({
             draggable
             pauseOnHover
           />
-          <SignIn />
         </main>
         {/*  Site footer */}
       </div>
