@@ -5,7 +5,7 @@ import Link from 'next/link'
 import Image from 'next/image'
 import { API_URL } from '@/config/index'
 
-export default function Profile({ student }) {
+export default function StudentProfile({ student }) {
   return (
     <div className='bg-white shadow overflow-hidden sm:rounded-lg mt-4'>
       <div className='px-4 py-5 sm:px-6 flex justify-between'>
@@ -67,7 +67,7 @@ export default function Profile({ student }) {
               {student.profile_pic ? (
                 <div>
                   <Image
-                    src={API_URL + student.profile_pic.url}
+                    src={API_URL + '/' + student.profile_pic.url}
                     width={140}
                     height={180}
                     objectFit='cover'
@@ -77,55 +77,6 @@ export default function Profile({ student }) {
                 'No Profile Picture'
               )}
             </dd>
-            <div className='sm:col-span-2'>
-              <label className='block text-sm font-medium text-gray-700'>
-                Profile photo
-              </label>
-              <div className='mt-1 flex justify-center px-6 pt-5 pb-6 border-2 border-gray-300 border-dashed rounded-md'>
-                <div className='space-y-1 text-center'>
-                  <svg
-                    className='mx-auto h-12 w-12 text-gray-400'
-                    stroke='currentColor'
-                    fill='none'
-                    viewBox='0 0 48 48'
-                    aria-hidden='true'
-                  >
-                    <path
-                      d='M28 8H12a4 4 0 00-4 4v20m32-12v8m0 0v8a4 4 0 01-4 4H12a4 4 0 01-4-4v-4m32-4l-3.172-3.172a4 4 0 00-5.656 0L28 28M8 32l9.172-9.172a4 4 0 015.656 0L28 28m0 0l4 4m4-24h8m-4-4v8m-12 4h.02'
-                      strokeWidth={2}
-                      strokeLinecap='round'
-                      strokeLinejoin='round'
-                    />
-                  </svg>
-                  <div className='flex text-sm text-gray-600'>
-                    <label
-                      htmlFor='file_upload'
-                      className='relative cursor-pointer bg-white rounded-md font-medium text-indigo-600 hover:text-indigo-500 focus-within:outline-none focus-within:ring-2 focus-within:ring-offset-2 focus-within:ring-indigo-500'
-                    >
-                      <span>Upload a file</span>
-                      <input
-                        // value={values.file_upload}
-                        // onChange={handleInputChange}
-                        id='file_upload'
-                        name='file_upload'
-                        type='file'
-                        className='sr-only'
-                        accept='image/*'
-                        required
-                      />
-                    </label>
-                    <p className='pl-1'>or drag and drop</p>
-                  </div>
-                  <p className='text-xs text-gray-500'>PNG, JPG up to 500KB</p>
-                </div>
-              </div>
-              <button
-                type='button'
-                className='inline-flex items-center px-3.5 py-2 mt-2 border border-transparent text-sm leading-4 font-medium rounded-full shadow-sm text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500'
-              >
-                Upload
-              </button>
-            </div>
           </div>
           <div className='py-4 sm:py-5 sm:grid sm:grid-cols-4 sm:gap-4 sm:px-6'>
             <dt className='text-sm font-medium text-gray-500 sm:col-span-1'>

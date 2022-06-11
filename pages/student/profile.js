@@ -1,29 +1,34 @@
 import Layout from '@/components/student/Layout'
-import React from 'react'
+import { useContext } from 'react'
 import axios from 'axios'
 import { API_URL } from '@/config/index'
 import StudentRegistration from '@/components/student/profile/StudentRegistration'
+import Profile from '@/components/student/profile/Profile'
+import { parseCookies } from '@/helpers/index'
+import AuthContext from '@/context/AuthContext'
+import { useRouter } from 'next/router'
 
-export default function profile({ data }) {
-  console.log(data)
+export default function profile({ data = '', statusCode = '', token = '' }) {
   return (
     <Layout heading='Profile'>
-      <StudentRegistration />
+      {statusCode === 204 ? (
+        <StudentRegistration token={token} />
+      ) : (
+        <Profile student={data} />
+      )}
     </Layout>
   )
 }
 
 export async function getServerSideProps({ req }) {
+  const { token } = parseCookies(req)
+
   const config = {
-    headers: { Authorization: `Bearer ${process.env.GET_TOKEN}` },
+    headers: { Authorization: `Bearer ${token}` },
   }
 
-  const res = await axios.get(
-    `${API_URL}/api/students?filters[roll][$eq]=2111mc02`,
-    config
-  )
-
+  const res = await axios.get(`${API_URL}/api/student/me`, config)
   return {
-    props: { data: res.data }, // will be passed to the page component as props
+    props: { data: res.data, statusCode: res.status, token: token }, // will be passed to the page component as props
   }
 }

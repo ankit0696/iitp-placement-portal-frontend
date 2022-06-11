@@ -27,6 +27,11 @@ const navigation = [
     icon: IdentificationIcon,
   },
   {
+    name: 'All Jobs',
+    href: '/student/all-jobs',
+    icon: IdentificationIcon,
+  },
+  {
     name: 'Jobs Applied',
     href: '/student/jobs-applied',
     icon: BriefcaseIcon,
@@ -168,10 +173,10 @@ export default function Sidebar({ heading = '', children }) {
                     </div>
                     <div className='ml-3'>
                       <p className='text-base font-medium text-white'>
-                        ankit_2111mc02@iitp.ac.in
+                        {user && user.email}
                       </p>
-                      <p className='text-sm font-medium text-gray-400 group-hover:text-gray-300'>
-                        2111MC02
+                      <p className='text-sm font-medium text-gray-400 group-hover:text-gray-300 uppercase'>
+                        {user && user.username}
                       </p>
                     </div>
                   </div>
@@ -256,10 +261,10 @@ export default function Sidebar({ heading = '', children }) {
                 </div>
                 <div className='ml-3'>
                   <p className='text-sm font-medium text-white'>
-                    ankit_2111mc02@iitp.ac.in
+                    {user && user.email}
                   </p>
-                  <p className='text-xs font-medium text-gray-300 group-hover:text-gray-200'>
-                    2111MC02
+                  <p className='text-xs font-medium text-gray-300 group-hover:text-gray-200 uppercase'>
+                    {user && user.username}
                   </p>
                 </div>
               </div>

@@ -1,6 +1,6 @@
 import { useState, useEffect, createContext } from 'react'
 import Router, { useRouter } from 'next/router'
-import { NEXT_URL } from '@/config/index'
+import { API_URL, NEXT_URL } from '@/config/index'
 import { toast } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
 
@@ -9,6 +9,7 @@ const AuthContext = createContext()
 export const AuthProvider = ({ children }) => {
   const router = useRouter()
   const [user, setUser] = useState(null)
+  const [role, setRole] = useState('student')
   const [error, setError] = useState(null)
 
   useEffect(() => {
@@ -28,6 +29,8 @@ export const AuthProvider = ({ children }) => {
 
     if (res.ok) {
       setUser(data.user)
+      setRole(data.role)
+
       router.push('/student/profile')
     } else {
       toast.error(data.error)
@@ -36,7 +39,7 @@ export const AuthProvider = ({ children }) => {
   }
 
   //login user
-  const login = async ({ username: identifier, password, role }) => {
+  const login = async ({ username: identifier, password }) => {
     const res = await fetch(`${NEXT_URL}/api/login`, {
       method: 'POST',
       headers: {
@@ -52,7 +55,16 @@ export const AuthProvider = ({ children }) => {
 
     if (res.ok) {
       setUser(data.user)
-      router.push('/student/profile')
+      setRole(data.role)
+      if (data.role === 'student') {
+        router.push('student/profile')
+      } else if (data.role === 'admin') {
+        router.push('admin/home')
+      } else if (data.role === 'coordinator') {
+        router.push('coordinator/home')
+      } else {
+        toast.error(data.error)
+      }
     } else {
       toast.error(data.error)
     }
@@ -65,12 +77,24 @@ export const AuthProvider = ({ children }) => {
     })
     if (res.ok) {
       setUser(null)
+      setRole('')
       router.push('/')
     }
   }
 
   //check user logged in
-  const checkUserLoggedIn = async (user) => {}
+  const checkUserLoggedIn = async (user) => {
+    const res = await fetch(`${NEXT_URL}/api/user`)
+    const data = await res.json()
+
+    if (res.ok) {
+      setUser(data.user)
+      setRole(data.role)
+    } else {
+      setUser(null)
+      setRole('')
+    }
+  }
 
   return (
     <AuthContext.Provider

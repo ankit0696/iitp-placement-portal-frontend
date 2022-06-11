@@ -12,11 +12,10 @@ export default function SignIn() {
   const { login, error } = useContext(AuthContext)
   const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
-  const [role, setRole] = useState('student')
 
   const handleSubmit = (e) => {
     e.preventDefault()
-    login({ username, password, role })
+    login({ username, password })
   }
 
   return (
@@ -97,36 +96,6 @@ export default function SignIn() {
                     className='appearance-none block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm'
                   />
                 </div>
-              </div>
-
-              <div>
-                <fieldset className='mt-4'>
-                  <legend className='sr-only'>Role</legend>
-                  <div className='space-y-4 sm:flex sm:items-center sm:space-y-0 sm:space-x-10'>
-                    {notificationMethods.map((notificationMethod) => (
-                      <div
-                        key={notificationMethod.id}
-                        className='flex items-center'
-                      >
-                        <input
-                          value={role}
-                          onChange={(e) => setRole(e.target.id)}
-                          id={notificationMethod.id}
-                          name='role'
-                          type='radio'
-                          defaultChecked={notificationMethod.id === 'student'}
-                          className='focus:ring-indigo-500 h-4 w-4 text-indigo-600 border-gray-300'
-                        />
-                        <label
-                          htmlFor={notificationMethod.id}
-                          className='ml-3 block text-sm font-medium text-gray-700'
-                        >
-                          {notificationMethod.title}
-                        </label>
-                      </div>
-                    ))}
-                  </div>
-                </fieldset>
               </div>
 
               <div className='flex items-center justify-between'>

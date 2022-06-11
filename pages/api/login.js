@@ -21,6 +21,14 @@ export default async (req, res) => {
     const data = await strapiRes.json()
 
     if (strapiRes.ok) {
+      const strapiRoleRes = await fetch(`${API_URL}/api/role/me`, {
+        method: 'GET',
+        headers: {
+          Authorization: `Bearer ${data.jwt}`,
+        },
+      })
+      const role = await strapiRoleRes.json()
+
       res.setHeader(
         'Set-Cookie',
         cookie.serialize('token', data.jwt, {
@@ -31,7 +39,11 @@ export default async (req, res) => {
           path: '/',
         })
       )
-      res.status(200).json({ user: data.user })
+      if (strapiRoleRes.ok) {
+        res.status(200).json({ user: data.user, role: role.role.type })
+      } else {
+        res.status(200).json({ user: data.user, error: 'User unauthorized' })
+      }
     } else {
       res.status(data.error.status).json({ error: data.error.message })
     }

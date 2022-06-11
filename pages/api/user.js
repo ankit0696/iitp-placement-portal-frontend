@@ -20,7 +20,19 @@ export default async (req, res) => {
     const user = await strapiRes.json()
 
     if (strapiRes.ok) {
-      res.status(200).json({ user })
+      const strapiRoleRes = await fetch(`${API_URL}/api/role/me`, {
+        method: 'GET',
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      })
+      const role = await strapiRoleRes.json()
+
+      if (strapiRoleRes.ok) {
+        res.status(200).json({ user: user, role: role.role.type })
+      } else {
+        res.status(403).json({ user: user, error: 'User unauthorized' })
+      }
     } else {
       res.status(403).json({ message: 'User forbidden' })
     }

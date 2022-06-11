@@ -1,26 +1,99 @@
-import React from 'react'
+import { useState } from 'react'
+import { useRouter } from 'next/router'
+import { toast } from 'react-toastify'
+import { API_URL } from '@/config/index'
 
-export default function StudentRegistration() {
-  const handleSubmit = (e) => {
+export default function StudentRegistration({ token = '' }) {
+  const [values, setValues] = useState({
+    name: '',
+    roll: '',
+    file_upload: '',
+    personal_email_id: '',
+    institute_email_id: '',
+    mobile_number_1: '',
+    mobile_number_2: '',
+    gender: '',
+    category: '',
+    address: '',
+    dob: '',
+    rank: '',
+    categoryRank: '',
+    registered_for: '',
+    program: '',
+    department: '',
+    course: '',
+    spi_1: '',
+    spi_2: '',
+    spi_3: '',
+    spi_4: '',
+    spi_5: '',
+    spi_6: '',
+    spi_7: '',
+    spi_8: '',
+    cpi: '',
+    X_marks: '',
+    XII_marks: '',
+    bachelor_marks: '',
+    master_marks: '',
+    admission_year: '',
+  })
+
+  const router = useRouter()
+
+  const handleSubmit = async (e) => {
     e.preventDefault()
-    alert('are you sure?')
+
+    // Validation
+    // const hasEmptyFields = Object.values(values).some((element) => {
+    //   element === ''
+
+    // })
+    if (confirm('Are you sure you want to submit for approval?')) {
+      const res = await fetch(`${API_URL}/api/student/submit-for-approval`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify({ data: values }),
+      })
+
+      if (!res.ok) {
+        if (res.status === 403 || res.status === 401) {
+          toast.error('No token included')
+          return
+        }
+        const profile = await res.json()
+        toast.error(res.status)
+        toast.error('Something Went Wrong')
+      } else {
+        const profile = await res.json()
+        toast.success('Profile Submitted for Approval')
+        router.push(`/student/profile`)
+      }
+    }
+  }
+
+  const handleInputChange = (e) => {
+    const { name, value } = e.target
+    setValues({ ...values, [name]: value })
   }
 
   return (
-    <div className='space-y-6 mt-4'>
-      <div className='bg-white shadow px-4 py-5 sm:rounded-lg sm:p-6'>
-        <div className='md:grid md:grid-cols-3 md:gap-6'>
-          <div className='md:col-span-1'>
-            <h3 className='text-lg font-medium leading-6 text-gray-900'>
-              Personal Information
-            </h3>
-            <p className='mt-1 text-sm text-gray-500'>
-              Student Personal Information, account will be active after admin
-              approval.
-            </p>
-          </div>
-          <div className='mt-5 md:mt-0 md:col-span-2'>
-            <form action='#' method='POST'>
+    <form onSubmit={handleSubmit}>
+      <div className='space-y-6 mt-4'>
+        <div className='bg-white shadow px-4 py-5 sm:rounded-lg sm:p-6'>
+          <div className='md:grid md:grid-cols-3 md:gap-6'>
+            <div className='md:col-span-1'>
+              <h3 className='text-lg font-medium leading-6 text-gray-900'>
+                Personal Information
+              </h3>
+              <p className='mt-1 text-sm text-gray-500'>
+                Student Personal Information, account will be active after admin
+                approval.
+              </p>
+            </div>
+            <div className='mt-5 md:mt-0 md:col-span-2'>
               <div className='grid grid-cols-6 gap-6'>
                 <div className='col-span-6 sm:col-span-3'>
                   <label
@@ -30,10 +103,13 @@ export default function StudentRegistration() {
                     Full Name
                   </label>
                   <input
+                    value={values.name}
+                    onChange={handleInputChange}
                     type='text'
                     name='name'
                     id='name'
-                    autoComplete='given-name'
+                    autoComplete='name'
+                    required
                     className='mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md'
                   />
                 </div>
@@ -45,70 +121,86 @@ export default function StudentRegistration() {
                     Roll No.
                   </label>
                   <input
+                    value={values.roll}
+                    onChange={handleInputChange}
                     type='text'
                     name='roll'
                     id='roll'
-                    autoComplete='family-name'
+                    autoComplete='roll'
+                    required
                     className='mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md'
                   />
                 </div>
+
                 <div className='col-span-6 sm:col-span-3'>
                   <label
-                    htmlFor='personal-email'
+                    htmlFor='personal_email_id'
                     className='block text-sm font-medium text-gray-700'
                   >
                     Personal Email
                   </label>
                   <input
+                    value={values.personal_email_id}
+                    onChange={handleInputChange}
                     type='text'
-                    name='personal-email'
-                    id='personal-email'
+                    name='personal_email_id'
+                    id='personal_email_id'
                     autoComplete='email'
+                    required
                     className='mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md'
                   />
                 </div>
                 <div className='col-span-6 sm:col-span-3'>
                   <label
-                    htmlFor='institute-email'
+                    htmlFor='institute_email_id'
                     className='block text-sm font-medium text-gray-700'
                   >
                     Institute Email
                   </label>
                   <input
+                    value={values.institute_email_id}
+                    onChange={handleInputChange}
                     type='text'
-                    name='institute-email'
-                    id='institute-email'
+                    name='institute_email_id'
+                    id='institute_email_id'
                     autoComplete='email'
+                    required
                     className='mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md'
                   />
                 </div>
                 <div className='col-span-6 sm:col-span-3'>
                   <label
-                    htmlFor='mobile-number-1'
+                    htmlFor='mobile_number_1'
                     className='block text-sm font-medium text-gray-700'
+                    required
                   >
                     Mobile Number 1
                   </label>
                   <input
+                    value={values.mobile_number_1}
+                    onChange={handleInputChange}
                     type='text'
-                    name='mobile-number-1'
-                    id='mobile-number-1'
+                    name='mobile_number_1'
+                    id='mobile_number_1'
                     autoComplete='tel-national'
                     className='mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md'
                   />
                 </div>
                 <div className='col-span-6 sm:col-span-3'>
                   <label
-                    htmlFor='mobile-number-2'
+                    htmlFor='mobile_number_2'
                     className='block text-sm font-medium text-gray-700'
                   >
                     Mobile Number 2
                   </label>
                   <input
+                    value={values.mobile_number_2}
+                    onChange={handleInputChange}
                     type='text'
-                    name='mobile-number-2'
-                    id='mobile-number-2'
-                    autoComplete='email'
+                    name='mobile_number_2'
+                    id='mobile_number_2'
+                    autoComplete='tel-national'
+                    required
                     className='mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md'
                   />
                 </div>
@@ -120,14 +212,18 @@ export default function StudentRegistration() {
                     Gender
                   </label>
                   <select
+                    value={values.gender}
+                    onChange={handleInputChange}
                     id='gender'
                     name='gender'
                     autoComplete='gender'
+                    required
                     className='mt-1 block w-full py-2 px-3 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm'
                   >
-                    <option>Female</option>
-                    <option>Male</option>
-                    <option>Others</option>
+                    <option>Select</option>
+                    <option>female</option>
+                    <option>male</option>
+                    <option>other</option>
                   </select>
                 </div>
                 <div className='col-span-6 sm:col-span-3'>
@@ -138,11 +234,15 @@ export default function StudentRegistration() {
                     Category
                   </label>
                   <select
+                    value={values.category}
+                    onChange={handleInputChange}
                     id='category'
                     name='category'
                     autoComplete='category'
+                    required
                     className='mt-1 block w-full py-2 px-3 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm'
                   >
+                    <option>Select</option>
                     <option>general</option>
                     <option>obc</option>
                     <option>sc</option>
@@ -160,32 +260,52 @@ export default function StudentRegistration() {
                     Date of Birth
                   </label>
                   <input
+                    value={values.dob}
+                    onChange={handleInputChange}
                     type='date'
                     name='dob'
                     id='dob'
-                    autoComplete='email'
+                    autoComplete='dob'
+                    required
                     className='mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md'
                   />
                 </div>
+
+                <div className='col-span-6 sm:col-span-3'>
+                  <label
+                    htmlFor='address'
+                    className='block text-sm font-medium text-gray-700'
+                  >
+                    Address
+                  </label>
+                  <textarea
+                    value={values.address}
+                    onChange={handleInputChange}
+                    rows={4}
+                    name='address'
+                    id='address'
+                    autoComplete='address'
+                    required
+                    className='shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border-gray-300 rounded-md'
+                  />
+                </div>
               </div>
-            </form>
+            </div>
           </div>
         </div>
-      </div>
 
-      <div className='bg-white shadow px-4 py-5 sm:rounded-lg sm:p-6'>
-        <div className='md:grid md:grid-cols-3 md:gap-6'>
-          <div className='md:col-span-1'>
-            <h3 className='text-lg font-medium leading-6 text-gray-900'>
-              Academic Details
-            </h3>
-            <p className='mt-1 text-sm text-gray-500'>
-              Student Academic Information, account will be active after admin
-              approval.
-            </p>
-          </div>
-          <div className='mt-5 md:mt-0 md:col-span-2'>
-            <form action='#' method='POST'>
+        <div className='bg-white shadow px-4 py-5 sm:rounded-lg sm:p-6'>
+          <div className='md:grid md:grid-cols-3 md:gap-6'>
+            <div className='md:col-span-1'>
+              <h3 className='text-lg font-medium leading-6 text-gray-900'>
+                Academic Details
+              </h3>
+              <p className='mt-1 text-sm text-gray-500'>
+                Student Academic Information, account will be active after admin
+                approval.
+              </p>
+            </div>
+            <div className='mt-5 md:mt-0 md:col-span-2'>
               <div className='grid grid-cols-6 gap-6'>
                 <div className='col-span-6 sm:col-span-3'>
                   <label
@@ -195,6 +315,8 @@ export default function StudentRegistration() {
                     GATE / JEE Rank
                   </label>
                   <input
+                    value={values.rank}
+                    onChange={handleInputChange}
                     type='text'
                     name='rank'
                     id='rank'
@@ -210,27 +332,33 @@ export default function StudentRegistration() {
                     Category Rank
                   </label>
                   <input
+                    value={values.categoryRank}
+                    onChange={handleInputChange}
                     type='text'
                     name='categoryRank'
                     id='categoryRank'
-                    autoComplete='family-name'
+                    autoComplete='categoryRank'
                     className='mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md'
                   />
                 </div>
 
                 <div className='col-span-6 sm:col-span-3'>
                   <label
-                    htmlFor='registering-for'
+                    htmlFor='registered_for'
                     className='block text-sm font-medium text-gray-700'
                   >
                     Registering for
                   </label>
                   <select
-                    id='registering-for'
-                    name='registering-for'
-                    autoComplete='registering-for'
+                    value={values.registered_for}
+                    onChange={handleInputChange}
+                    id='registered_for'
+                    name='registered_for'
+                    autoComplete='registered_for'
+                    required
                     className='mt-1 block w-full py-2 px-3 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm'
                   >
+                    <option>Select</option>
                     <option>Internship</option>
                     <option>FTE</option>
                   </select>
@@ -243,15 +371,17 @@ export default function StudentRegistration() {
                     Program
                   </label>
                   <select
+                    value={values.program}
+                    onChange={handleInputChange}
                     id='program'
                     name='program'
                     autoComplete='program'
+                    required
                     className='mt-1 block w-full py-2 px-3 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm'
                   >
-                    <option>general</option>
-                    <option>obc</option>
-                    <option>sc</option>
-                    <option>st</option>
+                    <option>Select</option>
+                    <option>B.Tech</option>
+                    <option>M.Tech</option>
                   </select>
                 </div>
                 <div className='col-span-6 sm:col-span-3'>
@@ -262,15 +392,17 @@ export default function StudentRegistration() {
                     Department
                   </label>
                   <select
+                    value={values.department}
+                    onChange={handleInputChange}
                     id='department'
                     name='department'
                     autoComplete='department'
+                    required
                     className='mt-1 block w-full py-2 px-3 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm'
                   >
-                    <option>general</option>
-                    <option>obc</option>
-                    <option>sc</option>
-                    <option>st</option>
+                    <option>Select</option>
+                    <option>mathematics</option>
+                    <option>computer science </option>
                   </select>
                 </div>
 
@@ -282,45 +414,51 @@ export default function StudentRegistration() {
                     Course
                   </label>
                   <select
+                    value={values.course}
+                    onChange={handleInputChange}
                     id='course'
                     name='course'
                     autoComplete='course'
+                    required
                     className='mt-1 block w-full py-2 px-3 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm'
                   >
-                    <option>general</option>
-                    <option>obc</option>
-                    <option>sc</option>
-                    <option>st</option>
+                    <option>Select</option>
+                    <option>Mathematics & Computing</option>
+                    <option>Mechatronics</option>
                   </select>
                 </div>
 
                 <div className='col-span-6 sm:col-span-2'>
                   <label
-                    htmlFor='spi-1'
+                    htmlFor='spi_1'
                     className='block text-sm font-medium text-gray-700'
                   >
                     SPI-1
                   </label>
                   <input
+                    value={values.spi_1}
+                    onChange={handleInputChange}
                     type='text'
-                    name='spi-1'
-                    id='spi-1'
-                    autoComplete=''
+                    name='spi_1'
+                    id='spi_1'
+                    autoComplete='spi_1'
                     className='mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md'
                   />
                 </div>
 
                 <div className='col-span-6 sm:col-span-2'>
                   <label
-                    htmlFor='spi-2'
+                    htmlFor='spi_2'
                     className='block text-sm font-medium text-gray-700'
                   >
                     SPI-2
                   </label>
                   <input
+                    value={values.spi_2}
+                    onChange={handleInputChange}
                     type='text'
-                    name='spi-2'
-                    id='spi-2'
+                    name='spi_2'
+                    id='spi_2'
                     autoComplete=''
                     className='mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md'
                   />
@@ -328,90 +466,102 @@ export default function StudentRegistration() {
 
                 <div className='col-span-6 sm:col-span-2'>
                   <label
-                    htmlFor='spi-3'
+                    htmlFor='spi_3'
                     className='block text-sm font-medium text-gray-700'
                   >
                     SPI-3
                   </label>
                   <input
+                    value={values.spi_3}
+                    onChange={handleInputChange}
                     type='text'
-                    name='spi-3'
-                    id='spi-3'
+                    name='spi_3'
+                    id='spi_3'
                     autoComplete=''
                     className='mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md'
                   />
                 </div>
                 <div className='col-span-6 sm:col-span-2'>
                   <label
-                    htmlFor='spi-4'
+                    htmlFor='spi_4'
                     className='block text-sm font-medium text-gray-700'
                   >
                     SPI-4
                   </label>
                   <input
+                    value={values.spi_4}
+                    onChange={handleInputChange}
                     type='text'
-                    name='spi-4'
-                    id='spi-4'
+                    name='spi_4'
+                    id='spi_4'
                     autoComplete=''
                     className='mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md'
                   />
                 </div>
                 <div className='col-span-6 sm:col-span-2'>
                   <label
-                    htmlFor='spi-5'
+                    htmlFor='spi_5'
                     className='block text-sm font-medium text-gray-700'
                   >
                     SPI-5
                   </label>
                   <input
+                    value={values.spi_5}
+                    onChange={handleInputChange}
                     type='text'
-                    name='spi-5'
-                    id='spi-5'
+                    name='spi_5'
+                    id='spi_5'
                     autoComplete=''
                     className='mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md'
                   />
                 </div>
                 <div className='col-span-6 sm:col-span-2'>
                   <label
-                    htmlFor='spi-6'
+                    htmlFor='spi_6'
                     className='block text-sm font-medium text-gray-700'
                   >
                     SPI-6
                   </label>
                   <input
+                    value={values.spi_6}
+                    onChange={handleInputChange}
                     type='text'
-                    name='spi-6'
-                    id='spi-6'
+                    name='spi_6'
+                    id='spi_6'
                     autoComplete=''
                     className='mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md'
                   />
                 </div>
                 <div className='col-span-6 sm:col-span-2'>
                   <label
-                    htmlFor='spi-7'
+                    htmlFor='spi_7'
                     className='block text-sm font-medium text-gray-700'
                   >
                     SPI-7
                   </label>
                   <input
+                    value={values.spi_7}
+                    onChange={handleInputChange}
                     type='text'
-                    name='spi-7'
-                    id='spi-7'
+                    name='spi_7'
+                    id='spi_7'
                     autoComplete=''
                     className='mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md'
                   />
                 </div>
                 <div className='col-span-6 sm:col-span-2'>
                   <label
-                    htmlFor='spi-8'
+                    htmlFor='spi_8'
                     className='block text-sm font-medium text-gray-700'
                   >
                     SPI-8
                   </label>
                   <input
+                    value={values.spi_8}
+                    onChange={handleInputChange}
                     type='text'
-                    name='spi-8'
-                    id='spi-8'
+                    name='spi_8'
+                    id='spi_8'
                     autoComplete=''
                     className='mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md'
                   />
@@ -424,6 +574,8 @@ export default function StudentRegistration() {
                     CPI
                   </label>
                   <input
+                    value={values.cpi}
+                    onChange={handleInputChange}
                     type='text'
                     name='cpi'
                     id='cpi'
@@ -433,45 +585,53 @@ export default function StudentRegistration() {
                 </div>
                 <div className='col-span-6 sm:col-span-2'>
                   <label
-                    htmlFor='X_percentage'
+                    htmlFor='X_marks'
                     className='block text-sm font-medium text-gray-700'
                   >
                     X Marks
                   </label>
                   <input
+                    value={values.X_marks}
+                    onChange={handleInputChange}
                     type='text'
-                    name='X_percentage'
-                    id='X_percentage'
+                    name='X_marks'
+                    id='X_marks'
                     autoComplete=''
+                    required
                     className='mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md'
                   />
                 </div>
                 <div className='col-span-6 sm:col-span-2'>
                   <label
-                    htmlFor='XII_percentage'
+                    htmlFor='XII_marks'
                     className='block text-sm font-medium text-gray-700'
                   >
                     XII Marks
                   </label>
                   <input
+                    value={values.XII_marks}
+                    onChange={handleInputChange}
                     type='text'
-                    name='XII_percentage'
-                    id='XII_percentage'
+                    name='XII_marks'
+                    id='XII_marks'
                     autoComplete=''
+                    required
                     className='mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md'
                   />
                 </div>
                 <div className='col-span-6 sm:col-span-2'>
                   <label
-                    htmlFor='bachlor_marks'
+                    htmlFor='bachelor_marks'
                     className='block text-sm font-medium text-gray-700'
                   >
                     Bachelor's Marks
                   </label>
                   <input
+                    value={values.bachelor_marks}
+                    onChange={handleInputChange}
                     type='text'
-                    name='bachlor_marks'
-                    id='bachlor_marks'
+                    name='bachelor_marks'
+                    id='bachelor_marks'
                     autoComplete=''
                     className='mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md'
                   />
@@ -484,6 +644,8 @@ export default function StudentRegistration() {
                     Master's Marks
                   </label>
                   <input
+                    value={values.master_marks}
+                    onChange={handleInputChange}
                     type='text'
                     name='master_marks'
                     id='master_marks'
@@ -491,21 +653,39 @@ export default function StudentRegistration() {
                     className='mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md'
                   />
                 </div>
+                <div className='col-span-6 sm:col-span-2'>
+                  <label
+                    htmlFor='admission_year'
+                    className='block text-sm font-medium text-gray-700'
+                  >
+                    Year of admission
+                  </label>
+                  <input
+                    value={values.admission_year}
+                    onChange={handleInputChange}
+                    type='text'
+                    name='admission_year'
+                    id='admission_year'
+                    autoComplete='admission_year'
+                    placeholder='Ex: 2022'
+                    required
+                    className='mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md'
+                  />
+                </div>
               </div>
-            </form>
+            </div>
           </div>
         </div>
-      </div>
 
-      <div className='flex justify-end'>
-        <button
-          onClick={handleSubmit}
-          type='submit'
-          className='ml-3 inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500'
-        >
-          Submit for approval
-        </button>
+        <div className='flex justify-end'>
+          <button
+            type='submit'
+            className='ml-3 inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500'
+          >
+            Submit for approval
+          </button>
+        </div>
       </div>
-    </div>
+    </form>
   )
 }

@@ -1,39 +1,31 @@
-import Layout from '@/components/student/Layout'
-import { API_URL } from '@/config/index'
-import { parseCookies } from '@/helpers/index'
+import Layout from '@/components/admin/Layout'
 import { AgGridReact } from 'ag-grid-react'
 import 'ag-grid-community/dist/styles/ag-grid.css'
 import 'ag-grid-community/dist/styles/ag-theme-alpine.css'
-import axios from 'axios'
 import { useState } from 'react'
+import { parseCookies } from '@/helpers/index'
+import axios from 'axios'
+import { API_URL } from '@/config/index'
 
-export default function jobsApplied({
-  data = '',
-  statusCode = '',
-  token = '',
-}) {
-  const [rowData] = useState(data)
+export default function students({ data }) {
+  const [rowData] = useState(data.data)
 
   const [columnDefs] = useState([
     {
+      headerName: 'S.No.',
+      valueGetter: 'node.rowIndex + 1',
+    },
+    {
       headerName: 'Company',
-      field: 'job.company.company_name',
-      filter: 'agTextColumnFilter',
+      field: 'attributes.company.data.attributes.company_name',
     },
     {
       headerName: 'Job Title',
-      field: 'job.job_title',
-      filter: 'agTextColumnFilter',
-    },
-    {
-      headerName: 'Student Status',
-      field: 'status',
-      filter: 'agTextColumnFilter',
+      field: 'attributes.job_title',
     },
     {
       headerName: 'Classification',
-      field: 'job.classification',
-      filter: 'agTextColumnFilter',
+      field: 'attributes.classification',
     },
     {
       headerName: 'JAF',
@@ -53,8 +45,8 @@ export default function jobsApplied({
     },
   ])
   return (
-    <Layout heading='Jobs Applied'>
-      <div className='ag-theme-alpine mt-4' style={{ height: 800 }}>
+    <Layout>
+      <div className='ag-theme-alpine mt-4' style={{ height: 600 }}>
         <AgGridReact
           rowData={rowData}
           columnDefs={columnDefs}
@@ -72,7 +64,7 @@ export async function getServerSideProps({ req }) {
     headers: { Authorization: `Bearer ${token}` },
   }
 
-  const res = await axios.get(`${API_URL}/api/student/applied-jobs`, config)
+  const res = await axios.get(`${API_URL}/api/jobs?populate=*`, config)
 
   return {
     props: { data: res.data, statusCode: res.status, token: token }, // will be passed to the page component as props
