@@ -21,9 +21,6 @@ export default function AddJob({ token = '' }) {
   })
 
   const [programs, setPrograms] = useState([])
-  const [departments, setDepartments] = useState([])
-
-  const router = useRouter()
 
   const handleSubmit = async (e) => {
     e.preventDefault()
@@ -104,7 +101,7 @@ export default function AddJob({ token = '' }) {
       .then((data) => setCompanies(data.data))
       .catch((err) => console.log(err))
 
-    fetch(`${API_URL}/api/programs`, {
+    fetch(`${API_URL}/api/programs?populate=*`, {
       headers: {
         'Content-Type': 'application/json',
         Authorization: `Bearer ${token}`,
@@ -113,32 +110,22 @@ export default function AddJob({ token = '' }) {
       .then((res) => res.json())
       .then((data) => setPrograms(data.data))
       .catch((err) => console.log(err))
-
-    fetch(`${API_URL}/api/departments`, {
-      headers: {
-        'Content-Type': 'application/json',
-        Authorization: `Bearer ${token}`,
-      },
-    })
-      .then((res) => res.json())
-      .then((data) => setDepartments(data.data))
-      .catch((err) => console.log(err))
   }, [])
 
   return (
     <form onSubmit={handleSubmit}>
       <div className='space-y-6 mt-4'>
         <div className='bg-white shadow px-4 py-5 sm:rounded-lg sm:p-6'>
+          <div className=''>
+            <h3 className='text-lg font-medium leading-6 text-gray-900 mb-4'>
+              Job Details
+            </h3>
+            {/* <p className='mt-1 text-sm text-gray-500'>
+              Some other details of the job
+            </p> */}
+          </div>
           <div className='md:grid md:grid-cols-3 md:gap-6'>
-            <div className='md:col-span-1'>
-              <h3 className='text-lg font-medium leading-6 text-gray-900'>
-                Job Details
-              </h3>
-              <p className='mt-1 text-sm text-gray-500'>
-                Some other details of the job
-              </p>
-            </div>
-            <div className='mt-5 md:mt-0 md:col-span-2'>
+            <div className='mt-5 md:mt-0 md:col-span-3'>
               <div className='grid grid-cols-6 gap-6'>
                 <div className='col-span-6 sm:col-span-3'>
                   <label
@@ -177,7 +164,7 @@ export default function AddJob({ token = '' }) {
                     className='mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md'
                   />
                 </div>
-                <div className='col-span-6 sm:col-span-3'>
+                <div className='col-span-6 sm:col-span-2'>
                   <label
                     htmlFor='classification'
                     className='block text-sm font-medium text-gray-700'
@@ -195,7 +182,7 @@ export default function AddJob({ token = '' }) {
                     <option value='X'>X</option>
                   </select>
                 </div>
-                <div className='col-span-6 sm:col-span-3'>
+                <div className='col-span-6 sm:col-span-2'>
                   <label
                     htmlFor='category'
                     className='block text-sm font-medium text-gray-700'
@@ -213,7 +200,7 @@ export default function AddJob({ token = '' }) {
                   </select>
                 </div>
 
-                <div className='col-span-6 sm:col-span-3'>
+                <div className='col-span-6 sm:col-span-2'>
                   <label
                     htmlFor='job_status'
                     className='block text-sm font-medium text-gray-700'
@@ -233,7 +220,7 @@ export default function AddJob({ token = '' }) {
                   </select>
                 </div>
 
-                <div className='col-span-6 sm:col-span-3'>
+                <div className='col-span-6 sm:col-span-2'>
                   <label
                     htmlFor='min_X_marks'
                     className='block text-sm font-medium text-gray-700'
@@ -251,7 +238,7 @@ export default function AddJob({ token = '' }) {
                   />
                 </div>
 
-                <div className='col-span-6 sm:col-span-3'>
+                <div className='col-span-6 sm:col-span-2'>
                   <label
                     htmlFor='min_XII_marks'
                     className='block text-sm font-medium text-gray-700'
@@ -269,7 +256,7 @@ export default function AddJob({ token = '' }) {
                   />
                 </div>
 
-                <div className='col-span-6 sm:col-span-3'>
+                <div className='col-span-6 sm:col-span-2'>
                   <label
                     htmlFor='min_cpi'
                     className='block text-sm font-medium text-gray-700'
@@ -286,7 +273,7 @@ export default function AddJob({ token = '' }) {
                     className='mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md'
                   />
                 </div>
-                <div className='col-span-6 sm:col-span-3'>
+                <div className='col-span-6 sm:col-span-2'>
                   <label
                     htmlFor='only_for_pwd'
                     className='block text-sm font-medium text-gray-700'
@@ -302,7 +289,7 @@ export default function AddJob({ token = '' }) {
                     <option value='true'>Yes</option>
                   </select>
                 </div>
-                <div className='col-span-6 sm:col-span-3'>
+                <div className='col-span-6 sm:col-span-2'>
                   <label
                     htmlFor='only_for_ews'
                     className='block text-sm font-medium text-gray-700'
@@ -318,69 +305,43 @@ export default function AddJob({ token = '' }) {
                     <option value='true'>Yes</option>
                   </select>
                 </div>
-                <div className='col-span-6 sm:col-span-3'>
-                  <p className='text-sm font-medium text-gray-700'>
-                    Eligible Programs
-                  </p>
-                  <fieldset className='space-y-5'>
-                    <legend className='sr-only'>Program</legend>
+                <div className='col-span-12 sm:col-span-6'>
+                  <div className='grid grid-cols-12 gap-6'>
                     {programs.map((program) => (
                       <div
                         key={program.id}
-                        className='relative flex items-start'
+                        className='col-span-6 sm:col-span-4'
                       >
-                        <div className='flex items-center h-5'>
-                          <input
-                            id='comments'
-                            aria-describedby='comments-description'
-                            name='comments'
-                            type='checkbox'
-                            className='focus:ring-indigo-500 h-4 w-4 text-indigo-600 border-gray-300 rounded'
-                          />
-                        </div>
-                        <div className='ml-3 text-sm'>
-                          <label
-                            htmlFor='comments'
-                            className='font-medium text-gray-700'
-                          >
+                        <fieldset>
+                          <legend className='block text-sm font-medium text-gray-900'>
                             {program.attributes.program_name}
-                          </label>
-                        </div>
+                          </legend>
+                          <div className='pt-6 space-y-3'>
+                            {program.attributes.courses.data.map((course) => (
+                              <div
+                                key={course.id}
+                                className='flex items-center'
+                              >
+                                <input
+                                  id={`${course.id}`}
+                                  name={`${course.id}`}
+                                  defaultValue={course.id}
+                                  type='checkbox'
+                                  className='h-4 w-4 border-gray-300 rounded text-indigo-600 focus:ring-indigo-500'
+                                />
+                                <label
+                                  htmlFor={`${course.id}`}
+                                  className='ml-3 text-sm text-gray-600'
+                                >
+                                  {course.attributes.course_name}
+                                </label>
+                              </div>
+                            ))}
+                          </div>
+                        </fieldset>
                       </div>
                     ))}
-                  </fieldset>
-                </div>
-                <div className='col-span-6 sm:col-span-3'>
-                  <p className='text-sm font-medium text-gray-700'>
-                    Eligible Departments
-                  </p>
-                  <fieldset className='space-y-5'>
-                    <legend className='sr-only'>Department</legend>
-                    {departments.map((department) => (
-                      <div
-                        key={department.id}
-                        className='relative flex items-start'
-                      >
-                        <div className='flex items-center h-5'>
-                          <input
-                            id='comments'
-                            aria-describedby='comments-description'
-                            name='comments'
-                            type='checkbox'
-                            className='focus:ring-indigo-500 h-4 w-4 text-indigo-600 border-gray-300 rounded'
-                          />
-                        </div>
-                        <div className='ml-3 text-sm'>
-                          <label
-                            htmlFor='comments'
-                            className='font-medium text-gray-700'
-                          >
-                            {department.attributes.department_name}
-                          </label>
-                        </div>
-                      </div>
-                    ))}
-                  </fieldset>
+                  </div>
                 </div>
               </div>
             </div>
