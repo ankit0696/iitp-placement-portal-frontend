@@ -63,7 +63,9 @@ export default function StudentRegistration({ token = '' }) {
           toast.error('No token included')
           return
         }
+
         const profile = await res.json()
+        console.log(profile)
         toast.error(res.status)
         toast.error('Something Went Wrong')
       } else {

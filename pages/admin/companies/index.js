@@ -19,10 +19,31 @@ export default function students({ data }) {
     {
       headerName: 'Company',
       field: 'attributes.company_name',
+      cellRenderer: function (params) {
+        return (
+          <div>
+            <Link href={`/admin/companies/${params.data.id}`}>
+              {params.value}
+            </Link>
+          </div>
+        )
+      },
     },
     {
       headerName: 'Approval Status',
-      field: 'attributes.approved',
+      field: 'attributes.status',
+    },
+    {
+      headerName: 'Company Addrees',
+      field: 'attributes.company_address',
+    },
+    {
+      headerName: 'Contact 1 Name',
+      field: 'attributes.contact1.name',
+    },
+    {
+      headerName: 'Contact 1 Mobile No',
+      field: 'attributes.contact1.mobile_no',
     },
   ])
   return (
@@ -31,7 +52,7 @@ export default function students({ data }) {
         <div className='border-b border-gray-200 px-4 py-4 sm:flex sm:items-center sm:justify-between sm:px-6 lg:px-8'>
           <div className='flex-1 min-w-0'>
             <h1 className='text-lg font-medium leading-6 text-gray-900 sm:truncate'>
-              Home
+              Companies
             </h1>
           </div>
           <div className='mt-4 flex sm:mt-0 sm:ml-4'>

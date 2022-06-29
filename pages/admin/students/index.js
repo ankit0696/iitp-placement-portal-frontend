@@ -6,6 +6,7 @@ import { useState, useCallback, useRef } from 'react'
 import { parseCookies } from '@/helpers/index'
 import axios from 'axios'
 import { API_URL } from '@/config/index'
+import Link from 'next/link'
 
 export default function students({ data }) {
   const [rowData] = useState(data.data)
@@ -14,14 +15,34 @@ export default function students({ data }) {
     {
       headerName: 'Roll No.',
       field: 'attributes.roll',
+      cellRenderer: function (params) {
+        return (
+          <div>
+            <Link href={`/admin/students/${params.data.id}`}>
+              {params.value}
+            </Link>
+          </div>
+        )
+      },
+      checkboxSelection: true,
     },
     {
       headerName: 'Name',
       field: 'attributes.name',
+      cellRenderer: function (params) {
+        return (
+          <div>
+            <Link href={`/admin/students/${params.data.id}`}>
+              {params.value}
+            </Link>
+          </div>
+        )
+      },
     },
     {
       headerName: 'CPI',
       field: 'attributes.cpi',
+      filter: 'agNumberColumnFilter',
     },
     {
       headerName: 'Course',
@@ -81,7 +102,7 @@ export default function students({ data }) {
   const gridRef = useRef()
   const onBtExport = useCallback(() => {
     gridRef.current.api.exportDataAsCsv({
-      // onlySelected: document.querySelector('#selectedOnly').checked,
+      nlySelected: true,
     })
   }, [])
   return (
@@ -112,7 +133,8 @@ export default function students({ data }) {
           ref={gridRef}
           rowData={rowData}
           columnDefs={columnDefs}
-          defaultColDef={{ sortable: true }}
+          rowSelection='multiple'
+          defaultColDef={{ sortable: true, filter: true }}
         ></AgGridReact>
       </div>
     </Layout>

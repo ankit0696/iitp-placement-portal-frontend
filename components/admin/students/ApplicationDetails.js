@@ -32,7 +32,7 @@ export default function ApplicationDetails({ applications = '' }) {
     <div className='my-4'>
       <div className='pb-5 border-b border-gray-200'>
         <h3 className='text-lg leading-6 font-medium text-gray-900'>
-          Application Details
+          Applied Jobs
         </h3>
       </div>
       <div className='ag-theme-alpine mt-4' style={{ height: 200 }}>

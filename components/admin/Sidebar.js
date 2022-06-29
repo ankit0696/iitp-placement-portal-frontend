@@ -3,15 +3,14 @@ import { Fragment, useState, useContext } from 'react'
 import { Dialog, Transition } from '@headlessui/react'
 import {
   BriefcaseIcon,
-  CalendarIcon,
-  ChartBarIcon,
+  CogIcon,
   DocumentTextIcon,
   FolderIcon,
-  HomeIcon,
   IdentificationIcon,
   InboxIcon,
   LogoutIcon,
   MenuIcon,
+  UserCircleIcon,
   UsersIcon,
   XIcon,
 } from '@heroicons/react/outline'
@@ -29,7 +28,7 @@ const navigation = [
   {
     name: 'Students',
     href: '/admin/students',
-    icon: BriefcaseIcon,
+    icon: UsersIcon,
   },
   {
     name: 'Companies',
@@ -38,13 +37,13 @@ const navigation = [
   },
   {
     name: 'Jobs/Internship',
-    href: '/admin/job',
-    icon: DocumentTextIcon,
+    href: '/admin/jobs',
+    icon: BriefcaseIcon,
   },
   {
     name: 'Settings',
     href: '/admin/settings',
-    icon: DocumentTextIcon,
+    icon: CogIcon,
   },
   {
     name: 'Requests',
@@ -54,7 +53,7 @@ const navigation = [
   {
     name: 'Coordinators',
     href: '/admin/coordinators',
-    icon: DocumentTextIcon,
+    icon: UserCircleIcon,
   },
 ]
 

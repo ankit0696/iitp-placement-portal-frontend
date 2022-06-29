@@ -1,18 +1,18 @@
 import Breadcrumbs from '@/components/admin/Breadcrumbs'
-import AddCompany from '@/components/admin/companies/AddCompany'
+import AddJob from '@/components/admin/jobs/AddJob'
 import Layout from '@/components/admin/Layout'
 import { parseCookies } from '@/helpers/index'
 import React from 'react'
 
 export default function index({ token = '' }) {
   const pages = [
-    { name: 'Companies', href: '/admin/companies', current: false },
-    { name: `Add Company`, href: '#', current: true },
+    { name: 'Jobs', href: '/admin/jobs', current: false },
+    { name: `Add Job`, href: '#', current: true },
   ]
   return (
     <Layout>
       <Breadcrumbs pages={pages} />
-      <AddCompany token={token} />
+      <AddJob token={token} />
     </Layout>
   )
 }
