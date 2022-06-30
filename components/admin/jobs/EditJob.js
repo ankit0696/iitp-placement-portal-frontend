@@ -3,19 +3,8 @@ import { useRouter } from 'next/router'
 import { toast } from 'react-toastify'
 import { API_URL } from '@/config/index'
 
-export default function AddJob({ token = '' }) {
-  const [values, setValues] = useState({
-    job_title: '',
-    job_status: '',
-    classification: '',
-    category: '',
-    min_X_marks: 0,
-    min_XII_marks: 0,
-    min_cpi: 0,
-    only_for_pwd: false,
-    only_for_ews: false,
-    company: null,
-  })
+export default function EditJob({ token = '', job = '' }) {
+  const [values, setValues] = useState(job)
   const eligibleCourses = new Set()
   const [programs, setPrograms] = useState([])
   programs.map((program) => {
