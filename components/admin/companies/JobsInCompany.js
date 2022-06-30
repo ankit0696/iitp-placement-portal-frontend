@@ -3,6 +3,7 @@ import { AgGridReact } from 'ag-grid-react'
 import 'ag-grid-community/dist/styles/ag-grid.css'
 import 'ag-grid-community/dist/styles/ag-theme-alpine.css'
 import { API_URL } from '@/config/index'
+import Link from 'next/link'
 
 export default function JobsInCompany({ id, token = '' }) {
   const [jobs, setJobs] = useState([])
@@ -31,6 +32,13 @@ export default function JobsInCompany({ id, token = '' }) {
     {
       headerName: 'Job Title',
       field: 'attributes.job_title',
+      cellRenderer: function (params) {
+        return (
+          <div>
+            <Link href={`/admin/jobs/${params.data.id}`}>{params.value}</Link>
+          </div>
+        )
+      },
     },
     {
       headerName: 'Classification',

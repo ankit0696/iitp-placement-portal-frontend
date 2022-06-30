@@ -12,9 +12,12 @@ export default function AddJob({ token = '' }) {
     min_X_marks: 0,
     min_XII_marks: 0,
     min_cpi: 0,
+    start_date: undefined,
+    last_date: undefined,
     only_for_pwd: false,
     only_for_ews: false,
-    company: null,
+    company: '',
+    approval_status: 'approved',
   })
   const eligibleCourses = new Set()
   const [programs, setPrograms] = useState([])
@@ -23,6 +26,13 @@ export default function AddJob({ token = '' }) {
       eligibleCourses.add(course.id)
     })
   })
+
+  const handleDateChange = (e) => {
+    const { name } = e.target
+    const value = e.target.value === '' ? undefined : e.target.value
+
+    setValues({ ...values, [name]: value })
+  }
 
   const handleCheckboxChange = (e) => {
     const { value } = e.target
@@ -41,7 +51,7 @@ export default function AddJob({ token = '' }) {
     //   element === ''
 
     // })
-    console.log(eligibleCourses)
+    // console.log(eligibleCourses)
     values['eligible_courses'] = Array.from(eligibleCourses).toString()
     if (confirm('Are you sure you add job?')) {
       const res = await fetch(`${API_URL}/api/jobs`, {
@@ -60,6 +70,7 @@ export default function AddJob({ token = '' }) {
           return
         }
         const profile = await res.json()
+        console.log(profile)
         toast.error('Error: ' + profile.error.details.errors[0].message)
       } else {
         toast.success('Company Added Successfully')
@@ -255,6 +266,40 @@ export default function AddJob({ token = '' }) {
                     name='min_cpi'
                     id='min_cpi'
                     autoComplete='min_cpi'
+                    className='mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md'
+                  />
+                </div>
+                <div className='col-span-6 sm:col-span-2'>
+                  <label
+                    htmlFor='start_date'
+                    className='block text-sm font-medium text-gray-700'
+                  >
+                    Start Date
+                  </label>
+                  <input
+                    defaultValue={values.start_date}
+                    onChange={handleDateChange}
+                    type='datetime-local'
+                    name='start_date'
+                    id='start_date'
+                    autoComplete='start_date'
+                    className='mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md'
+                  />
+                </div>
+                <div className='col-span-6 sm:col-span-2'>
+                  <label
+                    htmlFor='last_date'
+                    className='block text-sm font-medium text-gray-700'
+                  >
+                    Last Date
+                  </label>
+                  <input
+                    defaultValue={values.last_date}
+                    onChange={handleDateChange}
+                    type='datetime-local'
+                    name='last_date'
+                    id='last_date'
+                    autoComplete='last_date'
                     className='mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md'
                   />
                 </div>

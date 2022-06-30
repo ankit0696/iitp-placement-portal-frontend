@@ -14,7 +14,7 @@ export default function EditJobPage({ token = '', data }) {
   return (
     <Layout>
       <Breadcrumbs pages={pages} />
-      <EditJob token={token} job={data.data.attributes} />
+      <EditJob token={token} job={data.data} />
     </Layout>
   )
 }
@@ -26,7 +26,6 @@ export async function getServerSideProps({ req, params }) {
     headers: { Authorization: `Bearer ${token}` },
   }
   const res = await axios.get(`${API_URL}/api/jobs/${id}?populate=*`, config)
-  console.log(res.data)
   return {
     props: { token: token, data: res.data }, // will be passed to the page component as props
   }

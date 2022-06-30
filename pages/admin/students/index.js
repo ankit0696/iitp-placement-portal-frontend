@@ -46,11 +46,11 @@ export default function students({ data }) {
     },
     {
       headerName: 'Course',
-      field: 'attributes.course',
+      field: 'attributes.course.data.attributes.course_name',
     },
     {
       headerName: 'Program',
-      field: 'attributes.program',
+      field: 'attributes.program.data.attributes.program_name',
     },
     {
       headerName: 'Mobile',
@@ -102,7 +102,7 @@ export default function students({ data }) {
   const gridRef = useRef()
   const onBtExport = useCallback(() => {
     gridRef.current.api.exportDataAsCsv({
-      nlySelected: true,
+      OnlySelected: true,
     })
   }, [])
   return (

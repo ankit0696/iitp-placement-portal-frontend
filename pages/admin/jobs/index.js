@@ -19,10 +19,36 @@ export default function students({ data }) {
     {
       headerName: 'Company',
       field: 'attributes.company.data.attributes.company_name',
+      cellRenderer: function (params) {
+        return (
+          <div>
+            <Link
+              href={`/admin/companies/${params.data.attributes.company.data.id}`}
+            >
+              {params.value}
+            </Link>
+          </div>
+        )
+      },
+    },
+    {
+      headerName: 'Approval Status',
+      field: 'attributes.approval_status',
+    },
+    {
+      headerName: 'Category',
+      field: 'attributes.category',
     },
     {
       headerName: 'Job Title',
       field: 'attributes.job_title',
+      cellRenderer: function (params) {
+        return (
+          <div>
+            <Link href={`/admin/jobs/${params.data.id}`}>{params.value}</Link>
+          </div>
+        )
+      },
     },
     {
       headerName: 'Classification',
@@ -47,7 +73,7 @@ export default function students({ data }) {
   ])
   return (
     <Layout>
-      <div class='flex-1'>
+      <div className='flex-1'>
         <div className='border-b border-gray-200 px-4 py-4 sm:flex sm:items-center sm:justify-between sm:px-6 lg:px-8'>
           <div className='flex-1 min-w-0'>
             <h1 className='text-lg font-medium leading-6 text-gray-900 sm:truncate'>
@@ -75,7 +101,7 @@ export default function students({ data }) {
           <AgGridReact
             rowData={rowData}
             columnDefs={columnDefs}
-            defaultColDef={{ sortable: true }}
+            defaultColDef={{ sortable: true, filter: true }}
           ></AgGridReact>
         </div>
       </div>
@@ -91,7 +117,7 @@ export async function getServerSideProps({ req }) {
   }
 
   const res = await axios.get(`${API_URL}/api/jobs?populate=*`, config)
-
+  console.log(JSON.stringify(res.data, null, 2))
   return {
     props: { data: res.data, statusCode: res.status, token: token }, // will be passed to the page component as props
   }

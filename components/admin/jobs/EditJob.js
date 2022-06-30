@@ -4,7 +4,10 @@ import { toast } from 'react-toastify'
 import { API_URL } from '@/config/index'
 
 export default function EditJob({ token = '', job = '' }) {
-  const [values, setValues] = useState(job)
+  const id = job.id
+  const { company, ...newJob } = job.attributes
+  const [values, setValues] = useState(newJob)
+
   const eligibleCourses = new Set()
   const [programs, setPrograms] = useState([])
   programs.map((program) => {
@@ -22,6 +25,11 @@ export default function EditJob({ token = '', job = '' }) {
     }
   }
 
+  const handleDateChange = (e) => {
+    const { name, value } = e.target
+    setValues({ ...values, [name]: value === '' ? undefined : value })
+  }
+
   const handleSubmit = async (e) => {
     e.preventDefault()
 
@@ -32,9 +40,9 @@ export default function EditJob({ token = '', job = '' }) {
     // })
     console.log(eligibleCourses)
     values['eligible_courses'] = Array.from(eligibleCourses).toString()
-    if (confirm('Are you sure you add job?')) {
-      const res = await fetch(`${API_URL}/api/jobs`, {
-        method: 'POST',
+    if (confirm('Are you sure you edit job?')) {
+      const res = await fetch(`${API_URL}/api/jobs/${id}`, {
+        method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
           Authorization: `Bearer ${token}`,
@@ -49,6 +57,7 @@ export default function EditJob({ token = '', job = '' }) {
           return
         }
         const profile = await res.json()
+        toast.error('Something went wrong')
         toast.error('Error: ' + profile.error.details.errors[0].message)
       } else {
         toast.success('Company Added Successfully')
@@ -61,18 +70,7 @@ export default function EditJob({ token = '', job = '' }) {
     setValues({ ...values, [name]: value })
   }
 
-  const [companies, setCompanies] = useState([])
   useEffect(() => {
-    fetch(`${API_URL}/api/companies?filters[status][$eq]=approved&populate=*`, {
-      headers: {
-        'Content-Type': 'application/json',
-        Authorization: `Bearer ${token}`,
-      },
-    })
-      .then((res) => res.json())
-      .then((data) => setCompanies(data.data))
-      .catch((err) => console.log(err))
-
     fetch(`${API_URL}/api/programs?populate=*`, {
       headers: {
         'Content-Type': 'application/json',
@@ -108,18 +106,9 @@ export default function EditJob({ token = '', job = '' }) {
                   >
                     Company
                   </label>
-                  <select
-                    name='company'
-                    onChange={handleInputChange}
-                    className='mt-1 block w-full py-2 px-3 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm'
-                  >
-                    <option value=''>Select Company</option>
-                    {companies.map((company) => (
-                      <option key={company.id} value={company.id}>
-                        {company.attributes.company_name}
-                      </option>
-                    ))}
-                  </select>
+                  <p className='mt-1 block w-full py-2 px-3 border border-green-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm'>
+                    {company.data.attributes.company_name}
+                  </p>
                 </div>
                 <div className='col-span-6 sm:col-span-3'>
                   <label
@@ -148,6 +137,7 @@ export default function EditJob({ token = '', job = '' }) {
                   <select
                     name='classification'
                     onChange={handleInputChange}
+                    value={values.classification}
                     className='mt-1 block w-full py-2 px-3 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm'
                   >
                     <option value=''>Select Classification</option>
@@ -166,6 +156,7 @@ export default function EditJob({ token = '', job = '' }) {
                   <select
                     name='category'
                     onChange={handleInputChange}
+                    value={values.category}
                     className='mt-1 block w-full py-2 px-3 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm'
                   >
                     <option value=''>Select</option>
@@ -184,6 +175,7 @@ export default function EditJob({ token = '', job = '' }) {
                   <select
                     name='job_status'
                     onChange={handleInputChange}
+                    value={values.job_status}
                     className='mt-1 block w-full py-2 px-3 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm'
                   >
                     <option value=''>Select</option>
@@ -249,6 +241,40 @@ export default function EditJob({ token = '', job = '' }) {
                 </div>
                 <div className='col-span-6 sm:col-span-2'>
                   <label
+                    htmlFor='start_date'
+                    className='block text-sm font-medium text-gray-700'
+                  >
+                    Start Date
+                  </label>
+                  <input
+                    defaultValue={values.start_date}
+                    onChange={handleDateChange}
+                    type='datetime-local'
+                    name='start_date'
+                    id='start_date'
+                    autoComplete='start_date'
+                    className='mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md'
+                  />
+                </div>
+                <div className='col-span-6 sm:col-span-2'>
+                  <label
+                    htmlFor='last_date'
+                    className='block text-sm font-medium text-gray-700'
+                  >
+                    Last Date
+                  </label>
+                  <input
+                    defaultValue={values.last_date}
+                    onChange={handleDateChange}
+                    type='datetime-local'
+                    name='last_date'
+                    id='last_date'
+                    autoComplete='last_date'
+                    className='mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md'
+                  />
+                </div>
+                <div className='col-span-6 sm:col-span-2'>
+                  <label
                     htmlFor='only_for_pwd'
                     className='block text-sm font-medium text-gray-700'
                   >
@@ -257,6 +283,7 @@ export default function EditJob({ token = '', job = '' }) {
                   <select
                     name='only_for_pwd'
                     onChange={handleInputChange}
+                    value={values.only_for_pwd}
                     className='mt-1 block w-full py-2 px-3 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm'
                   >
                     <option value='false'>No</option>
@@ -273,6 +300,7 @@ export default function EditJob({ token = '', job = '' }) {
                   <select
                     name='only_for_ews'
                     onChange={handleInputChange}
+                    value={values.only_for_ews}
                     className='mt-1 block w-full py-2 px-3 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm'
                   >
                     <option value='false'>No</option>
@@ -329,7 +357,7 @@ export default function EditJob({ token = '', job = '' }) {
             type='submit'
             className='ml-3 inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500'
           >
-            Add
+            Edit
           </button>
         </div>
       </div>
