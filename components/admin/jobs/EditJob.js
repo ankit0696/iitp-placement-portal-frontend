@@ -1,15 +1,40 @@
 import { useEffect, useState } from 'react'
-import { useRouter } from 'next/router'
+import Router, { useRouter } from 'next/router'
+import { TrashIcon } from '@heroicons/react/solid'
 import { toast } from 'react-toastify'
 import { API_URL } from '@/config/index'
+import axios from 'axios'
 
 export default function EditJob({ token = '', job = '' }) {
   const id = job.id
-  const { company, ...newJob } = job.attributes
+  const { company, createdAt, updatedAt, publishedAt, jaf, ...newJob } =
+    job.attributes
   const [values, setValues] = useState(newJob)
+
+  const router = useRouter()
 
   const eligibleCourses = new Set()
   const [programs, setPrograms] = useState([])
+
+  const handleDelete = async () => {
+    if (confirm('Are you sure you want to delete this job?')) {
+      try {
+        const res = await fetch(`${API_URL}/api/jobs/${id}`, {
+          method: 'DELETE',
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        })
+        if (res.status === 200) {
+          toast.success('Job deleted successfully')
+          router.push('/admin/jobs')
+        }
+      } catch (error) {
+        toast.error('Error deleting job')
+        console.log(error)
+      }
+    }
+  }
   programs.map((program) => {
     program.attributes.courses.data.map((course) => {
       eligibleCourses.add(course.id)
@@ -57,10 +82,11 @@ export default function EditJob({ token = '', job = '' }) {
           return
         }
         const profile = await res.json()
+        console.log(profile)
         toast.error('Something went wrong')
         toast.error('Error: ' + profile.error.details.errors[0].message)
       } else {
-        toast.success('Company Added Successfully')
+        toast.success('Job Edited Successfully')
       }
     }
   }
@@ -353,6 +379,13 @@ export default function EditJob({ token = '', job = '' }) {
         </div>
 
         <div className='flex justify-end'>
+          <button
+            type='button'
+            onClick={handleDelete}
+            className='ml-3 inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-red-600 hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500'
+          >
+            <TrashIcon className='w-5 h-5 text-white' />
+          </button>
           <button
             type='submit'
             className='ml-3 inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500'
