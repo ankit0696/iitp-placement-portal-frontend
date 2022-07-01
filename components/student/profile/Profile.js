@@ -182,21 +182,21 @@ export default function Profile({ student }) {
               Program
             </dt>
             <dd className='mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-1'>
-              {student.program}
+              {student.program.program_name}
             </dd>
           </div>
           <div className='py-4 sm:py-5 sm:grid sm:grid-cols-4 sm:gap-4 sm:px-6'>
-            <dt className='text-sm font-medium text-gray-500 sm:col-span-1'>
+            {/* <dt className='text-sm font-medium text-gray-500 sm:col-span-1'>
               Department
             </dt>
             <dd className='mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-1 capitalize'>
               {student.department}
-            </dd>
+            </dd> */}
             <dt className='text-sm font-medium text-gray-500 sm:col-span-1'>
               Course
             </dt>
             <dd className='mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-1'>
-              {student.course}
+              {student.course.course_name}
             </dd>
           </div>
           <div className='py-4 sm:py-5 sm:grid sm:grid-cols-4 sm:gap-4 sm:px-6'>

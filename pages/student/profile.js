@@ -5,8 +5,6 @@ import { API_URL } from '@/config/index'
 import StudentRegistration from '@/components/student/profile/StudentRegistration'
 import Profile from '@/components/student/profile/Profile'
 import { parseCookies } from '@/helpers/index'
-import AuthContext from '@/context/AuthContext'
-import { useRouter } from 'next/router'
 
 export default function profile({ data = '', statusCode = '', token = '' }) {
   return (
