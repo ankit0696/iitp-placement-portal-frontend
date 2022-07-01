@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react'
 import { useRouter } from 'next/router'
 import { toast } from 'react-toastify'
 import { API_URL } from '@/config/index'
+import moment from 'moment'
 
 export default function AddJob({ token = '' }) {
   const [values, setValues] = useState({
@@ -29,10 +30,10 @@ export default function AddJob({ token = '' }) {
   })
 
   const handleDateChange = (e) => {
-    const { name } = e.target
-    const value = e.target.value === '' ? undefined : e.target.value
-
-    setValues({ ...values, [name]: value })
+    let { name, value } = e.target
+    value = moment(value).local().format('yyyy-MM-DDThh:mm:ss.SSS')
+    console.log(value)
+    setValues({ ...values, [name]: value === '' ? undefined : value })
   }
 
   const handleCheckboxChange = (e) => {
@@ -235,6 +236,7 @@ export default function AddJob({ token = '' }) {
                     type='number'
                     name='min_X_marks'
                     id='min_X_marks'
+                    maxValue='100'
                     autoComplete='min_X_marks'
                     className='mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md'
                   />
@@ -253,6 +255,7 @@ export default function AddJob({ token = '' }) {
                     type='number'
                     name='min_XII_marks'
                     id='min_XII_marks'
+                    maxValue={100}
                     autoComplete='min_XII_marks'
                     className='mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md'
                   />

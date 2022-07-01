@@ -12,16 +12,16 @@ export default function EditJob({ token = '', job = '' }) {
 
   newJob.start_date = moment(newJob.start_date)
     .local()
-    .format('YYYY-MM-DD HH:mm:ss')
+    .format('yyyy-MM-DDThh:mm:ss.SSS')
   newJob.last_date = moment(newJob.last_date)
     .local()
-    .format('YYYY-MM-DD HH:mm:ss')
+    .format('yyyy-MM-DDThh:mm:ss.SSS')
 
   const [values, setValues] = useState(newJob)
 
   const router = useRouter()
 
-  const eligibleCourses = new Set(values.eligible_courses.split(','))
+  const eligibleCourses = new Set(values.eligible_courses?.split(','))
 
   const [programs, setPrograms] = useState([])
 
@@ -55,7 +55,9 @@ export default function EditJob({ token = '', job = '' }) {
   }
 
   const handleDateChange = (e) => {
-    const { name, value } = e.target
+    let { name, value } = e.target
+    value = moment(value).local().format('yyyy-MM-DDThh:mm:ss.SSS')
+    console.log(value)
     setValues({ ...values, [name]: value === '' ? undefined : value })
   }
 

@@ -1,5 +1,6 @@
 import Breadcrumbs from '@/components/admin/Breadcrumbs'
 import EditJob from '@/components/admin/jobs/EditJob'
+import StudentApplied from '@/components/admin/jobs/StudentApplied'
 import Layout from '@/components/admin/Layout'
 import { API_URL } from '@/config/index'
 import { parseCookies } from '@/helpers/index'
@@ -14,6 +15,7 @@ export default function EditJobPage({ token = '', data }) {
   return (
     <Layout>
       <Breadcrumbs pages={pages} />
+      <StudentApplied token={token} id={data.data.id} />
       <EditJob token={token} job={data.data} />
     </Layout>
   )
