@@ -5,13 +5,31 @@ import { AgGridReact } from 'ag-grid-react'
 import 'ag-grid-community/dist/styles/ag-grid.css'
 import 'ag-grid-community/dist/styles/ag-theme-alpine.css'
 import axios from 'axios'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
+import { useRouter } from 'next/router'
 
 export default function jobsApplied({
   data = '',
   statusCode = '',
   token = '',
 }) {
+  const router = useRouter()
+  // check if student is approved or not
+
+  useEffect(() => {
+    fetch(`${API_URL}/api/student/me`, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    })
+      .then((res) => res.json())
+      .then((data) => {
+        if (data.approved !== 'approved') {
+          router.push('/student/profile')
+        }
+      })
+  }, [])
+
   const [rowData] = useState(data)
 
   const [columnDefs] = useState([

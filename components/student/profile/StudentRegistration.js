@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { useRouter } from 'next/router'
 import { toast } from 'react-toastify'
 import { API_URL } from '@/config/index'
@@ -15,11 +15,12 @@ export default function StudentRegistration({ token = '' }) {
     gender: '',
     category: '',
     address: '',
-    dob: '',
+    date_of_birth: '',
     rank: '',
     categoryRank: '',
     registered_for: '',
     program: '',
+    pwd: false,
     department: '',
     course: '',
     spi_1: '',
@@ -66,8 +67,7 @@ export default function StudentRegistration({ token = '' }) {
 
         const profile = await res.json()
         console.log(profile)
-        toast.error(res.status)
-        toast.error('Something Went Wrong')
+        toast.error(profile?.error.name)
       } else {
         const profile = await res.json()
         toast.success('Profile Submitted for Approval')
@@ -80,6 +80,32 @@ export default function StudentRegistration({ token = '' }) {
     const { name, value } = e.target
     setValues({ ...values, [name]: value })
   }
+
+  const [programs, setPrograms] = useState([])
+  const [courses, setCourses] = useState([])
+
+  //get courses of selected program
+
+  useEffect(() => {
+    fetch(`${API_URL}/api/programs?populate=*`, {
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${token}`,
+      },
+    })
+      .then((res) => res.json())
+      .then((data) => {
+        setPrograms(data.data)
+      })
+  }, [])
+
+  useEffect(() => {
+    programs.map((program) => {
+      if (program.id === parseFloat(values.program)) {
+        setCourses(program.attributes.courses.data)
+      }
+    })
+  }, [values.program])
 
   return (
     <form onSubmit={handleSubmit}>
@@ -256,18 +282,39 @@ export default function StudentRegistration({ token = '' }) {
 
                 <div className='col-span-6 sm:col-span-3'>
                   <label
-                    htmlFor='dob'
+                    htmlFor='pwd'
+                    className='block text-sm font-medium text-gray-700'
+                  >
+                    PWD
+                  </label>
+                  <select
+                    value={values.pwd}
+                    onChange={handleInputChange}
+                    id='pwd'
+                    name='pwd'
+                    autoComplete='pwd'
+                    required
+                    className='mt-1 block w-full py-2 px-3 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm'
+                  >
+                    <option>Select</option>
+                    <option value={true}>Yes</option>
+                    <option value={false}>No</option>
+                  </select>
+                </div>
+                <div className='col-span-6 sm:col-span-3'>
+                  <label
+                    htmlFor='date_of_birth'
                     className='block text-sm font-medium text-gray-700'
                   >
                     Date of Birth
                   </label>
                   <input
-                    value={values.dob}
+                    value={values.date_of_birth}
                     onChange={handleInputChange}
                     type='date'
-                    name='dob'
-                    id='dob'
-                    autoComplete='dob'
+                    name='date_of_birth'
+                    id='date_of_birth'
+                    autoComplete='date_of_birth'
                     required
                     className='mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md'
                   />
@@ -382,29 +429,11 @@ export default function StudentRegistration({ token = '' }) {
                     className='mt-1 block w-full py-2 px-3 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm'
                   >
                     <option>Select</option>
-                    <option>B.Tech</option>
-                    <option>M.Tech</option>
-                  </select>
-                </div>
-                <div className='col-span-6 sm:col-span-3'>
-                  <label
-                    htmlFor='department'
-                    className='block text-sm font-medium text-gray-700'
-                  >
-                    Department
-                  </label>
-                  <select
-                    value={values.department}
-                    onChange={handleInputChange}
-                    id='department'
-                    name='department'
-                    autoComplete='department'
-                    required
-                    className='mt-1 block w-full py-2 px-3 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm'
-                  >
-                    <option>Select</option>
-                    <option>mathematics</option>
-                    <option>computer science </option>
+                    {programs.map((program) => (
+                      <option key={program.id} value={program.id}>
+                        {program.attributes.program_name}
+                      </option>
+                    ))}
                   </select>
                 </div>
 
@@ -425,8 +454,11 @@ export default function StudentRegistration({ token = '' }) {
                     className='mt-1 block w-full py-2 px-3 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm'
                   >
                     <option>Select</option>
-                    <option>Mathematics & Computing</option>
-                    <option>Mechatronics</option>
+                    {courses.map((course) => (
+                      <option key={course.id} value={course.id}>
+                        {course.attributes.course_name}
+                      </option>
+                    ))}
                   </select>
                 </div>
 
@@ -440,7 +472,8 @@ export default function StudentRegistration({ token = '' }) {
                   <input
                     value={values.spi_1}
                     onChange={handleInputChange}
-                    type='text'
+                    type='number'
+                    max={10}
                     name='spi_1'
                     id='spi_1'
                     autoComplete='spi_1'
@@ -458,7 +491,8 @@ export default function StudentRegistration({ token = '' }) {
                   <input
                     value={values.spi_2}
                     onChange={handleInputChange}
-                    type='text'
+                    type='number'
+                    max={10}
                     name='spi_2'
                     id='spi_2'
                     autoComplete=''
@@ -476,7 +510,8 @@ export default function StudentRegistration({ token = '' }) {
                   <input
                     value={values.spi_3}
                     onChange={handleInputChange}
-                    type='text'
+                    type='number'
+                    max={10}
                     name='spi_3'
                     id='spi_3'
                     autoComplete=''
@@ -493,7 +528,8 @@ export default function StudentRegistration({ token = '' }) {
                   <input
                     value={values.spi_4}
                     onChange={handleInputChange}
-                    type='text'
+                    type='number'
+                    max={10}
                     name='spi_4'
                     id='spi_4'
                     autoComplete=''
@@ -510,7 +546,8 @@ export default function StudentRegistration({ token = '' }) {
                   <input
                     value={values.spi_5}
                     onChange={handleInputChange}
-                    type='text'
+                    type='number'
+                    max={10}
                     name='spi_5'
                     id='spi_5'
                     autoComplete=''
@@ -527,7 +564,8 @@ export default function StudentRegistration({ token = '' }) {
                   <input
                     value={values.spi_6}
                     onChange={handleInputChange}
-                    type='text'
+                    type='number'
+                    max={10}
                     name='spi_6'
                     id='spi_6'
                     autoComplete=''
@@ -544,7 +582,8 @@ export default function StudentRegistration({ token = '' }) {
                   <input
                     value={values.spi_7}
                     onChange={handleInputChange}
-                    type='text'
+                    type='number'
+                    max={10}
                     name='spi_7'
                     id='spi_7'
                     autoComplete=''
@@ -561,7 +600,8 @@ export default function StudentRegistration({ token = '' }) {
                   <input
                     value={values.spi_8}
                     onChange={handleInputChange}
-                    type='text'
+                    type='number'
+                    max={10}
                     name='spi_8'
                     id='spi_8'
                     autoComplete=''
@@ -578,7 +618,8 @@ export default function StudentRegistration({ token = '' }) {
                   <input
                     value={values.cpi}
                     onChange={handleInputChange}
-                    type='text'
+                    type='number'
+                    max={10}
                     name='cpi'
                     id='cpi'
                     autoComplete=''
@@ -595,9 +636,10 @@ export default function StudentRegistration({ token = '' }) {
                   <input
                     value={values.X_marks}
                     onChange={handleInputChange}
-                    type='text'
+                    type='number'
                     name='X_marks'
                     id='X_marks'
+                    max={100}
                     autoComplete=''
                     required
                     className='mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md'
@@ -613,9 +655,10 @@ export default function StudentRegistration({ token = '' }) {
                   <input
                     value={values.XII_marks}
                     onChange={handleInputChange}
-                    type='text'
+                    type='number'
                     name='XII_marks'
                     id='XII_marks'
+                    max={100}
                     autoComplete=''
                     required
                     className='mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md'
@@ -665,7 +708,9 @@ export default function StudentRegistration({ token = '' }) {
                   <input
                     value={values.admission_year}
                     onChange={handleInputChange}
-                    type='text'
+                    type='number'
+                    min={2000}
+                    max={2200}
                     name='admission_year'
                     id='admission_year'
                     autoComplete='admission_year'

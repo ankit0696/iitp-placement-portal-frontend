@@ -5,7 +5,7 @@ import { AgGridReact } from 'ag-grid-react'
 import 'ag-grid-community/dist/styles/ag-grid.css'
 import 'ag-grid-community/dist/styles/ag-theme-alpine.css'
 import axios from 'axios'
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { useRouter } from 'next/router'
 import { toast } from 'react-toastify'
 
@@ -14,7 +14,20 @@ export default function eligibleJobs({
   statusCode = '',
   token = '',
 }) {
-  const router = useRouter();
+  const router = useRouter()
+  useEffect(() => {
+    fetch(`${API_URL}/api/student/me`, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    })
+      .then((res) => res.json())
+      .then((resp) => {
+        if (resp.approved !== 'approved') {
+          router.push('/student/profile')
+        }
+      })
+  }, [])
 
   async function handleApply(id) {
     if (confirm('Are you sure to apply ?')) {

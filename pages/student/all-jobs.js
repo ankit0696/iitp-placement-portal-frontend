@@ -4,15 +4,47 @@ import { parseCookies } from '@/helpers/index'
 import { AgGridReact } from 'ag-grid-react'
 import 'ag-grid-community/dist/styles/ag-grid.css'
 import 'ag-grid-community/dist/styles/ag-theme-alpine.css'
-import axios from 'axios'
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
+import { useRouter } from 'next/router'
 
-export default function eligibleJobs({
-  data = '',
-  statusCode = '',
-  token = '',
-}) {
-  const [rowData] = useState(data)
+export default function eligibleJobs({ statusCode = '', token = '' }) {
+  const router = useRouter()
+  // check if student is approved or not
+
+  useEffect(() => {
+    fetch(`${API_URL}/api/student/me`, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    })
+      .then((res) => res.json())
+      .then((resp) => {
+        console.log(resp)
+        if (resp.approved !== 'approved') {
+          router.push('/student/profile')
+        }
+      })
+  }, [])
+
+  const [jobs, setJobs] = useState([])
+
+  useEffect(() => {
+    fetch(`${API_URL}/api/student/alljobs`, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    })
+      .then((res) => res.json())
+      .then((data) => {
+        if (data.status === 'success') {
+          setJobs(data.data)
+        }
+      })
+
+    console.log(jobs)
+  }, [])
+
+  const [rowData] = jobs
 
   const [columnDefs] = useState([
     {
@@ -55,10 +87,9 @@ export async function getServerSideProps({ req }) {
   const config = {
     headers: { Authorization: `Bearer ${token}` },
   }
-
-  const res = await axios.get(`${API_URL}/api/student/alljobs`, config)
+  // const res = await axios.get(`${API_URL}/api/student/alljobs`, config)
 
   return {
-    props: { data: res.data, statusCode: res.status, token: token }, // will be passed to the page component as props
+    props: { token: token }, // will be passed to the page component as props
   }
 }

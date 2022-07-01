@@ -69,7 +69,7 @@ export default function students({ data }) {
                 View JAF
               </a>
             ) : (
-              <span>No JAF</span>
+              <span className='text-xs font-medium'>No JAF</span>
             )}
           </div>
         )
