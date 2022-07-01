@@ -310,10 +310,11 @@ export default function Profile({ student }) {
                   </div>
                   <div className='ml-4 flex-shrink-0 space-x-4'>
                     {student.resume ? (
-                      <div>
+                      <div className=''>
                         <a
-                          href='#'
-                          className='font-medium text-indigo-600 hover:text-indigo-500'
+                          href={`${API_URL}${student.resume.url}`}
+                          target='_blank'
+                          className='font-medium text-indigo-600 hover:text-indigo-500 px-2'
                         >
                           Download
                         </a>
