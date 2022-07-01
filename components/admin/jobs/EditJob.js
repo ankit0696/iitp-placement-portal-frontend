@@ -1,19 +1,28 @@
 import { useEffect, useState } from 'react'
-import Router, { useRouter } from 'next/router'
+import { useRouter } from 'next/router'
 import { TrashIcon } from '@heroicons/react/solid'
 import { toast } from 'react-toastify'
 import { API_URL } from '@/config/index'
-import axios from 'axios'
+import moment from 'moment'
 
 export default function EditJob({ token = '', job = '' }) {
   const id = job.id
   const { company, createdAt, updatedAt, publishedAt, jaf, ...newJob } =
     job.attributes
+
+  newJob.start_date = moment(newJob.start_date)
+    .local()
+    .format('YYYY-MM-DD HH:mm:ss')
+  newJob.last_date = moment(newJob.last_date)
+    .local()
+    .format('YYYY-MM-DD HH:mm:ss')
+
   const [values, setValues] = useState(newJob)
 
   const router = useRouter()
 
-  const eligibleCourses = new Set()
+  const eligibleCourses = new Set(values.eligible_courses.split(','))
+
   const [programs, setPrograms] = useState([])
 
   const handleDelete = async () => {
@@ -35,11 +44,6 @@ export default function EditJob({ token = '', job = '' }) {
       }
     }
   }
-  programs.map((program) => {
-    program.attributes.courses.data.map((course) => {
-      eligibleCourses.add(course.id)
-    })
-  })
 
   const handleCheckboxChange = (e) => {
     const { value } = e.target
@@ -63,8 +67,9 @@ export default function EditJob({ token = '', job = '' }) {
     //   element === ''
 
     // })
-    console.log(eligibleCourses)
-    values['eligible_courses'] = Array.from(eligibleCourses).toString()
+    if (!values.eligible_courses) {
+      values['eligible_courses'] = Array.from(eligibleCourses).toString()
+    }
     if (confirm('Are you sure you edit job?')) {
       const res = await fetch(`${API_URL}/api/jobs/${id}`, {
         method: 'PUT',
@@ -108,6 +113,8 @@ export default function EditJob({ token = '', job = '' }) {
         setPrograms(data.data)
       })
       .catch((err) => console.log(err))
+
+    console.log(eligibleCourses)
   }, [])
 
   return (
@@ -353,9 +360,10 @@ export default function EditJob({ token = '', job = '' }) {
                                 <input
                                   id={course.id}
                                   name={course.id}
-                                  defaultValue={course.id}
                                   type='checkbox'
-                                  defaultChecked={course.id}
+                                  defaultChecked={eligibleCourses.has(
+                                    course.id.toString()
+                                  )}
                                   onChange={handleCheckboxChange}
                                   className='h-4 w-4 border-gray-300 rounded text-indigo-600 focus:ring-indigo-500'
                                 />

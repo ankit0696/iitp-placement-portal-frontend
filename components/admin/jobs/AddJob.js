@@ -21,6 +21,7 @@ export default function AddJob({ token = '' }) {
   })
   const eligibleCourses = new Set()
   const [programs, setPrograms] = useState([])
+
   programs.map((program) => {
     program.attributes.courses.data.map((course) => {
       eligibleCourses.add(course.id)
@@ -35,12 +36,13 @@ export default function AddJob({ token = '' }) {
   }
 
   const handleCheckboxChange = (e) => {
-    const { value } = e.target
+    const { id } = e.target
     if (e.target.checked) {
-      eligibleCourses.add(parseInt(value))
+      eligibleCourses.add(parseInt(id))
     } else {
-      eligibleCourses.delete(parseInt(value))
+      eligibleCourses.delete(parseInt(id))
     }
+    console.log(eligibleCourses)
   }
 
   const handleSubmit = async (e) => {
@@ -51,8 +53,10 @@ export default function AddJob({ token = '' }) {
     //   element === ''
 
     // })
-    // console.log(eligibleCourses)
-    values['eligible_courses'] = Array.from(eligibleCourses).toString()
+    if (!values.eligible_courses) {
+      values['eligible_courses'] = Array.from(eligibleCourses).toString()
+    }
+    console.log(values.eligible_courses)
     if (confirm('Are you sure you add job?')) {
       const res = await fetch(`${API_URL}/api/jobs`, {
         method: 'POST',
@@ -157,6 +161,7 @@ export default function AddJob({ token = '' }) {
                     name='job_title'
                     id='job_title'
                     autoComplete='job_title'
+                    required
                     className='mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md'
                   />
                 </div>
@@ -170,9 +175,10 @@ export default function AddJob({ token = '' }) {
                   <select
                     name='classification'
                     onChange={handleInputChange}
+                    required
                     className='mt-1 block w-full py-2 px-3 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm'
                   >
-                    <option value=''>Select Classification</option>
+                    <option value='none'>Select Classification</option>
                     <option value='A1'>A1</option>
                     <option value='A2'>A2</option>
                     <option value='X'>X</option>
@@ -355,10 +361,9 @@ export default function AddJob({ token = '' }) {
                                 <input
                                   id={course.id}
                                   name={course.id}
-                                  defaultValue={course.id}
+                                  onChange={handleCheckboxChange}
                                   type='checkbox'
                                   defaultChecked={course.id}
-                                  onChange={handleCheckboxChange}
                                   className='h-4 w-4 border-gray-300 rounded text-indigo-600 focus:ring-indigo-500'
                                 />
                                 <label
