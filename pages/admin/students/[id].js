@@ -19,6 +19,8 @@ export default function StudentProfilePage({
     { name: `${student.attributes.name}`, href: '#', current: true },
   ]
   const [applications, setApplications] = useState([])
+  const [eligibleJobs, setEligibleJobs] = useState([])
+
   const query = qs.stringify(
     {
       filters: {
@@ -34,6 +36,7 @@ export default function StudentProfilePage({
       encodeValuesOnly: true, // prettify url
     }
   )
+
   useEffect(() => {
     fetch(`${API_URL}/api/applications?${query}`, {
       headers: {
@@ -50,11 +53,27 @@ export default function StudentProfilePage({
       })
   }, [])
 
+  useEffect(() => {
+    fetch(`${API_URL}/api/jobs?populate=*`, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    })
+      .then((res) => res.json())
+      .then((resp) => {
+        console.log(resp.data)
+        setEligibleJobs(resp.data)
+      })
+      .catch((err) => {
+        console.log(err)
+      })
+  }, [])
+
   return (
     <Layout>
       <Breadcrumbs pages={pages} />
       <ApplicationDetails applications={applications} />
-      {/* <Eligiblejobs jobs={eligiblejobs} /> */}
+      <Eligiblejobs jobs={eligibleJobs} />
       <StudentProfileEdit student={student} token={token} />
     </Layout>
   )
@@ -71,29 +90,6 @@ export async function getServerSideProps({ req, params }) {
     `${API_URL}/api/students/${id}?populate=*`,
     config
   )
-
-  // const query = qs.stringify(
-  //   {
-  //     filters: {
-  //       student: {
-  //         id: {
-  //           $eq: id,
-  //         },
-  //       },
-  //     },
-  //     populate: ['student', 'job.company'],
-  //   },
-  //   {
-  //     encodeValuesOnly: true, // prettify url
-  //   }
-  // )
-
-  // const applicationRes = await axios.get(
-  //   `${API_URL}/api/applications?${query}`,
-  //   config
-  // )
-
-  // const eligibleJobRes = await axios.get(`${API_URL}/api/jobs`, config)
 
   return {
     props: {

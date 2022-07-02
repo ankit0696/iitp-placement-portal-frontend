@@ -2,18 +2,25 @@ import Layout from '@/components/admin/Layout'
 import { AgGridReact } from 'ag-grid-react'
 import 'ag-grid-community/dist/styles/ag-grid.css'
 import 'ag-grid-community/dist/styles/ag-theme-alpine.css'
-import { useState } from 'react'
+import { useCallback, useRef, useState } from 'react'
 import { parseCookies } from '@/helpers/index'
 import axios from 'axios'
 import { API_URL } from '@/config/index'
 import Link from 'next/link'
 
 export default function students({ data }) {
+  const gridRef = useRef()
+  const onBtExport = useCallback(() => {
+    gridRef.current.api.exportDataAsCsv({
+      onlySelected: true,
+    })
+  }, [])
   const [rowData] = useState(data.data)
 
   const [columnDefs] = useState([
     {
       headerName: 'S.No.',
+      checkboxSelection: true,
       valueGetter: 'node.rowIndex + 1',
     },
     {
@@ -62,6 +69,14 @@ export default function students({ data }) {
             >
               Deactivate
             </button>
+            <button
+              type='button'
+              onClick={onBtExport}
+              className='order-0 inline-flex items-center px-4 py-2 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 sm:order-1 sm:ml-3'
+            >
+              Export
+            </button>
+
             <Link href={`/admin/companies/add`}>
               <button
                 type='button'
@@ -74,9 +89,12 @@ export default function students({ data }) {
         </div>
         <div className='ag-theme-alpine mt-4' style={{ height: 600 }}>
           <AgGridReact
+            ref={gridRef}
+            rowMultiSelectWithClick={true}
             rowData={rowData}
             columnDefs={columnDefs}
-            defaultColDef={{ sortable: true }}
+            rowSelection='multiple'
+            defaultColDef={{ sortable: true, filter: true }}
           ></AgGridReact>
         </div>
       </div>

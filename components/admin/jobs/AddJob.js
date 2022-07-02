@@ -1,5 +1,4 @@
 import { useEffect, useState } from 'react'
-import { useRouter } from 'next/router'
 import { toast } from 'react-toastify'
 import { API_URL } from '@/config/index'
 import moment from 'moment'
@@ -78,7 +77,7 @@ export default function AddJob({ token = '' }) {
         console.log(profile)
         toast.error('Error: ' + profile.error.details.errors[0].message)
       } else {
-        toast.success('Company Added Successfully')
+        toast.success('Job Added Successfully')
       }
     }
   }

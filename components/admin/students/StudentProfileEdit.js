@@ -122,6 +122,26 @@ export default function StudentProfileEdit({ token = '', student }) {
                     <option value='rejected'>Rejected</option>
                   </select>
                 </div>
+
+                <div className='col-span-6 sm:col-span-3'>
+                  <label
+                    htmlFor='placed_status'
+                    className='block text-sm font-medium text-gray-700'
+                  >
+                    Placed Status
+                  </label>
+                  <select
+                    name='placed_status'
+                    id='placed_status'
+                    className='block w-full px-3 py-2 rounded-md text-gray-700 bg-white border border-gray-300 focus:outline-none focus:shadow-outline-blue focus:border-blue-300 sm:text-sm sm:leading-5'
+                    value={values.placed_status}
+                    onChange={handleInputChange}
+                  >
+                    <option value='unplaced'>Not Placed</option>
+                    <option value='placed_a1'>Placed in A1</option>
+                    <option value='placed_a2'>Placed in A2</option>
+                  </select>
+                </div>
                 <div className='col-span-6 sm:col-span-3'>
                   <label
                     htmlFor='name'

@@ -131,6 +131,7 @@ export default function students({ data }) {
       <div className='ag-theme-alpine mt-4' style={{ height: 600 }}>
         <AgGridReact
           ref={gridRef}
+          rowMultiSelectWithClick={true}
           rowData={rowData}
           columnDefs={columnDefs}
           rowSelection='multiple'
