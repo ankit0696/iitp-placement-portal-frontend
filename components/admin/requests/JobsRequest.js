@@ -27,11 +27,6 @@ export default function JobRequest({ token = '' }) {
       toast.success('Something Went Wrong!')
     } else {
       toast.success('Successfully Approved')
-      const data = await res.json()
-      const id = data.data.id
-      // update jobs to remove the id from the list
-      const newJobs = jobs.filter((job) => job.id !== id)
-      setJobs(newJobs)
     }
   }
   const handleReject = async (id) => {
@@ -52,11 +47,6 @@ export default function JobRequest({ token = '' }) {
       toast.success('Something Went Wrong!')
     } else {
       toast.success('Successfully Rejected')
-      const data = await res.json()
-      const id = data.data.id
-      // update jobs to remove the id from the list
-      const newJobs = jobs.filter((job) => job.id !== id)
-      setJobs(newJobs)
     }
   }
   useEffect(() => {
@@ -72,7 +62,7 @@ export default function JobRequest({ token = '' }) {
       .then((res) => res.json())
       .then((data) => setJobs(data.data))
       .catch((err) => console.log(err))
-  }, [])
+  }, [handleApprove, handleReject])
 
   const [columnDefs] = useState([
     {

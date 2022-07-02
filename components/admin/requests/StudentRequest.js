@@ -9,6 +9,7 @@ export default function StudentRequest({ token = '' }) {
   const [students, setStudents] = useState([])
 
   const handleApprove = async (id) => {
+    console.log('student', students)
     const res = await fetch(`${API_URL}/api/students/${id}`, {
       method: 'PUT',
       headers: {
@@ -26,11 +27,6 @@ export default function StudentRequest({ token = '' }) {
       toast.success('Something Went Wrong!')
     } else {
       toast.success('Successfully Approved')
-      const data = await res.json()
-      const id = data.data.id
-      // update student to remove the id from the list
-      const newStudents = students.filter((student) => student.id !== id)
-      setStudents(newStudents)
     }
   }
   const handleReject = async (id) => {
@@ -51,28 +47,20 @@ export default function StudentRequest({ token = '' }) {
       toast.warning('Something Went Wrong!')
     } else {
       toast.info('Successfully Rejected')
-      const data = await res.json()
-      const id = data.data.id
-      // update student to remove the id from the list
-      const newStudents = students.filter((student) => student.id !== id)
-      setStudents(newStudents)
     }
   }
 
   useEffect(() => {
-    const fetchData = fetch(
-      `${API_URL}/api/students?filters[approved][$eq]=pending`,
-      {
-        headers: {
-          'Content-Type': 'application/json',
-          Authorization: `Bearer ${token}`,
-        },
-      }
-    )
+    fetch(`${API_URL}/api/students?filters[approved][$eq]=pending`, {
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${token}`,
+      },
+    })
       .then((res) => res.json())
       .then((data) => setStudents(data.data))
       .catch((err) => console.log(err))
-  }, [])
+  }, [handleApprove, handleReject])
 
   const [columnDefs] = useState([
     {

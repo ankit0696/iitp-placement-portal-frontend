@@ -27,11 +27,6 @@ export default function CompaniesRequest({ token = '' }) {
       toast.warning('Something Went Wrong!')
     } else {
       toast.success('Successfully Approved')
-      const data = await res.json()
-      const id = data.data.id
-      // update companies to remove the id from the list
-      const newCompanies = companies.filter((company) => company.id !== id)
-      setCompanies(newCompanies)
     }
   }
 
@@ -53,11 +48,6 @@ export default function CompaniesRequest({ token = '' }) {
       toast.warning('Something Went Wrong!')
     } else {
       toast.info('Successfully Rejected')
-      const data = await res.json()
-      const id = data.data.id
-      // update companies to remove the id from the list
-      const newCompanies = companies.filter((company) => company.id !== id)
-      setCompanies(newCompanies)
     }
   }
   useEffect(() => {
@@ -70,7 +60,7 @@ export default function CompaniesRequest({ token = '' }) {
       .then((res) => res.json())
       .then((data) => setCompanies(data.data))
       .catch((err) => console.log(err))
-  }, [])
+  }, [handleApprove, handleReject])
 
   const [columnDefs] = useState([
     {

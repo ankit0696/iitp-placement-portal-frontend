@@ -1,9 +1,10 @@
 import Layout from '@/components/admin/Layout'
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import CompaniesRequest from '@/components/admin/requests/CompaniesRequest'
 import { parseCookies } from '@/helpers/index'
 import JobRequest from '@/components/admin/requests/JobsRequest'
 import StudentRequest from '@/components/admin/requests/StudentRequest'
+import { API_URL } from '@/config/index'
 
 export default function index({ token }) {
   return (
