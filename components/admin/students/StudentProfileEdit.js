@@ -13,6 +13,7 @@ export default function StudentProfileEdit({ token = '', student }) {
     user_relation,
     program,
     course,
+    resume,
     profile_pic,
     ...newStudent
   } = student.attributes
@@ -716,14 +717,14 @@ export default function StudentProfileEdit({ token = '', student }) {
                     aria-hidden='true'
                   />
                   <span className='ml-2 flex-1 w-0 truncate'>
-                    {newStudent.resume ? 'resume.pdf' : 'No resume found'}
+                    {resume ? 'resume.pdf' : 'No resume found'}
                   </span>
                 </div>
                 <div className='ml-4 flex-shrink-0 space-x-4'>
-                  {newStudent.resume.data ? (
+                  {resume.data ? (
                     <div className=''>
                       <a
-                        href={`${API_URL}${newStudent.resume.data.attributes.url}`}
+                        href={`${API_URL}${resume.data.attributes.url}`}
                         target='_blank'
                         className='font-medium text-indigo-600 hover:text-indigo-500 px-2'
                       >
