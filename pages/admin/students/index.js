@@ -102,7 +102,7 @@ export default function students({ data }) {
   const gridRef = useRef()
   const onBtExport = useCallback(() => {
     gridRef.current.api.exportDataAsCsv({
-      OnlySelected: true,
+      onlySelected: true,
     })
   }, [])
   return (
