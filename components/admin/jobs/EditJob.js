@@ -10,10 +10,10 @@ export default function EditJob({ token = '', job = '' }) {
   const { company, createdAt, updatedAt, publishedAt, jaf, ...newJob } =
     job.attributes
 
-  newJob.start_date = moment(newJob.start_date)
+  newJob?.start_date = moment(newJob.start_date)
     .local()
     .format('yyyy-MM-DDThh:mm:ss.SSS')
-  newJob.last_date = moment(newJob.last_date)
+  newJob?.last_date = moment(newJob.last_date)
     .local()
     .format('yyyy-MM-DDThh:mm:ss.SSS')
 
