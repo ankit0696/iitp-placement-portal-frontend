@@ -70,14 +70,6 @@ export default function eligibleJobs({ token = '' }) {
     }
   }
 
-  if (!approved) {
-    return (
-      <Layout>
-        <NotApproved />
-      </Layout>
-    )
-  }
-
   const [columnDefs] = useState([
     {
       headerName: 'Job Title',
@@ -135,6 +127,13 @@ export default function eligibleJobs({ token = '' }) {
       },
     },
   ])
+  if (!approved) {
+    return (
+      <Layout>
+        <NotApproved />
+      </Layout>
+    )
+  }
   return (
     <Layout heading='Eligible Jobs'>
       <div className='ag-theme-alpine mt-4' style={{ height: 800 }}>
