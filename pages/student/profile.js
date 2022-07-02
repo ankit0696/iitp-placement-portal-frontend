@@ -12,7 +12,7 @@ export default function profile({ data = '', statusCode = '', token = '' }) {
       {statusCode === 204 ? (
         <StudentRegistration token={token} />
       ) : (
-        <Profile student={data} />
+        <Profile student={data} token={token} />
       )}
     </Layout>
   )
