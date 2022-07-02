@@ -36,15 +36,10 @@ export default function eligibleJobs({ statusCode = '', token = '' }) {
     })
       .then((res) => res.json())
       .then((data) => {
-        if (data.status === 'success') {
-          setJobs(data.data)
-        }
+        setJobs(data)
+        console.log(data)
       })
-
-    console.log(jobs)
   }, [])
-
-  const [rowData] = jobs
 
   const [columnDefs] = useState([
     {
@@ -72,7 +67,7 @@ export default function eligibleJobs({ statusCode = '', token = '' }) {
     <Layout heading='All Jobs'>
       <div className='ag-theme-alpine mt-4' style={{ height: 800 }}>
         <AgGridReact
-          rowData={rowData}
+          rowData={jobs}
           columnDefs={columnDefs}
           defaultColDef={{ sortable: true }}
         ></AgGridReact>
@@ -83,11 +78,6 @@ export default function eligibleJobs({ statusCode = '', token = '' }) {
 
 export async function getServerSideProps({ req }) {
   const { token } = parseCookies(req)
-
-  const config = {
-    headers: { Authorization: `Bearer ${token}` },
-  }
-  // const res = await axios.get(`${API_URL}/api/student/alljobs`, config)
 
   return {
     props: { token: token }, // will be passed to the page component as props
