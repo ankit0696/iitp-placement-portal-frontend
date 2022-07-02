@@ -27,9 +27,38 @@ export default function JobRequest({ token = '' }) {
       toast.success('Something Went Wrong!')
     } else {
       toast.success('Successfully Approved')
+      const data = await res.json()
+      const id = data.data.id
+      // update jobs to remove the id from the list
+      const newJobs = jobs.filter((job) => job.id !== id)
+      setJobs(newJobs)
     }
   }
+  const handleReject = async (id) => {
+    const res = await fetch(`${API_URL}/api/jobs/${id}`, {
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${token}`,
+      },
 
+      body: JSON.stringify({
+        data: {
+          approval_status: 'rejected',
+        },
+      }),
+    })
+    if (!res.ok) {
+      toast.success('Something Went Wrong!')
+    } else {
+      toast.success('Successfully Rejected')
+      const data = await res.json()
+      const id = data.data.id
+      // update jobs to remove the id from the list
+      const newJobs = jobs.filter((job) => job.id !== id)
+      setJobs(newJobs)
+    }
+  }
   useEffect(() => {
     fetch(
       `${API_URL}/api/jobs?filters[approval_status][$eq]=pending&populate=*`,
