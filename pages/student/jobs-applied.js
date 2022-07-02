@@ -4,18 +4,13 @@ import { parseCookies } from '@/helpers/index'
 import { AgGridReact } from 'ag-grid-react'
 import 'ag-grid-community/dist/styles/ag-grid.css'
 import 'ag-grid-community/dist/styles/ag-theme-alpine.css'
-import axios from 'axios'
 import { useEffect, useState } from 'react'
-import { useRouter } from 'next/router'
+import NotApproved from '@/components/student/NotApproved'
 
-export default function jobsApplied({
-  data = '',
-  statusCode = '',
-  token = '',
-}) {
-  const router = useRouter()
+export default function jobsApplied({ token = '' }) {
   // check if student is approved or not
-
+  const [approved, setApproved] = useState(true)
+  const [jobs, setJobs] = useState([])
   useEffect(() => {
     fetch(`${API_URL}/api/student/me`, {
       headers: {
@@ -25,12 +20,25 @@ export default function jobsApplied({
       .then((res) => res.json())
       .then((data) => {
         if (data.approved !== 'approved') {
-          router.push('/student/profile')
+          setApproved(false)
         }
       })
   }, [])
 
-  const [rowData] = useState(data)
+  useEffect(() => {
+    fetch(`${API_URL}/api/student/applied-jobs`, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    })
+      .then((res) => res.json())
+      .then((data) => {
+        setJobs(data)
+      })
+      .catch((err) => {
+        console.log(err)
+      })
+  }, [])
 
   const [columnDefs] = useState([
     {
@@ -70,11 +78,18 @@ export default function jobsApplied({
       },
     },
   ])
+  if (!approved) {
+    return (
+      <Layout>
+        <NotApproved />
+      </Layout>
+    )
+  }
   return (
     <Layout heading='Jobs Applied'>
       <div className='ag-theme-alpine mt-4' style={{ height: 800 }}>
         <AgGridReact
-          rowData={rowData}
+          rowData={jobs}
           columnDefs={columnDefs}
           defaultColDef={{ sortable: true }}
         ></AgGridReact>
@@ -85,14 +100,7 @@ export default function jobsApplied({
 
 export async function getServerSideProps({ req }) {
   const { token } = parseCookies(req)
-
-  const config = {
-    headers: { Authorization: `Bearer ${token}` },
-  }
-
-  const res = await axios.get(`${API_URL}/api/student/applied-jobs`, config)
-
   return {
-    props: { data: res.data, statusCode: res.status, token: token }, // will be passed to the page component as props
+    props: { token: token }, // will be passed to the page component as props
   }
 }

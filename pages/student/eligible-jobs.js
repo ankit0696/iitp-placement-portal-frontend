@@ -6,15 +6,13 @@ import 'ag-grid-community/dist/styles/ag-grid.css'
 import 'ag-grid-community/dist/styles/ag-theme-alpine.css'
 import axios from 'axios'
 import { useState, useEffect } from 'react'
-import { useRouter } from 'next/router'
-import { toast } from 'react-toastify'
 
-export default function eligibleJobs({
-  data = '',
-  statusCode = '',
-  token = '',
-}) {
-  const router = useRouter()
+import { toast } from 'react-toastify'
+import NotApproved from '@/components/student/NotApproved'
+
+export default function eligibleJobs({ token = '' }) {
+  const [approved, setApproved] = useState(true)
+  const [jobs, setJobs] = useState([])
   useEffect(() => {
     fetch(`${API_URL}/api/student/me`, {
       headers: {
@@ -24,8 +22,23 @@ export default function eligibleJobs({
       .then((res) => res.json())
       .then((resp) => {
         if (resp.approved !== 'approved') {
-          router.push('/student/profile')
+          setApproved(false)
         }
+      })
+  }, [])
+
+  useEffect(() => {
+    fetch(`${API_URL}/api/student/eligiblejobs`, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    })
+      .then((res) => res.json())
+      .then((data) => {
+        setJobs(data)
+      })
+      .catch((err) => {
+        console.log(err)
       })
   }, [])
 
@@ -53,8 +66,6 @@ export default function eligibleJobs({
       }
     }
   }
-
-  const [rowData] = useState(data)
 
   const [columnDefs] = useState([
     {
@@ -113,11 +124,18 @@ export default function eligibleJobs({
       },
     },
   ])
+  if (!approved) {
+    return (
+      <Layout>
+        <NotApproved />
+      </Layout>
+    )
+  }
   return (
     <Layout heading='Eligible Jobs'>
       <div className='ag-theme-alpine mt-4' style={{ height: 800 }}>
         <AgGridReact
-          rowData={rowData}
+          rowData={jobs}
           columnDefs={columnDefs}
           defaultColDef={{ sortable: true }}
         ></AgGridReact>
@@ -129,13 +147,7 @@ export default function eligibleJobs({
 export async function getServerSideProps({ req }) {
   const { token } = parseCookies(req)
 
-  const config = {
-    headers: { Authorization: `Bearer ${token}` },
-  }
-
-  const res = await axios.get(`${API_URL}/api/student/eligiblejobs`, config)
-
   return {
-    props: { data: res.data, statusCode: res.status, token: token }, // will be passed to the page component as props
+    props: { token: token }, // will be passed to the page component as props
   }
 }

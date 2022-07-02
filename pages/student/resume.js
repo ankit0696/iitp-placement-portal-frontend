@@ -2,11 +2,12 @@ import Layout from '@/components/student/Layout'
 import FileUpload from '@/components/student/resume/FileUpload'
 import { API_URL } from '@/config/index'
 import { parseCookies } from '@/helpers/index'
-import React, { useEffect } from 'react'
-import { useRouter } from 'next/router'
+import React, { useEffect, useState } from 'react'
+import NotApproved from '@/components/student/NotApproved'
 
 export default function resume({ token }) {
-  const router = useRouter()
+  const [approved, setApproved] = useState(true)
+
   useEffect(() => {
     fetch(`${API_URL}/api/student/me`, {
       headers: {
@@ -16,10 +17,17 @@ export default function resume({ token }) {
       .then((res) => res.json())
       .then((resp) => {
         if (resp.approved !== 'approved') {
-          router.push('/student/profile')
+          setApproved(false)
         }
       })
   }, [])
+  if (!approved) {
+    return (
+      <Layout>
+        <NotApproved />
+      </Layout>
+    )
+  }
   return (
     <Layout heading='Resume'>
       <FileUpload token={token} />

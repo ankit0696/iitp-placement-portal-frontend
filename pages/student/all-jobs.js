@@ -6,11 +6,12 @@ import 'ag-grid-community/dist/styles/ag-grid.css'
 import 'ag-grid-community/dist/styles/ag-theme-alpine.css'
 import { useState, useEffect } from 'react'
 import { useRouter } from 'next/router'
+import NotApproved from '@/components/student/NotApproved'
 
 export default function eligibleJobs({ statusCode = '', token = '' }) {
   const router = useRouter()
   // check if student is approved or not
-
+  const [approved, setApproved] = useState(true)
   useEffect(() => {
     fetch(`${API_URL}/api/student/me`, {
       headers: {
@@ -21,7 +22,7 @@ export default function eligibleJobs({ statusCode = '', token = '' }) {
       .then((resp) => {
         console.log(resp)
         if (resp.approved !== 'approved') {
-          router.push('/student/profile')
+          setApproved(false)
         }
       })
   }, [])
@@ -63,6 +64,13 @@ export default function eligibleJobs({ statusCode = '', token = '' }) {
       filter: 'agTextColumnFilter',
     },
   ])
+  if (!approved) {
+    return (
+      <Layout>
+        <NotApproved />
+      </Layout>
+    )
+  }
   return (
     <Layout heading='All Jobs'>
       <div className='ag-theme-alpine mt-4' style={{ height: 800 }}>
