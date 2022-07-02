@@ -1,13 +1,13 @@
-import { useEffect, useState } from 'react'
+import { useContext, useEffect, useState } from 'react'
 import { useRouter } from 'next/router'
 import { toast } from 'react-toastify'
 import { API_URL } from '@/config/index'
+import AuthContext from '@/context/AuthContext'
 
 export default function StudentRegistration({ token = '' }) {
   const [values, setValues] = useState({
     name: '',
     roll: '',
-    file_upload: '',
     personal_email_id: '',
     institute_email_id: '',
     mobile_number_1: '',
@@ -40,6 +40,10 @@ export default function StudentRegistration({ token = '' }) {
   })
 
   const router = useRouter()
+  const { user } = useContext(AuthContext)
+  if (user && user.username) {
+    values.roll = user.username
+  }
 
   const handleSubmit = async (e) => {
     e.preventDefault()
@@ -450,6 +454,7 @@ export default function StudentRegistration({ token = '' }) {
                     required
                     className='mt-1 block w-full py-2 px-3 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm'
                   >
+                    <option value=''>Select Course</option>
                     {courses.map((course) => (
                       <option key={course.id} value={course.id}>
                         {course.attributes.course_name}
