@@ -50,7 +50,7 @@ export default function JobsInCompany({ id, token = '' }) {
     },
     {
       headerName: 'JAF',
-      field: 'jaf.url',
+      field: 'attributes.jaf.data.attributes.url',
       cellRenderer: function (params) {
         return (
           <div>
