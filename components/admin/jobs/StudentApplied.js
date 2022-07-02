@@ -3,6 +3,7 @@ import { AgGridReact } from 'ag-grid-react'
 import 'ag-grid-community/dist/styles/ag-grid.css'
 import 'ag-grid-community/dist/styles/ag-theme-alpine.css'
 import { API_URL } from '@/config/index'
+import qs from 'qs'
 import Link from 'next/link'
 
 export default function StudentApplied({ token = '', id = '' }) {
@@ -13,16 +14,30 @@ export default function StudentApplied({ token = '', id = '' }) {
       onlySelected: true,
     })
   }, [])
-  useEffect(() => {
-    fetch(
-      `${API_URL}/api/applications?populate=*&filters[job][id][$eq]=${id}`,
-      {
-        headers: {
-          'Content-Type': 'application/json',
-          Authorization: `Bearer ${token}`,
+
+  const query = qs.stringify(
+    {
+      populate: ['student.course', 'job.company', 'student.program'],
+      filters: {
+        job: {
+          id: {
+            $eq: id,
+          },
         },
-      }
-    )
+      },
+    },
+    {
+      encodeValuesOnly: true, // prettify url
+    }
+  )
+
+  useEffect(() => {
+    fetch(`${API_URL}/api/applications?${query}`, {
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${token}`,
+      },
+    })
       .then((res) => res.json())
       .then((data) => {
         setStudents(data.data)
@@ -64,7 +79,24 @@ export default function StudentApplied({ token = '', id = '' }) {
       headerName: 'Personal Email',
       field: 'attributes.student.data.attributes.personal_email_id',
     },
-
+    {
+      headerName: 'Mobile Number',
+      field: 'attributes.student.data.attributes.mobile_number_1',
+    },
+    {
+      headerName: 'Alternate Mobile Number',
+      field: 'attributes.student.data.attributes.mobile_number_2',
+    },
+    {
+      headerName: 'Program',
+      field:
+        'attributes.student.data.attributes.program.data.attributes.program_name',
+    },
+    {
+      headerName: 'Course',
+      field:
+        'attributes.student.data.attributes.course.data.attributes.course_name',
+    },
     {
       headerName: 'CPI',
       field: 'attributes.student.data.attributes.cpi',
@@ -120,7 +152,7 @@ export default function StudentApplied({ token = '', id = '' }) {
               type='button'
               className='order-0 inline-flex items-center px-4 py-2 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 sm:order-1 sm:ml-3'
             >
-              Add Company
+              Download CV
             </button>
           </Link>
         </div>
@@ -130,9 +162,10 @@ export default function StudentApplied({ token = '', id = '' }) {
         <AgGridReact
           ref={gridRef}
           rowMultiSelectWithClick={true}
+          rowSelection='multiple'
           rowData={students}
           columnDefs={columnDefs}
-          defaultColDef={{ sortable: true }}
+          defaultColDef={{ sortable: true, filter: true }}
         ></AgGridReact>
       </div>
     </div>

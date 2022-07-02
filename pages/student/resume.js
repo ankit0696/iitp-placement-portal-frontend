@@ -6,7 +6,7 @@ import React, { useEffect, useState } from 'react'
 import NotApproved from '@/components/student/NotApproved'
 
 export default function resume({ token }) {
-  const [approved, setApproved] = useState(true)
+  const [approved, setApproved] = useState(false)
 
   useEffect(() => {
     fetch(`${API_URL}/api/student/me`, {
@@ -16,9 +16,12 @@ export default function resume({ token }) {
     })
       .then((res) => res.json())
       .then((resp) => {
-        if (resp.approved !== 'approved') {
-          setApproved(false)
+        if (resp.approved === 'approved') {
+          setApproved(true)
         }
+      })
+      .catch((err) => {
+        console.log(err)
       })
   }, [])
   if (!approved) {

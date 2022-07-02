@@ -5,13 +5,11 @@ import { AgGridReact } from 'ag-grid-react'
 import 'ag-grid-community/dist/styles/ag-grid.css'
 import 'ag-grid-community/dist/styles/ag-theme-alpine.css'
 import { useState, useEffect } from 'react'
-import { useRouter } from 'next/router'
 import NotApproved from '@/components/student/NotApproved'
 
-export default function eligibleJobs({ statusCode = '', token = '' }) {
-  const router = useRouter()
+export default function eligibleJobs({ token = '' }) {
   // check if student is approved or not
-  const [approved, setApproved] = useState(true)
+  const [approved, setApproved] = useState(false)
   useEffect(() => {
     fetch(`${API_URL}/api/student/me`, {
       headers: {
@@ -20,10 +18,12 @@ export default function eligibleJobs({ statusCode = '', token = '' }) {
     })
       .then((res) => res.json())
       .then((resp) => {
-        console.log(resp)
-        if (resp.approved !== 'approved') {
-          setApproved(false)
+        if (resp.approved === 'approved') {
+          setApproved(true)
         }
+      })
+      .catch((err) => {
+        console.log(err)
       })
   }, [])
 
@@ -71,6 +71,7 @@ export default function eligibleJobs({ statusCode = '', token = '' }) {
       </Layout>
     )
   }
+
   return (
     <Layout heading='All Jobs'>
       <div className='ag-theme-alpine mt-4' style={{ height: 800 }}>

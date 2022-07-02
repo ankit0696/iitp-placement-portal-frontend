@@ -9,7 +9,7 @@ import NotApproved from '@/components/student/NotApproved'
 
 export default function jobsApplied({ token = '' }) {
   // check if student is approved or not
-  const [approved, setApproved] = useState(true)
+  const [approved, setApproved] = useState(false)
   const [jobs, setJobs] = useState([])
   useEffect(() => {
     fetch(`${API_URL}/api/student/me`, {
@@ -19,9 +19,12 @@ export default function jobsApplied({ token = '' }) {
     })
       .then((res) => res.json())
       .then((data) => {
-        if (data.approved !== 'approved') {
-          setApproved(false)
+        if (data.approved === 'approved') {
+          setApproved(true)
         }
+      })
+      .catch((err) => {
+        console.log(err)
       })
   }, [])
 
@@ -78,6 +81,7 @@ export default function jobsApplied({ token = '' }) {
       },
     },
   ])
+
   if (!approved) {
     return (
       <Layout>

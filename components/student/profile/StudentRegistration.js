@@ -58,6 +58,7 @@ export default function StudentRegistration({ token = '' }) {
         },
         body: JSON.stringify({ data: values }),
       })
+      console.log(JSON.stringify({ data: values }))
 
       if (!res.ok) {
         if (res.status === 403 || res.status === 401) {
@@ -276,7 +277,6 @@ export default function StudentRegistration({ token = '' }) {
                     <option>sc</option>
                     <option>st</option>
                     <option>ews</option>
-                    <option>pwd</option>
                   </select>
                 </div>
 
@@ -296,9 +296,8 @@ export default function StudentRegistration({ token = '' }) {
                     required
                     className='mt-1 block w-full py-2 px-3 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm'
                   >
-                    <option>Select</option>
-                    <option value={true}>Yes</option>
                     <option value={false}>No</option>
+                    <option value={true}>Yes</option>
                   </select>
                 </div>
                 <div className='col-span-6 sm:col-span-3'>
@@ -407,9 +406,8 @@ export default function StudentRegistration({ token = '' }) {
                     required
                     className='mt-1 block w-full py-2 px-3 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm'
                   >
-                    <option>Select</option>
-                    <option>Internship</option>
-                    <option>FTE</option>
+                    <option value='Internship'>Internship</option>
+                    <option value='FTE'>FTE</option>
                   </select>
                 </div>
                 <div className='col-span-6 sm:col-span-3'>
@@ -428,7 +426,6 @@ export default function StudentRegistration({ token = '' }) {
                     required
                     className='mt-1 block w-full py-2 px-3 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm'
                   >
-                    <option>Select</option>
                     {programs.map((program) => (
                       <option key={program.id} value={program.id}>
                         {program.attributes.program_name}
@@ -453,7 +450,6 @@ export default function StudentRegistration({ token = '' }) {
                     required
                     className='mt-1 block w-full py-2 px-3 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm'
                   >
-                    <option>Select</option>
                     {courses.map((course) => (
                       <option key={course.id} value={course.id}>
                         {course.attributes.course_name}

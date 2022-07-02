@@ -11,7 +11,7 @@ import { toast } from 'react-toastify'
 import NotApproved from '@/components/student/NotApproved'
 
 export default function eligibleJobs({ token = '' }) {
-  const [approved, setApproved] = useState(true)
+  const [approved, setApproved] = useState(false)
   const [jobs, setJobs] = useState([])
   useEffect(() => {
     fetch(`${API_URL}/api/student/me`, {
@@ -21,9 +21,12 @@ export default function eligibleJobs({ token = '' }) {
     })
       .then((res) => res.json())
       .then((resp) => {
-        if (resp.approved !== 'approved') {
-          setApproved(false)
+        if (resp.approved === 'approved') {
+          setApproved(true)
         }
+      })
+      .catch((err) => {
+        console.log(err)
       })
   }, [])
 
@@ -65,6 +68,14 @@ export default function eligibleJobs({ token = '' }) {
         router.push(`/student/jobs-applied`)
       }
     }
+  }
+
+  if (!approved) {
+    return (
+      <Layout>
+        <NotApproved />
+      </Layout>
+    )
   }
 
   const [columnDefs] = useState([
@@ -124,13 +135,6 @@ export default function eligibleJobs({ token = '' }) {
       },
     },
   ])
-  if (!approved) {
-    return (
-      <Layout>
-        <NotApproved />
-      </Layout>
-    )
-  }
   return (
     <Layout heading='Eligible Jobs'>
       <div className='ag-theme-alpine mt-4' style={{ height: 800 }}>
