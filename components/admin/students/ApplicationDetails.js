@@ -4,7 +4,6 @@ import 'ag-grid-community/dist/styles/ag-grid.css'
 import 'ag-grid-community/dist/styles/ag-theme-alpine.css'
 
 export default function ApplicationDetails({ applications = '' }) {
-  const [rowData] = useState(applications.data)
   const [columnDefs] = useState([
     {
       headerName: 'Company',
@@ -37,7 +36,7 @@ export default function ApplicationDetails({ applications = '' }) {
       </div>
       <div className='ag-theme-alpine mt-4' style={{ height: 200 }}>
         <AgGridReact
-          rowData={rowData}
+          rowData={applications}
           columnDefs={columnDefs}
           defaultColDef={{ sortable: true }}
         ></AgGridReact>

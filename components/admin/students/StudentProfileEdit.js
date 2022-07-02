@@ -2,42 +2,21 @@ import { useEffect, useState } from 'react'
 import { useRouter } from 'next/router'
 import { toast } from 'react-toastify'
 import { API_URL } from '@/config/index'
+import { PaperClipIcon } from '@heroicons/react/solid'
 
-export default function StudentRegistration({ token = '' }) {
-  const [values, setValues] = useState({
-    name: '',
-    roll: '',
-    file_upload: '',
-    personal_email_id: '',
-    institute_email_id: '',
-    mobile_number_1: '',
-    mobile_number_2: '',
-    gender: '',
-    category: '',
-    address: '',
-    date_of_birth: '',
-    rank: '',
-    categoryRank: '',
-    registered_for: '',
-    program: '',
-    pwd: false,
-    department: '',
-    course: '',
-    spi_1: '',
-    spi_2: '',
-    spi_3: '',
-    spi_4: '',
-    spi_5: '',
-    spi_6: '',
-    spi_7: '',
-    spi_8: '',
-    cpi: '',
-    X_marks: '',
-    XII_marks: '',
-    bachelor_marks: '',
-    master_marks: '',
-    admission_year: '',
-  })
+export default function StudentProfileEdit({ token = '', student }) {
+  const id = student.id
+  const {
+    createdAt,
+    resume_link,
+    updatedAt,
+    user_relation,
+    program,
+    course,
+    profile_pic,
+    ...newStudent
+  } = student.attributes
+  const [values, setValues] = useState(newStudent)
 
   const router = useRouter()
 
@@ -49,15 +28,16 @@ export default function StudentRegistration({ token = '' }) {
     //   element === ''
 
     // })
-    if (confirm('Are you sure you want to submit for approval?')) {
-      const res = await fetch(`${API_URL}/api/student/submit-for-approval`, {
-        method: 'POST',
+    if (confirm('Are you sure you want to edit student profile?')) {
+      const res = await fetch(`${API_URL}/api/students/${id}`, {
+        method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
           Authorization: `Bearer ${token}`,
         },
         body: JSON.stringify({ data: values }),
       })
+      console.log(JSON.stringify({ data: values }))
 
       if (!res.ok) {
         if (res.status === 403 || res.status === 401) {
@@ -70,8 +50,7 @@ export default function StudentRegistration({ token = '' }) {
         toast.error(profile?.error.name)
       } else {
         const profile = await res.json()
-        toast.success('Profile Submitted for Approval')
-        router.push(`/student/profile`)
+        toast.success('Profile Edited Successfully')
       }
     }
   }
@@ -723,13 +702,57 @@ export default function StudentRegistration({ token = '' }) {
             </div>
           </div>
         </div>
-
+        <div className='py-4 sm:py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6'>
+          <dt className='text-sm font-medium text-gray-500'>Resume</dt>
+          <dd className='mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2'>
+            <ul
+              role='list'
+              className='border border-gray-200 rounded-md divide-y divide-gray-200'
+            >
+              <li className='pl-3 pr-4 py-3 flex items-center justify-between text-sm'>
+                <div className='w-0 flex-1 flex items-center'>
+                  <PaperClipIcon
+                    className='flex-shrink-0 h-5 w-5 text-gray-400'
+                    aria-hidden='true'
+                  />
+                  <span className='ml-2 flex-1 w-0 truncate'>
+                    {newStudent.resume ? 'resume.pdf' : 'No resume found'}
+                  </span>
+                </div>
+                <div className='ml-4 flex-shrink-0 space-x-4'>
+                  {newStudent.resume.data ? (
+                    <div className=''>
+                      <a
+                        href={`${API_URL}${newStudent.resume.data.attributes.url}`}
+                        target='_blank'
+                        className='font-medium text-indigo-600 hover:text-indigo-500 px-2'
+                      >
+                        Download
+                      </a>
+                      <a
+                        href={newStudent.resume_link}
+                        target='_blank'
+                        className='font-medium text-indigo-600 hover:text-indigo-500'
+                      >
+                        Google Drive Link
+                      </a>
+                    </div>
+                  ) : (
+                    <p className='font-medium text-indigo-600 hover:text-indigo-500'>
+                      NA
+                    </p>
+                  )}
+                </div>
+              </li>
+            </ul>
+          </dd>
+        </div>
         <div className='flex justify-end'>
           <button
             type='submit'
             className='ml-3 inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500'
           >
-            Submit for approval
+            Edit
           </button>
         </div>
       </div>
