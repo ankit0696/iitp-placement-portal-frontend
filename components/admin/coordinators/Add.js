@@ -39,7 +39,14 @@ export default function AddCoordinatorComponent({ token = '' }) {
       })
 
       const data = await res.json()
-      console.log(data)
+      console.log(
+        JSON.stringify({
+          username,
+          email,
+          password,
+          role,
+        })
+      )
 
       if (res.ok) {
         toast.success('Coordinator added successfully!')

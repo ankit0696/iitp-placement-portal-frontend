@@ -58,7 +58,7 @@ export default function AddJob({ token = '' }) {
     }
     console.log(values.eligible_courses)
     if (confirm('Are you sure you add job?')) {
-      const res = await fetch(`${API_URL}/api/jobs`, {
+      const res = await fetch(`${API_URL}/api/job/register`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
