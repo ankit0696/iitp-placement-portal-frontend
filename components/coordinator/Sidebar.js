@@ -38,7 +38,7 @@ const navigation = [
   },
   {
     name: 'Job/ Internship',
-    href: '/coordinator/job',
+    href: '/coordinator/jobs',
     icon: DocumentTextIcon,
   },
 ]

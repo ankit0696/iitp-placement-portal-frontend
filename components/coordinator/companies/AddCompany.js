@@ -40,7 +40,7 @@ export default function AddCompany({ token = '' }) {
 
     // })
     if (confirm('Are you sure you add company?')) {
-      const res = await fetch(`${API_URL}/api/companies`, {
+      const res = await fetch(`${API_URL}/api/company/register`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
