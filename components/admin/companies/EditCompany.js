@@ -1,13 +1,10 @@
 import { useState } from 'react'
-import { useRouter } from 'next/router'
 import { toast } from 'react-toastify'
 import { API_URL } from '@/config/index'
 
 export default function EditCompany({ token = '', company = '' }) {
   const [values, setValues] = useState(company.attributes)
   const id = company.id
-
-  const router = useRouter()
 
   const handleSubmit = async (e) => {
     e.preventDefault()
@@ -33,11 +30,9 @@ export default function EditCompany({ token = '', company = '' }) {
           toast.error('No token included')
           return
         }
-        const profile = await res.json()
         toast.error(res.status)
         toast.error('Something Went Wrong')
       } else {
-        const profile = await res.json()
         toast.success('Company Edited Successfully')
       }
     }
