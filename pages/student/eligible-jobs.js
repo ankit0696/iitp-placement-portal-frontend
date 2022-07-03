@@ -6,11 +6,13 @@ import 'ag-grid-community/dist/styles/ag-grid.css'
 import 'ag-grid-community/dist/styles/ag-theme-alpine.css'
 import axios from 'axios'
 import { useState, useEffect } from 'react'
+import { useRouter } from 'next/router'
 
 import { toast } from 'react-toastify'
 import NotApproved from '@/components/student/NotApproved'
 
 export default function eligibleJobs({ token = '' }) {
+  const router = useRouter()
   const [approved, setApproved] = useState(false)
   const [jobs, setJobs] = useState([])
   useEffect(() => {

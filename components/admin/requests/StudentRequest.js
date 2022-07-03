@@ -60,7 +60,7 @@ export default function StudentRequest({ token = '' }) {
       .then((res) => res.json())
       .then((data) => setStudents(data.data))
       .catch((err) => console.log(err))
-  }, [handleApprove, handleReject])
+  }, [])
 
   const [columnDefs] = useState([
     {
@@ -129,15 +129,15 @@ export default function StudentRequest({ token = '' }) {
         <div className='mt-4 flex md:mt-0 md:ml-4'>
           <button
             type='button'
-            className='inline-flex items-center px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-orange-600 hover:bg-orange-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-orange-500'
+            className='inline-flex items-center px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-green-600 hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500'
           >
-            Edit
+            Accept
           </button>
           <button
             type='button'
-            className='ml-3 inline-flex items-center px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500'
+            className='ml-3 inline-flex items-center px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-red-600 hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500'
           >
-            Publish
+            Reject
           </button>
         </div>
       </div>

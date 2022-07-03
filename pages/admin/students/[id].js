@@ -54,7 +54,7 @@ export default function StudentProfilePage({
   }, [])
 
   useEffect(() => {
-    fetch(`${API_URL}/api/jobs?populate=*`, {
+    fetch(`${API_URL}/api/admin/eligiblejobs?roll=${student.attributes.roll}`, {
       headers: {
         Authorization: `Bearer ${token}`,
       },
