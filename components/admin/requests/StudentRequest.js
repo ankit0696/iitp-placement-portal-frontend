@@ -51,7 +51,7 @@ export default function StudentRequest({ token = '' }) {
   }
 
   useEffect(() => {
-    fetch(`${API_URL}/api/students?filters[approved][$eq]=pending`, {
+    fetch(`${API_URL}/api/students?filters[approved][$eq]=pending&populate=*`, {
       headers: {
         'Content-Type': 'application/json',
         Authorization: `Bearer ${token}`,
@@ -72,12 +72,12 @@ export default function StudentRequest({ token = '' }) {
       field: 'attributes.roll',
     },
     {
-      headerName: 'Department',
-      field: 'attributes.department',
+      headerName: 'Program',
+      field: 'attributes.program.data.attributes.program_name',
     },
     {
       headerName: 'Course',
-      field: 'attributes.course',
+      field: 'attributes.course.data.attributes.course_name',
     },
     {
       headerName: 'Registered For',
