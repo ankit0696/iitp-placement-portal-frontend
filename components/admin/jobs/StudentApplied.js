@@ -114,7 +114,7 @@ export default function StudentApplied({ token = '', id = '' }) {
       .then((data) => {
         setStudents(data.data)
       })
-  }, [handlePlaced])
+  }, [])
 
   const [columnDefs] = useState([
     {

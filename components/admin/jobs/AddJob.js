@@ -16,6 +16,7 @@ export default function AddJob({ token = '' }) {
     last_date: undefined,
     only_for_pwd: false,
     only_for_ews: false,
+    only_for_females: false,
     company: '',
     approval_status: 'approved',
   })
@@ -310,6 +311,22 @@ export default function AddJob({ token = '' }) {
                     autoComplete='last_date'
                     className='mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md'
                   />
+                </div>
+                <div className='col-span-6 sm:col-span-2'>
+                  <label
+                    htmlFor='only_for_females'
+                    className='block text-sm font-medium text-gray-700'
+                  >
+                    Only for females
+                  </label>
+                  <select
+                    name='only_for_females'
+                    onChange={handleInputChange}
+                    className='mt-1 block w-full py-2 px-3 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm'
+                  >
+                    <option value='false'>No</option>
+                    <option value='true'>Yes</option>
+                  </select>
                 </div>
                 <div className='col-span-6 sm:col-span-2'>
                   <label
