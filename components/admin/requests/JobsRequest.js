@@ -68,6 +68,13 @@ export default function JobRequest({ token = '' }) {
     {
       headerName: 'Job Title',
       field: 'attributes.job_title',
+      cellRenderer: function (params) {
+        return (
+          <Link href={`/admin/jobs/${params.data.id}`}>
+            <a>{params.value}</a>
+          </Link>
+        )
+      },
     },
     {
       headerName: 'Job Category',

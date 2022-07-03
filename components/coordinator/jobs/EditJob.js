@@ -29,26 +29,6 @@ export default function EditJob({ token = '', job = '' }) {
 
   const [programs, setPrograms] = useState([])
 
-  const handleDelete = async () => {
-    if (confirm('Are you sure you want to delete this job?')) {
-      try {
-        const res = await fetch(`${API_URL}/api/jobs/${id}`, {
-          method: 'DELETE',
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        })
-        if (res.status === 200) {
-          toast.success('Job deleted successfully')
-          router.push('/admin/jobs')
-        }
-      } catch (error) {
-        toast.error('Error deleting job')
-        console.log(error)
-      }
-    }
-  }
-
   const handleCheckboxChange = (e) => {
     const { value } = e.target
     if (e.target.checked) {
@@ -283,12 +263,31 @@ export default function EditJob({ token = '', job = '' }) {
                 </div>
                 <div className='col-span-6 sm:col-span-2'>
                   <label
+                    htmlFor='only_for_female'
+                    className='block text-sm font-medium text-gray-700'
+                  >
+                    Only for female
+                  </label>
+                  <select
+                    disabled
+                    name='only_for_female'
+                    onChange={handleInputChange}
+                    value={values.only_for_female}
+                    className='mt-1 block w-full py-2 px-3 border border-red-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm'
+                  >
+                    <option value='false'>No</option>
+                    <option value='true'>Yes</option>
+                  </select>
+                </div>
+                <div className='col-span-6 sm:col-span-2'>
+                  <label
                     htmlFor='only_for_pwd'
                     className='block text-sm font-medium text-gray-700'
                   >
                     Only for PWD
                   </label>
                   <select
+                    disabled
                     name='only_for_pwd'
                     onChange={handleInputChange}
                     value={values.only_for_pwd}
@@ -306,6 +305,7 @@ export default function EditJob({ token = '', job = '' }) {
                     Only for EWS
                   </label>
                   <select
+                    disabled
                     name='only_for_ews'
                     onChange={handleInputChange}
                     value={values.only_for_ews}

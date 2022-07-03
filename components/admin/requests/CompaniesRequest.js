@@ -70,6 +70,13 @@ export default function CompaniesRequest({ token = '' }) {
     {
       headerName: 'Company',
       field: 'attributes.company_name',
+      cellRenderer: function (params) {
+        return (
+          <Link href={`/admin/companies/${params.data.id}`}>
+            <a>{params.value}</a>
+          </Link>
+        )
+      },
     },
     {
       headerName: 'Approval Status',

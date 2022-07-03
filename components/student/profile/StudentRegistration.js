@@ -71,7 +71,7 @@ export default function StudentRegistration({ token = '' }) {
         }
 
         const profile = await res.json()
-        console.log(profile)
+        console.log(JSON.stringify(profile, null, 2))
         toast.error(profile?.error.name)
       } else {
         const profile = await res.json()
@@ -175,7 +175,7 @@ export default function StudentRegistration({ token = '' }) {
                   <input
                     value={values.personal_email_id}
                     onChange={handleInputChange}
-                    type='text'
+                    type='email'
                     name='personal_email_id'
                     id='personal_email_id'
                     autoComplete='email'
@@ -193,10 +193,12 @@ export default function StudentRegistration({ token = '' }) {
                   <input
                     value={values.institute_email_id}
                     onChange={handleInputChange}
-                    type='text'
+                    pattern='.+@iitp\.ac\.in'
+                    type='email'
                     name='institute_email_id'
                     id='institute_email_id'
                     autoComplete='email'
+                    placeholder='Ex: xyz_2111cs@iitp.ac.in'
                     required
                     className='mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md'
                   />
@@ -212,7 +214,7 @@ export default function StudentRegistration({ token = '' }) {
                   <input
                     value={values.mobile_number_1}
                     onChange={handleInputChange}
-                    type='text'
+                    type='number'
                     name='mobile_number_1'
                     id='mobile_number_1'
                     autoComplete='tel-national'
@@ -229,7 +231,7 @@ export default function StudentRegistration({ token = '' }) {
                   <input
                     value={values.mobile_number_2}
                     onChange={handleInputChange}
-                    type='text'
+                    type='number'
                     name='mobile_number_2'
                     id='mobile_number_2'
                     autoComplete='tel-national'
@@ -253,10 +255,10 @@ export default function StudentRegistration({ token = '' }) {
                     required
                     className='mt-1 block w-full py-2 px-3 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm'
                   >
-                    <option>Select</option>
-                    <option>female</option>
-                    <option>male</option>
-                    <option>other</option>
+                    <option value=''>Select</option>
+                    <option value='female'>female</option>
+                    <option value='male'>male</option>
+                    <option value=''>other</option>
                   </select>
                 </div>
                 <div className='col-span-6 sm:col-span-3'>
@@ -275,12 +277,12 @@ export default function StudentRegistration({ token = '' }) {
                     required
                     className='mt-1 block w-full py-2 px-3 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm'
                   >
-                    <option>Select</option>
-                    <option>general</option>
-                    <option>obc</option>
-                    <option>sc</option>
-                    <option>st</option>
-                    <option>ews</option>
+                    <option value=''>Select</option>
+                    <option value='general'>general</option>
+                    <option value='obc'>obc</option>
+                    <option value='sc'>sc</option>
+                    <option value='st'>st</option>
+                    <option value='ews'>ews</option>
                   </select>
                 </div>
 
@@ -410,6 +412,7 @@ export default function StudentRegistration({ token = '' }) {
                     required
                     className='mt-1 block w-full py-2 px-3 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm'
                   >
+                    <option value=''>Select</option>
                     <option value='Internship'>Internship</option>
                     <option value='FTE'>FTE</option>
                   </select>
@@ -430,7 +433,7 @@ export default function StudentRegistration({ token = '' }) {
                     required
                     className='mt-1 block w-full py-2 px-3 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm'
                   >
-                    <option>Select</option>
+                    <option value=''>Select</option>
                     {programs.map((program) => (
                       <option key={program.id} value={program.id}>
                         {program.attributes.program_name}
@@ -463,6 +466,28 @@ export default function StudentRegistration({ token = '' }) {
                     ))}
                   </select>
                 </div>
+                <div className='col-span-6 sm:col-span-2'>
+                  <label
+                    htmlFor='cpi'
+                    className='block text-sm font-medium text-gray-700'
+                  >
+                    CPI
+                  </label>
+                  <input
+                    required
+                    value={values.cpi}
+                    onChange={handleInputChange}
+                    type='number'
+                    min={2}
+                    max={10}
+                    step='.01'
+                    placeholder='Ex: 8.86'
+                    name='cpi'
+                    id='cpi'
+                    autoComplete=''
+                    className='mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md'
+                  />
+                </div>
 
                 <div className='col-span-6 sm:col-span-2'>
                   <label
@@ -475,7 +500,10 @@ export default function StudentRegistration({ token = '' }) {
                     value={values.spi_1}
                     onChange={handleInputChange}
                     type='number'
+                    min={2}
                     max={10}
+                    step='.01'
+                    placeholder='Ex: 8.86'
                     name='spi_1'
                     id='spi_1'
                     autoComplete='spi_1'
@@ -494,7 +522,10 @@ export default function StudentRegistration({ token = '' }) {
                     value={values.spi_2}
                     onChange={handleInputChange}
                     type='number'
+                    min={2}
                     max={10}
+                    step='.01'
+                    placeholder='Ex: 8.86'
                     name='spi_2'
                     id='spi_2'
                     autoComplete=''
@@ -513,7 +544,10 @@ export default function StudentRegistration({ token = '' }) {
                     value={values.spi_3}
                     onChange={handleInputChange}
                     type='number'
+                    min={2}
                     max={10}
+                    step='.01'
+                    placeholder='Ex: 8.86'
                     name='spi_3'
                     id='spi_3'
                     autoComplete=''
@@ -531,7 +565,10 @@ export default function StudentRegistration({ token = '' }) {
                     value={values.spi_4}
                     onChange={handleInputChange}
                     type='number'
+                    min={2}
                     max={10}
+                    step='.01'
+                    placeholder='Ex: 8.86'
                     name='spi_4'
                     id='spi_4'
                     autoComplete=''
@@ -549,7 +586,10 @@ export default function StudentRegistration({ token = '' }) {
                     value={values.spi_5}
                     onChange={handleInputChange}
                     type='number'
+                    min={2}
                     max={10}
+                    step='.01'
+                    placeholder='Ex: 8.86'
                     name='spi_5'
                     id='spi_5'
                     autoComplete=''
@@ -567,7 +607,10 @@ export default function StudentRegistration({ token = '' }) {
                     value={values.spi_6}
                     onChange={handleInputChange}
                     type='number'
+                    min={2}
                     max={10}
+                    step='.01'
+                    placeholder='Ex: 8.86'
                     name='spi_6'
                     id='spi_6'
                     autoComplete=''
@@ -585,7 +628,10 @@ export default function StudentRegistration({ token = '' }) {
                     value={values.spi_7}
                     onChange={handleInputChange}
                     type='number'
+                    min={2}
                     max={10}
+                    step='.01'
+                    placeholder='Ex: 8.86'
                     name='spi_7'
                     id='spi_7'
                     autoComplete=''
@@ -603,31 +649,17 @@ export default function StudentRegistration({ token = '' }) {
                     value={values.spi_8}
                     onChange={handleInputChange}
                     type='number'
+                    min={2}
                     max={10}
+                    step='.01'
+                    placeholder='Ex: 8.86'
                     name='spi_8'
                     id='spi_8'
                     autoComplete=''
                     className='mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md'
                   />
                 </div>
-                <div className='col-span-6 sm:col-span-2'>
-                  <label
-                    htmlFor='cpi'
-                    className='block text-sm font-medium text-gray-700'
-                  >
-                    CPI
-                  </label>
-                  <input
-                    value={values.cpi}
-                    onChange={handleInputChange}
-                    type='number'
-                    max={10}
-                    name='cpi'
-                    id='cpi'
-                    autoComplete=''
-                    className='mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md'
-                  />
-                </div>
+
                 <div className='col-span-6 sm:col-span-2'>
                   <label
                     htmlFor='X_marks'
@@ -643,6 +675,7 @@ export default function StudentRegistration({ token = '' }) {
                     id='X_marks'
                     min={33}
                     max={100}
+                    step='.01'
                     autoComplete=''
                     placeholder='In percentage Ex: 88.5'
                     required
@@ -664,9 +697,10 @@ export default function StudentRegistration({ token = '' }) {
                     id='XII_marks'
                     min={33}
                     max={100}
+                    step='.01'
+                    placeholder='In percentage Ex: 88.5'
                     autoComplete=''
                     required
-                    placeholder='In percentage Ex: 88.5'
                     className='mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md'
                   />
                 </div>
@@ -680,9 +714,13 @@ export default function StudentRegistration({ token = '' }) {
                   <input
                     value={values.bachelor_marks}
                     onChange={handleInputChange}
-                    type='text'
+                    type='number'
                     name='bachelor_marks'
                     id='bachelor_marks'
+                    min={2}
+                    max={10}
+                    step='.01'
+                    placeholder='Ex: 8.86'
                     autoComplete=''
                     className='mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md'
                   />
@@ -697,9 +735,13 @@ export default function StudentRegistration({ token = '' }) {
                   <input
                     value={values.master_marks}
                     onChange={handleInputChange}
-                    type='text'
+                    type='number'
                     name='master_marks'
                     id='master_marks'
+                    min={2}
+                    max={10}
+                    step='.01'
+                    placeholder='Ex: 8.86'
                     autoComplete=''
                     className='mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md'
                   />

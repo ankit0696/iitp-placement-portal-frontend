@@ -236,7 +236,7 @@ export default function AddJob({ token = '' }) {
                     type='number'
                     name='min_X_marks'
                     id='min_X_marks'
-                    maxValue='100'
+                    max={100}
                     autoComplete='min_X_marks'
                     className='mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md'
                   />
@@ -255,7 +255,7 @@ export default function AddJob({ token = '' }) {
                     type='number'
                     name='min_XII_marks'
                     id='min_XII_marks'
-                    maxValue={100}
+                    max={100}
                     autoComplete='min_XII_marks'
                     className='mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md'
                   />

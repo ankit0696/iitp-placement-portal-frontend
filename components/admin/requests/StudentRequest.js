@@ -4,6 +4,7 @@ import 'ag-grid-community/dist/styles/ag-grid.css'
 import 'ag-grid-community/dist/styles/ag-theme-alpine.css'
 import { API_URL } from '@/config/index'
 import { toast } from 'react-toastify'
+import Link from 'next/link'
 
 export default function StudentRequest({ token = '' }) {
   const [students, setStudents] = useState([])
@@ -64,12 +65,26 @@ export default function StudentRequest({ token = '' }) {
 
   const [columnDefs] = useState([
     {
-      headerName: 'Name',
+      headerName: 'Student Name',
       field: 'attributes.name',
+      cellRenderer: function (params) {
+        return (
+          <Link href={`/admin/students/${params.data.id}`}>
+            <a>{params.value}</a>
+          </Link>
+        )
+      },
     },
     {
       headerName: 'Roll No.',
       field: 'attributes.roll',
+      cellRenderer: function (params) {
+        return (
+          <Link href={`/admin/students/${params.data.id}`}>
+            <a>{params.value}</a>
+          </Link>
+        )
+      },
     },
     {
       headerName: 'Program',
