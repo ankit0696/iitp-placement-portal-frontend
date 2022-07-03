@@ -16,7 +16,7 @@ export default function AddJob({ token = '' }) {
     last_date: undefined,
     only_for_pwd: false,
     only_for_ews: false,
-    only_for_females: false,
+    only_for_female: false,
     company: '',
     approval_status: 'approved',
   })
@@ -314,13 +314,13 @@ export default function AddJob({ token = '' }) {
                 </div>
                 <div className='col-span-6 sm:col-span-2'>
                   <label
-                    htmlFor='only_for_females'
+                    htmlFor='only_for_female'
                     className='block text-sm font-medium text-gray-700'
                   >
-                    Only for females
+                    Only for female
                   </label>
                   <select
-                    name='only_for_females'
+                    name='only_for_female'
                     onChange={handleInputChange}
                     className='mt-1 block w-full py-2 px-3 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm'
                   >
