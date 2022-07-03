@@ -7,10 +7,5 @@ import Profile from '@/components/student/profile/Profile'
 import { parseCookies } from '@/helpers/index'
 
 export default function profile() {
-  return (
-    <Layout heading='Home'>
-      <StudentRegistration />
-      {/* <Profile student={data} /> */}
-    </Layout>
-  )
+  return <Layout heading='Home'>{/* <Profile student={data} /> */}</Layout>
 }

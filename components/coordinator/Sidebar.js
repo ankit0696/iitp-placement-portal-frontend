@@ -23,22 +23,22 @@ import AuthContext from '@/context/AuthContext'
 const navigation = [
   {
     name: 'Home',
-    href: '/admin/home',
+    href: '/coordinator/home',
     icon: IdentificationIcon,
   },
   {
     name: 'Students',
-    href: '/admin/students',
+    href: '/coordinator/students',
     icon: BriefcaseIcon,
   },
   {
     name: 'Companies',
-    href: '/admin/companies',
+    href: '/coordinator/companies',
     icon: FolderIcon,
   },
   {
     name: 'Job/ Internship',
-    href: '/admin/job',
+    href: '/coordinator/job',
     icon: DocumentTextIcon,
   },
 ]
