@@ -314,6 +314,23 @@ export default function EditJob({ token = '', job = '' }) {
                 </div>
                 <div className='col-span-6 sm:col-span-2'>
                   <label
+                    htmlFor='only_for_females'
+                    className='block text-sm font-medium text-gray-700'
+                  >
+                    Only for females
+                  </label>
+                  <select
+                    name='only_for_females'
+                    onChange={handleInputChange}
+                    value={values.only_for_females}
+                    className='mt-1 block w-full py-2 px-3 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm'
+                  >
+                    <option value='false'>No</option>
+                    <option value='true'>Yes</option>
+                  </select>
+                </div>
+                <div className='col-span-6 sm:col-span-2'>
+                  <label
                     htmlFor='only_for_pwd'
                     className='block text-sm font-medium text-gray-700'
                   >
