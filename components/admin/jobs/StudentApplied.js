@@ -5,6 +5,7 @@ import 'ag-grid-community/dist/styles/ag-theme-alpine.css'
 import { API_URL } from '@/config/index'
 import qs from 'qs'
 import Link from 'next/link'
+import { toast } from 'react-toastify'
 
 export default function StudentApplied({ token = '', id = '' }) {
   const [students, setStudents] = useState([])
@@ -39,7 +40,17 @@ export default function StudentApplied({ token = '', id = '' }) {
           }),
         })
           .then((res) => res.json())
-          .then((data) => {})
+          .then((data) => {
+            toast.success(
+              `${row.attributes.student.data.attributes.name} marked as placed`
+            )
+          })
+          .catch((err) => {
+            console.log(err)
+            toast.error(
+              `${row.attributes.student.data.attributes.name} failed to place`
+            )
+          })
       })
     }
   }
