@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { Disclosure, Menu, Switch, Transition } from '@headlessui/react'
 
 function classNames(...classes) {
@@ -6,10 +6,20 @@ function classNames(...classes) {
 }
 
 export default function AdminSettings() {
-  const [availableToHire, setAvailableToHire] = useState(true)
-  const [privateAccount, setPrivateAccount] = useState(false)
-  const [allowCommenting, setAllowCommenting] = useState(true)
-  const [allowMentions, setAllowMentions] = useState(true)
+  const [cpiChangeAllowed, setCpiChangeAllowed] = useState(true)
+  const [registrationsAllowed, setRegistrationsAllowed] = useState(true)
+
+  useEffect(() => {
+    // TODO: Get those boolean values from $SERVER/api/setting
+  })
+
+  const handleUpdateSetting = (e) => {
+    e.preventDefault(e.target)
+
+    // TODO: Use PUT $SERVER/api/setting, to update the settings
+    // Keys are: `registrations_allowed`, `cpi_change_allowed` on backend
+  }
+
   return (
     <main className='mt-4'>
       <div className='max-w-screen-xl mx-auto pb-6 '>
@@ -19,6 +29,7 @@ export default function AdminSettings() {
               className='divide-y divide-gray-200 lg:col-span-12'
               action='#'
               method='POST'
+	      onSubmit={handleUpdateSetting}
             >
               {/* Profile section */}
               {/* <div className='py-6 px-4 sm:p-6 lg:pb-8'>
@@ -237,17 +248,17 @@ export default function AdminSettings() {
                         </Switch.Description>
                       </div>
                       <Switch
-                        checked={availableToHire}
-                        onChange={setAvailableToHire}
+                        checked={cpiChangeAllowed}
+                        onChange={setCpiChangeAllowed}
                         className={classNames(
-                          availableToHire ? 'bg-teal-500' : 'bg-gray-200',
+                          cpiChangeAllowed ? 'bg-teal-500' : 'bg-gray-200',
                           'ml-4 relative inline-flex flex-shrink-0 h-6 w-11 border-2 border-transparent rounded-full cursor-pointer transition-colors ease-in-out duration-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-sky-500'
                         )}
                       >
                         <span
                           aria-hidden='true'
                           className={classNames(
-                            availableToHire ? 'translate-x-5' : 'translate-x-0',
+                            cpiChangeAllowed ? 'translate-x-5' : 'translate-x-0',
                             'inline-block h-5 w-5 rounded-full bg-white shadow transform ring-0 transition ease-in-out duration-200'
                           )}
                         />
@@ -270,17 +281,17 @@ export default function AdminSettings() {
                         </Switch.Description>
                       </div>
                       <Switch
-                        checked={privateAccount}
-                        onChange={setPrivateAccount}
+                        checked={registrationsAllowed}
+                        onChange={setRegistrationsAllowed}
                         className={classNames(
-                          privateAccount ? 'bg-teal-500' : 'bg-gray-200',
+                          registrationsAllowed ? 'bg-teal-500' : 'bg-gray-200',
                           'ml-4 relative inline-flex flex-shrink-0 h-6 w-11 border-2 border-transparent rounded-full cursor-pointer transition-colors ease-in-out duration-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-sky-500'
                         )}
                       >
                         <span
                           aria-hidden='true'
                           className={classNames(
-                            privateAccount ? 'translate-x-5' : 'translate-x-0',
+                            registrationsAllowed ? 'translate-x-5' : 'translate-x-0',
                             'inline-block h-5 w-5 rounded-full bg-white shadow transform ring-0 transition ease-in-out duration-200'
                           )}
                         />
