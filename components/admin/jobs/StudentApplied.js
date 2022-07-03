@@ -15,6 +15,35 @@ export default function StudentApplied({ token = '', id = '' }) {
     })
   }, [])
 
+  const handlePlaced = async () => {
+    const selectedRows = gridRef.current.api.getSelectedRows()
+    const selectedStudents = selectedRows.map(
+      (row) => row.attributes.student.data.attributes.name
+    )
+    if (
+      confirm(
+        `Are you sure you want to place these students? ${selectedStudents}`
+      )
+    ) {
+      selectedRows.map((row) => {
+        fetch(`${API_URL}/api/applications/${row.id}`, {
+          method: 'PUT',
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${token}`,
+          },
+          body: JSON.stringify({
+            data: {
+              status: 'selected',
+            },
+          }),
+        })
+          .then((res) => res.json())
+          .then((data) => {})
+      })
+    }
+  }
+
   const getSelectedRowData = () => {
     const selectedRows = gridRef.current.api.getSelectedRows()
     let selectedData = selectedRows.map(
@@ -74,7 +103,7 @@ export default function StudentApplied({ token = '', id = '' }) {
       .then((data) => {
         setStudents(data.data)
       })
-  }, [])
+  }, [handlePlaced])
 
   const [columnDefs] = useState([
     {
@@ -170,6 +199,13 @@ export default function StudentApplied({ token = '', id = '' }) {
             className='order-1 ml-3 inline-flex items-center px-4 py-2 border border-gray-300 shadow-sm text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 sm:order-0 sm:ml-0'
           >
             Deactivate
+          </button>
+          <button
+            type='button'
+            onClick={handlePlaced}
+            className='order-0 inline-flex items-center px-4 py-2 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-green-600 hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500 sm:order-1 sm:ml-3'
+          >
+            Mark as Placed
           </button>
           <button
             type='button'
