@@ -32,8 +32,12 @@ export const AuthProvider = ({ children }) => {
           toast.error(data.message.message)
         } else {
           setUser(data)
+          setRole(data.role)
           toast.success('Successfully Registered')
-          router.push('/student/profile')
+          // redirect after 3 seconds
+          setTimeout(() => {
+            router.push('/')
+          }, 3000)
         }
       })
       .catch((err) => {
