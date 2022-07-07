@@ -25,7 +25,12 @@ export default function EditJob({ token = '', job = '' }) {
 
   const router = useRouter()
 
-  const eligibleCourses = new Set(values.eligible_courses?.split(','))
+  const [eligibleCourses, setEligibleCourses] = useState(
+    new Set(
+      // convert string of values to numbers
+      values.eligible_courses.split(',').map(Number)
+    )
+  )
 
   const [programs, setPrograms] = useState([])
 
@@ -344,7 +349,7 @@ export default function EditJob({ token = '', job = '' }) {
                                   name={course.id}
                                   type='checkbox'
                                   defaultChecked={eligibleCourses.has(
-                                    course.id.toString()
+                                    course.id
                                   )}
                                   onChange={handleCheckboxChange}
                                   className='h-4 w-4 border-red-300 rounded text-indigo-600 focus:ring-indigo-500'

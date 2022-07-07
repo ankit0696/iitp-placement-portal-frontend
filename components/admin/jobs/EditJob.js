@@ -24,8 +24,12 @@ export default function EditJob({ token = '', job = '' }) {
   const [values, setValues] = useState(newJob)
 
   const router = useRouter()
-
-  const eligibleCourses = new Set(values.eligible_courses?.split(','))
+  const [eligibleCourses, setEligibleCourses] = useState(
+    new Set(
+      // convert string of values to numbers
+      values.eligible_courses.split(',').map(Number)
+    )
+  )
 
   const [programs, setPrograms] = useState([])
 
@@ -50,11 +54,13 @@ export default function EditJob({ token = '', job = '' }) {
   }
 
   const handleCheckboxChange = (e) => {
-    const { value } = e.target
+    const { id } = e.target
     if (e.target.checked) {
-      eligibleCourses.add(parseInt(value))
+      setEligibleCourses((prev) => new Set([...prev, parseInt(id)]))
     } else {
-      eligibleCourses.delete(parseInt(value))
+      setEligibleCourses(
+        (prev) => new Set([...prev].filter((course) => course !== parseInt(id)))
+      )
     }
   }
 
@@ -73,9 +79,11 @@ export default function EditJob({ token = '', job = '' }) {
     //   element === ''
 
     // })
-    if (!values.eligible_courses) {
-      values['eligible_courses'] = Array.from(eligibleCourses).toString()
+    if (eligibleCourses.size === 0) {
+      toast.error('Please select atleast one course')
+      return
     }
+    values['eligible_courses'] = Array.from(eligibleCourses).toString()
     if (confirm('Are you sure you edit job?')) {
       const res = await fetch(`${API_URL}/api/jobs/${id}`, {
         method: 'PUT',
@@ -393,8 +401,9 @@ export default function EditJob({ token = '', job = '' }) {
                                   id={course.id}
                                   name={course.id}
                                   type='checkbox'
+                                  // check if the course is in set of eligible courses
                                   defaultChecked={eligibleCourses.has(
-                                    course.id.toString()
+                                    course.id
                                   )}
                                   onChange={handleCheckboxChange}
                                   className='h-4 w-4 border-gray-300 rounded text-indigo-600 focus:ring-indigo-500'

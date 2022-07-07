@@ -20,14 +20,16 @@ export default function AddJob({ token = '' }) {
     company: '',
     approval_status: 'approved',
   })
-  const eligibleCourses = new Set()
+  const [eligibleCourses, setEligibleCourses] = useState(new Set())
   const [programs, setPrograms] = useState([])
 
-  programs.map((program) => {
-    program.attributes.courses.data.map((course) => {
-      eligibleCourses.add(course.id)
+  useEffect(() => {
+    programs.map((program) => {
+      program.attributes.courses.data.map((course) => {
+        setEligibleCourses((prev) => new Set([...prev, parseInt(course.id)]))
+      })
     })
-  })
+  }, [programs])
 
   const handleDateChange = (e) => {
     let { name, value } = e.target
@@ -39,11 +41,12 @@ export default function AddJob({ token = '' }) {
   const handleCheckboxChange = (e) => {
     const { id } = e.target
     if (e.target.checked) {
-      eligibleCourses.add(parseInt(id))
+      setEligibleCourses((prev) => new Set([...prev, parseInt(id)]))
     } else {
-      eligibleCourses.delete(parseInt(id))
+      setEligibleCourses(
+        (prev) => new Set([...prev].filter((course) => course !== parseInt(id)))
+      )
     }
-    console.log(eligibleCourses)
   }
 
   const handleSubmit = async (e) => {
@@ -54,10 +57,12 @@ export default function AddJob({ token = '' }) {
     //   element === ''
 
     // })
-    if (!values.eligible_courses) {
-      values['eligible_courses'] = Array.from(eligibleCourses).toString()
+    if (eligibleCourses.size === 0) {
+      toast.error('Please select atleast one course')
+      return
     }
-    console.log(values.eligible_courses)
+
+    values['eligible_courses'] = Array.from(eligibleCourses).toString()
     if (confirm('Are you sure you add job?')) {
       const res = await fetch(`${API_URL}/api/jobs`, {
         method: 'POST',
@@ -137,6 +142,7 @@ export default function AddJob({ token = '' }) {
                   </label>
                   <select
                     name='company'
+                    required
                     onChange={handleInputChange}
                     className='mt-1 block w-full py-2 px-3 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm'
                   >
@@ -183,6 +189,7 @@ export default function AddJob({ token = '' }) {
                     <option value='A1'>A1</option>
                     <option value='A2'>A2</option>
                     <option value='X'>X</option>
+                    <option value='none'>None (for Internship)</option>
                   </select>
                 </div>
                 <div className='col-span-6 sm:col-span-2'>
@@ -195,6 +202,7 @@ export default function AddJob({ token = '' }) {
                   <select
                     name='category'
                     onChange={handleInputChange}
+                    required
                     className='mt-1 block w-full py-2 px-3 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm'
                   >
                     <option value=''>Select</option>
@@ -212,6 +220,7 @@ export default function AddJob({ token = '' }) {
                   </label>
                   <select
                     name='job_status'
+                    required
                     onChange={handleInputChange}
                     className='mt-1 block w-full py-2 px-3 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm'
                   >
