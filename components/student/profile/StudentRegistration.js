@@ -43,6 +43,7 @@ export default function StudentRegistration({ token = '' }) {
   const { user } = useContext(AuthContext)
   if (user && user.username) {
     values.roll = user.username
+    values.institute_email_id = user.email
   }
 
   const handleSubmit = async (e) => {
@@ -191,6 +192,7 @@ export default function StudentRegistration({ token = '' }) {
                     Institute Email
                   </label>
                   <input
+                    disabled
                     value={values.institute_email_id}
                     onChange={handleInputChange}
                     pattern='.+@iitp\.ac\.in'
@@ -198,9 +200,9 @@ export default function StudentRegistration({ token = '' }) {
                     name='institute_email_id'
                     id='institute_email_id'
                     autoComplete='email'
-                    placeholder='Ex: xyz_2111cs@iitp.ac.in'
+                    placeholder='Ex: 1234xx21@iitp.ac.in'
                     required
-                    className='mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md'
+                    className='mt-1 focus:ring-green-500 focus:border-green-500 block w-full shadow-sm sm:text-sm border-green-300 rounded-md'
                   />
                 </div>
                 <div className='col-span-6 sm:col-span-3'>

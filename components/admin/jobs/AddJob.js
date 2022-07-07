@@ -229,6 +229,9 @@ export default function AddJob({ token = '' }) {
                     className='block text-sm font-medium text-gray-700'
                   >
                     Minimum X Marks
+                    <small className='text-gray-500 ml-1'>
+                      Ex: 88.5 (out of 100)
+                    </small>
                   </label>
                   <input
                     value={values.min_X_marks}
@@ -236,7 +239,6 @@ export default function AddJob({ token = '' }) {
                     type='number'
                     name='min_X_marks'
                     id='min_X_marks'
-                    max={100}
                     autoComplete='min_X_marks'
                     className='mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md'
                   />
@@ -248,6 +250,9 @@ export default function AddJob({ token = '' }) {
                     className='block text-sm font-medium text-gray-700'
                   >
                     Minimum XII Marks
+                    <small className='text-gray-500 ml-1'>
+                      Ex: 88.5 (out of 100)
+                    </small>
                   </label>
                   <input
                     value={values.min_XII_marks}
@@ -255,7 +260,6 @@ export default function AddJob({ token = '' }) {
                     type='number'
                     name='min_XII_marks'
                     id='min_XII_marks'
-                    max={100}
                     autoComplete='min_XII_marks'
                     className='mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md'
                   />
@@ -267,6 +271,9 @@ export default function AddJob({ token = '' }) {
                     className='block text-sm font-medium text-gray-700'
                   >
                     Minimum CPI
+                    <small className='text-gray-500 ml-1'>
+                      Ex: 8.86 (out of 10)
+                    </small>
                   </label>
                   <input
                     value={values.min_cpi}

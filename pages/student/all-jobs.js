@@ -35,10 +35,19 @@ export default function eligibleJobs({ token = '' }) {
         Authorization: `Bearer ${token}`,
       },
     })
-      .then((res) => res.json())
+      .then((res) => {
+        // check for 200 status
+        if (res.status === 200) {
+          return res.json()
+        } else {
+          throw new Error('Failed to fetch jobs')
+        }
+      })
       .then((data) => {
         setJobs(data)
-        console.log(data)
+      })
+      .catch((err) => {
+        console.log('err', err)
       })
   }, [])
 

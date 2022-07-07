@@ -231,6 +231,9 @@ export default function EditJob({ token = '', job = '' }) {
                     className='block text-sm font-medium text-gray-700'
                   >
                     Minimum X Marks
+                    <small className='text-gray-500 ml-1'>
+                      Ex: 88.5 (out of 100)
+                    </small>
                   </label>
                   <input
                     value={values.min_X_marks}
@@ -249,6 +252,9 @@ export default function EditJob({ token = '', job = '' }) {
                     className='block text-sm font-medium text-gray-700'
                   >
                     Minimum XII Marks
+                    <small className='text-gray-500 ml-1'>
+                      Ex: 88.5 (out of 100)
+                    </small>
                   </label>
                   <input
                     value={values.min_XII_marks}
@@ -267,6 +273,9 @@ export default function EditJob({ token = '', job = '' }) {
                     className='block text-sm font-medium text-gray-700'
                   >
                     Minimum CPI
+                    <small className='text-gray-500 ml-1'>
+                      Ex: 8.86 (out of 10)
+                    </small>
                   </label>
                   <input
                     value={values.min_cpi}

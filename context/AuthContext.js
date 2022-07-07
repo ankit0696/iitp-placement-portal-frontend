@@ -36,7 +36,7 @@ export const AuthProvider = ({ children }) => {
           toast.success('Successfully Registered')
           // redirect after 3 seconds
           setTimeout(() => {
-            router.push('/')
+            router.push('/student/profile')
           }, 3000)
         }
       })
@@ -55,7 +55,6 @@ export const AuthProvider = ({ children }) => {
       body: JSON.stringify({
         identifier,
         password,
-        role,
       }),
     })
     const data = await res.json()
@@ -90,11 +89,12 @@ export const AuthProvider = ({ children }) => {
   }
 
   //check user logged in
-  const checkUserLoggedIn = async (user) => {
+  const checkUserLoggedIn = async () => {
     const res = await fetch(`${NEXT_URL}/api/user`)
     const data = await res.json()
 
     if (res.ok) {
+      console.log(data)
       setUser(data.user)
       setRole(data.role)
     } else {

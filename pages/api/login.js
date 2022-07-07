@@ -3,7 +3,7 @@ import cookie from 'cookie'
 
 export default async (req, res) => {
   if (req.method === 'POST') {
-    const { identifier, password, role } = req.body
+    const { identifier, password } = req.body
 
     const strapiRes = await fetch(`${API_URL}/api/auth/local`, {
       method: 'POST',
@@ -14,7 +14,6 @@ export default async (req, res) => {
       body: JSON.stringify({
         identifier,
         password,
-        role,
       }),
     })
 
