@@ -41,6 +41,11 @@ const navigation = [
     href: '/coordinator/jobs',
     icon: DocumentTextIcon,
   },
+  {
+    name: 'Reset Password',
+    href: '/coordinator/reset-password',
+    icon: DocumentTextIcon,
+  },
 ]
 
 function classNames(...classes) {
