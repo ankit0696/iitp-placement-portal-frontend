@@ -66,18 +66,21 @@ export default function jobsApplied({ token = '' }) {
     },
     {
       headerName: 'JAF',
-      field: 'jaf.url',
+      field: 'job.jaf.url',
       cellRenderer: function (params) {
-        return (
-          <div>
+        if (params.value) {
+          return (
             <a
               href={API_URL + params.value}
+              target='_blank'
               className='inline-flex items-center py-1.5 border border-transparent text-xs font-medium rounded-full shadow-sm text-indigo-600 hover:text-indigo-700 focus:text-indigo-800'
             >
               View JAF
             </a>
-          </div>
-        )
+          )
+        } else {
+          return 'No JAF'
+        }
       },
     },
   ])

@@ -46,6 +46,11 @@ const navigation = [
     href: '/student/resume',
     icon: DocumentTextIcon,
   },
+  {
+    name: 'Reset Password',
+    href: '/student/reset-password',
+    icon: DocumentTextIcon,
+  },
 ]
 
 function classNames(...classes) {
