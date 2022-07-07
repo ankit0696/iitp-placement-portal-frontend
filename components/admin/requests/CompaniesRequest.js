@@ -4,6 +4,7 @@ import 'ag-grid-community/dist/styles/ag-grid.css'
 import 'ag-grid-community/dist/styles/ag-theme-alpine.css'
 import { API_URL } from '@/config/index'
 import { toast } from 'react-toastify'
+import Link from 'next/link'
 
 export default function CompaniesRequest({ token = '' }) {
   // Fetch Companies from API

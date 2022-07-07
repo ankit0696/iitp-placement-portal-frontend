@@ -1,5 +1,5 @@
 import { useState, useEffect, createContext } from 'react'
-import Router, { useRouter } from 'next/router'
+import { useRouter } from 'next/router'
 import { API_URL, NEXT_URL } from '@/config/index'
 import { toast } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
@@ -18,24 +18,27 @@ export const AuthProvider = ({ children }) => {
 
   //register user
   const register = async (user) => {
-    const res = await fetch(`${NEXT_URL}/api/register`, {
+    fetch(`${NEXT_URL}/api/register`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
       },
       body: JSON.stringify(user),
     })
-    const data = await res.json()
-
-    if (res.ok) {
-      setUser(data.user)
-      setRole(data.role)
-
-      router.push('/student/profile')
-    } else {
-      toast.error(data.error)
-      console.log(data)
-    }
+      .then((res) => res.json())
+      .then((data) => {
+        console.log('data', data)
+        if (data.message.status === 400) {
+          toast.error(data.message.message)
+        } else {
+          setUser(data)
+          toast.success('Successfully Registered')
+          router.push('/student/profile')
+        }
+      })
+      .catch((err) => {
+        console.log(err)
+      })
   }
 
   //login user

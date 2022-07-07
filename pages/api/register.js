@@ -3,38 +3,54 @@ import cookie from 'cookie'
 
 export default async (req, res) => {
   if (req.method === 'POST') {
-    const { username, email, password, role } = req.body
+    const { username, email, password } = req.body
 
-    const strapiRes = await fetch(`${API_URL}/student/register-student`, {
+    const strapiRes = await fetch(`${API_URL}/api/student/register-student`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
-        'User-Agent': '*',
       },
       body: JSON.stringify({
         username,
         email,
         password,
-        role,
       }),
     })
 
-    const data = await strapiRes.json()
-
-    if (strapiRes.ok) {
-      res.setHeader(
-        'Set-Cookie',
-        cookie.serialize('token', data.jwt, {
-          httpOnly: true,
-          secure: process.env.NODE_ENV === 'production',
-          maxAge: 60 * 60 * 24 * 7,
-          sameSite: 'strict',
-          path: '/',
+    try {
+      const data = await strapiRes.json()
+      console.log('data', data)
+      if (strapiRes.ok) {
+        res.setHeader(
+          'Set-Cookie',
+          cookie.serialize('token', data.token, {
+            httpOnly: true,
+            secure: process.env.NODE_ENV === 'production',
+            maxAge: 30 * 24 * 60 * 60,
+          })
+        )
+        res.statusCode = 200
+        res.end(
+          JSON.stringify({
+            message: 'Successfully registered',
+          })
+        )
+      } else {
+        res.statusCode = 400
+        res.end(
+          JSON.stringify({
+            message: data.error,
+          })
+        )
+      }
+    } catch (err) {
+      console.log('err: ', err)
+      res.statusCode = 500
+      res.end(
+        JSON.stringify({
+          message: 'Something went wrong',
         })
       )
-      res.status(200).json({ user: data.user })
-    } else {
-      res.status(data.error.status).json({ error: data.error.message })
     }
   } else {
     res.setHeader('Allow', ['POST'])
