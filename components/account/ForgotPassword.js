@@ -23,9 +23,6 @@ export default function ForgotPassword() {
     })
       .then((res) => res.json())
       .then((data) => {
-        console.log(
-          JSON.stringify({ roll: username, institute_email_id: email })
-        )
         if (data.error) {
           console.error(data.error)
           toast.error(
@@ -36,10 +33,10 @@ export default function ForgotPassword() {
           toast.error(data.message.messages[0].message)
         } else {
           toast.success('Successfully Requested. Wait for reply')
-          // redirect after 3 seconds
+          // redirect after 5 seconds
           setTimeout(() => {
             router.push('/')
-          }, 3000)
+          }, 5000)
         }
       })
       .catch((err) => {

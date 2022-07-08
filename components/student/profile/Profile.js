@@ -73,7 +73,6 @@ export default function Profile({ student, token }) {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json',
-        Authorization: `Bearer ${token}`,
       },
     })
       .then((res) => res.json())
