@@ -8,7 +8,7 @@ import axios from 'axios'
 import { API_URL } from '@/config/index'
 import Link from 'next/link'
 
-export default function students({ data }) {
+export default function Students({ data }) {
   const gridRef = useRef()
   const onBtExport = useCallback(() => {
     gridRef.current.api.exportDataAsCsv({

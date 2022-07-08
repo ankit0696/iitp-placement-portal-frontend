@@ -7,7 +7,7 @@ import 'ag-grid-community/dist/styles/ag-theme-alpine.css'
 import { useState, useEffect } from 'react'
 import NotApproved from '@/components/student/NotApproved'
 
-export default function eligibleJobs({ token = '' }) {
+export default function AllJobs({ token = '' }) {
   // check if student is approved or not
   const [approved, setApproved] = useState(false)
   useEffect(() => {

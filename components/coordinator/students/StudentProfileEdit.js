@@ -645,7 +645,7 @@ export default function StudentProfileEdit({ token = '', student }) {
                     htmlFor='bachelor_marks'
                     className='block text-sm font-medium text-gray-700'
                   >
-                    Bachelor's Marks
+                    Bachelor&apos;s Marks
                   </label>
                   <input
                     disabled
@@ -663,7 +663,7 @@ export default function StudentProfileEdit({ token = '', student }) {
                     htmlFor='master_marks'
                     className='block text-sm font-medium text-gray-700'
                   >
-                    Master's Marks
+                    Master&apos;s Marks
                   </label>
                   <input
                     disabled
@@ -725,6 +725,7 @@ export default function StudentProfileEdit({ token = '', student }) {
                       <a
                         href={`${API_URL}${resume.data.attributes.url}`}
                         target='_blank'
+                        rel='noreferrer'
                         className='font-medium text-green-600 hover:text-green-500 px-2'
                       >
                         Download
@@ -732,6 +733,7 @@ export default function StudentProfileEdit({ token = '', student }) {
                       <a
                         href={newStudent.resume_link}
                         target='_blank'
+                        rel='noreferrer'
                         className='font-medium text-green-600 hover:text-green-500'
                       >
                         Google Drive Link

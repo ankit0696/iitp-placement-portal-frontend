@@ -711,7 +711,7 @@ export default function StudentRegistration({ token = '' }) {
                     htmlFor='bachelor_marks'
                     className='block text-sm font-medium text-gray-700'
                   >
-                    Bachelor's Marks
+                    Bachelor&apos;s Marks
                   </label>
                   <input
                     value={values.bachelor_marks}
@@ -732,7 +732,7 @@ export default function StudentRegistration({ token = '' }) {
                     htmlFor='master_marks'
                     className='block text-sm font-medium text-gray-700'
                   >
-                    Master's Marks
+                    Master&apos;s Marks
                   </label>
                   <input
                     value={values.master_marks}

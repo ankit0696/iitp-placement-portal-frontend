@@ -8,7 +8,7 @@ import axios from 'axios'
 import { API_URL } from '@/config/index'
 import Link from 'next/link'
 
-export default function students({ data }) {
+export default function Students({ data }) {
   const [rowData] = useState(data.data)
 
   const [columnDefs] = useState([
@@ -66,6 +66,7 @@ export default function students({ data }) {
               <a
                 href={API_URL + params.value.data.attributes.url}
                 target='_blank'
+                rel='noreferrer'
                 className='inline-flex items-center py-1.5 border border-transparent text-xs font-medium rounded-full shadow-sm text-indigo-600 hover:text-indigo-700 focus:text-indigo-800'
               >
                 Resume
@@ -87,6 +88,7 @@ export default function students({ data }) {
               <a
                 href={params.value}
                 target='_blank'
+                rel='noreferrer'
                 className='inline-flex items-center py-1.5 border border-transparent text-xs font-medium rounded-full shadow-sm text-indigo-600 hover:text-indigo-700 focus:text-indigo-800'
               >
                 Resume Link

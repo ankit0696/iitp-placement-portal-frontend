@@ -5,7 +5,7 @@ import { parseCookies } from '@/helpers/index'
 import React, { useEffect, useState } from 'react'
 import NotApproved from '@/components/student/NotApproved'
 
-export default function resume({ token }) {
+export default function Resume({ token }) {
   const [approved, setApproved] = useState(false)
 
   useEffect(() => {

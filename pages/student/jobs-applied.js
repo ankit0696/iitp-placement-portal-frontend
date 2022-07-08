@@ -7,7 +7,7 @@ import 'ag-grid-community/dist/styles/ag-theme-alpine.css'
 import { useEffect, useState } from 'react'
 import NotApproved from '@/components/student/NotApproved'
 
-export default function jobsApplied({ token = '' }) {
+export default function JobsApplied({ token = '' }) {
   // check if student is approved or not
   const [approved, setApproved] = useState(false)
   const [jobs, setJobs] = useState([])
@@ -73,6 +73,7 @@ export default function jobsApplied({ token = '' }) {
             <a
               href={API_URL + params.value}
               target='_blank'
+              rel='noreferrer'
               className='inline-flex items-center py-1.5 border border-transparent text-xs font-medium rounded-full shadow-sm text-indigo-600 hover:text-indigo-700 focus:text-indigo-800'
             >
               View JAF

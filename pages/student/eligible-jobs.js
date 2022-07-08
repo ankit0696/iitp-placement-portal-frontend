@@ -11,7 +11,7 @@ import { useRouter } from 'next/router'
 import { toast } from 'react-toastify'
 import NotApproved from '@/components/student/NotApproved'
 
-export default function eligibleJobs({ token = '' }) {
+export default function EligibleJobs({ token = '' }) {
   const router = useRouter()
   const [approved, setApproved] = useState(false)
   const [jobs, setJobs] = useState([])
@@ -97,6 +97,7 @@ export default function eligibleJobs({ token = '' }) {
             <a
               href={API_URL + params.value}
               target='_blank'
+              rel='noreferrer'
               className='inline-flex items-center py-1.5 border border-transparent text-xs font-medium rounded-full shadow-sm text-indigo-600 hover:text-indigo-700 focus:text-indigo-800'
             >
               View JAF

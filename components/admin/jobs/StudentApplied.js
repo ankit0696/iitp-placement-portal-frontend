@@ -187,6 +187,7 @@ export default function StudentApplied({ token = '', id = '' }) {
             <a
               href={params.value}
               target='_blank'
+              rel='noreferrer'
               className='inline-flex items-center py-1.5 border border-transparent text-xs font-medium rounded-full shadow-sm text-indigo-600 hover:text-indigo-700 focus:text-indigo-800'
             >
               View Resume

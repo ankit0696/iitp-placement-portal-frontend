@@ -509,13 +509,13 @@ export default function Profile({ student, token }) {
           </div>
           <div className='py-4 sm:py-5 sm:grid sm:grid-cols-4 sm:gap-4 sm:px-6'>
             <dt className='text-sm font-medium text-gray-500 sm:col-span-1'>
-              Bachelor's Marks
+              Bachelor&apos;s Marks
             </dt>
             <dd className='mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-1'>
               {student.bachelor_marks}
             </dd>
             <dt className='text-sm font-medium text-gray-500 sm:col-span-1'>
-              Master's Marks
+              Master&apos;s Marks
             </dt>
             <dd className='mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-1'>
               {student.master_marks}
@@ -544,6 +544,7 @@ export default function Profile({ student, token }) {
                         <a
                           href={`${API_URL}${student.resume.url}`}
                           target='_blank'
+                          rel='noreferrer'
                           className='font-medium text-indigo-600 hover:text-indigo-500 px-2'
                         >
                           Download
@@ -551,6 +552,7 @@ export default function Profile({ student, token }) {
                         <a
                           href={student.resume_link}
                           target='_blank'
+                          rel='noreferrer'
                           className='font-medium text-indigo-600 hover:text-indigo-500'
                         >
                           Google Drive Link
