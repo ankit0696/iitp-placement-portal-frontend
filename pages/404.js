@@ -7,16 +7,18 @@ export default function NotFound() {
       <div className='min-h-full pt-16 pb-12 flex flex-col bg-white'>
         <main className='flex-grow flex flex-col justify-center max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8'>
           <div className='flex-shrink-0 flex justify-center'>
-            <a href='/' className='inline-flex'>
-              <span className='sr-only'>IIT Patna</span>
-              <Image
-                className='mx-auto'
-                width={100}
-                height={100}
-                alt='IIT Patna'
-                src='/images/logo.svg'
-              />
-            </a>
+            <Link href='/'>
+              <a className='inline-flex'>
+                <span className='sr-only'>IIT Patna</span>
+                <Image
+                  className='mx-auto'
+                  width={100}
+                  height={100}
+                  alt='IIT Patna'
+                  src='/images/logo.svg'
+                />
+              </a>
+            </Link>
           </div>
           <div className='py-16'>
             <div className='text-center'>
