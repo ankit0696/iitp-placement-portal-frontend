@@ -29,6 +29,7 @@ export default function CompaniesRequest({ token = '' }) {
     } else {
       toast.success('Successfully Approved')
     }
+    fetchData()
   }
 
   const handleReject = async (id) => {
@@ -50,17 +51,27 @@ export default function CompaniesRequest({ token = '' }) {
     } else {
       toast.info('Successfully Rejected')
     }
+    fetchData()
+  }
+  const fetchData = async () => {
+    const res = await fetch(
+      `${API_URL}/api/companies?filters[status][$eq]=pending&populate=*`,
+      {
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    )
+    const data = await res.json()
+    if (res.ok) {
+      setCompanies(data.data)
+    } else {
+      toast.warning('Something Went Wrong!')
+    }
   }
   useEffect(() => {
-    fetch(`${API_URL}/api/companies?filters[status][$eq]=pending&populate=*`, {
-      headers: {
-        'Content-Type': 'application/json',
-        Authorization: `Bearer ${token}`,
-      },
-    })
-      .then((res) => res.json())
-      .then((data) => setCompanies(data.data))
-      .catch((err) => console.log(err))
+    fetchData()
   }, [])
 
   const [columnDefs] = useState([

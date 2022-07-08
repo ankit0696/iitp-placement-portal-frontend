@@ -29,6 +29,7 @@ export default function StudentRequest({ token = '' }) {
     } else {
       toast.success('Successfully Approved')
     }
+    fetchData()
   }
   const handleReject = async (id) => {
     const res = await fetch(`${API_URL}/api/students/${id}`, {
@@ -49,18 +50,29 @@ export default function StudentRequest({ token = '' }) {
     } else {
       toast.info('Successfully Rejected')
     }
+    fetchData()
+  }
+
+  const fetchData = async () => {
+    const res = await fetch(
+      `${API_URL}/api/students?filters[approved][$eq]=pending&populate=*`,
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    )
+    const data = await res.json()
+    if (res.ok) {
+      setStudents(data.data)
+    } else {
+      console.log('error', data)
+      toast.warning('Something Went Wrong!')
+    }
   }
 
   useEffect(() => {
-    fetch(`${API_URL}/api/students?filters[approved][$eq]=pending&populate=*`, {
-      headers: {
-        'Content-Type': 'application/json',
-        Authorization: `Bearer ${token}`,
-      },
-    })
-      .then((res) => res.json())
-      .then((data) => setStudents(data.data))
-      .catch((err) => console.log(err))
+    fetchData()
   }, [])
 
   const [columnDefs] = useState([

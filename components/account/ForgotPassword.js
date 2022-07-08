@@ -3,13 +3,13 @@ import { useState } from 'react'
 import { toast } from 'react-toastify'
 import { API_URL } from '@/config/index'
 import 'react-toastify/dist/ReactToastify.css'
-import {useRouter} from 'next/router'
+import { useRouter } from 'next/router'
 
 export default function ForgotPassword() {
   const [username, setUsername] = useState('')
   const [email, setEmail] = useState('')
 
-  const router = useRouter();
+  const router = useRouter()
 
   const handleSubmit = (e) => {
     e.preventDefault()
@@ -19,28 +19,32 @@ export default function ForgotPassword() {
       headers: {
         'Content-Type': 'application/json',
       },
-      body: JSON.stringify({ roll: username, institute_email_id: email })
-    })  
-    .then((res) => res.json())
-    .then((data) => {
-      console.log(data);
-      if (data.error) {
-	console.error(data.error);
-        toast.error(data.error.details[0].messages[0].id || data.error.message)
-      } else if(data.message.messages) {
-	// For eg. in case of "Too many requests", ie 429 this will happen
-	toast.error(data.message.messages[0].message);
-      } else {
-	toast.success('Successfully Requested. Wait for reply')
-        // redirect after 3 seconds
-        setTimeout(() => {
-          router.push('/')
-        }, 3000)
-      }
+      body: JSON.stringify({ roll: username, institute_email_id: email }),
     })
-    .catch((err) => {
-      console.log(err)
-    });
+      .then((res) => res.json())
+      .then((data) => {
+        console.log(
+          JSON.stringify({ roll: username, institute_email_id: email })
+        )
+        if (data.error) {
+          console.error(data.error)
+          toast.error(
+            data.error.details[0].messages[0].id || data.error.message
+          )
+        } else if (data.message.messages) {
+          // For eg. in case of "Too many requests", ie 429 this will happen
+          toast.error(data.message.messages[0].message)
+        } else {
+          toast.success('Successfully Requested. Wait for reply')
+          // redirect after 3 seconds
+          setTimeout(() => {
+            router.push('/')
+          }, 3000)
+        }
+      })
+      .catch((err) => {
+        console.log(err)
+      })
   }
 
   return (
@@ -64,7 +68,7 @@ export default function ForgotPassword() {
             IIT Patna
           </h2>
           <p className='mt-2 text-center text-sm text-gray-600'>
-	    Only for Students
+            Forgot Password (Only for Students)
           </p>
         </div>
 
@@ -82,7 +86,7 @@ export default function ForgotPassword() {
                   className='block text-sm font-medium text-gray-700'
                 >
                   Roll Number
-               </label>
+                </label>
                 <div className='mt-1'>
                   <input
                     value={username}

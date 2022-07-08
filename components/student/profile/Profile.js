@@ -324,7 +324,7 @@ export default function Profile({ student, token }) {
                   className={`appearance-none border-1 ${
                     editCpi ? 'border-green-200' : 'border-gray-200'
                   } rounded w-full py-2 px-4 text-gray-900 text-sm leading-tight focus:outline-none focus:border-blue-500`}
-                  value={studentData.spi_1}
+                  value={studentData.spi_1 || ''}
                   onChange={handleChange}
                 />
               </dd>
@@ -342,7 +342,7 @@ export default function Profile({ student, token }) {
                   className={`appearance-none border-1 ${
                     editCpi ? 'border-green-200' : 'border-gray-200'
                   } rounded w-full py-2 px-4 text-gray-900 text-sm leading-tight focus:outline-none focus:border-blue-500`}
-                  value={studentData.spi_2}
+                  value={studentData.spi_2 || ''}
                   onChange={handleChange}
                 />
               </dd>
@@ -362,7 +362,7 @@ export default function Profile({ student, token }) {
                   className={`appearance-none border-1 ${
                     editCpi ? 'border-green-200' : 'border-gray-200'
                   } rounded w-full py-2 px-4 text-gray-900 text-sm leading-tight focus:outline-none focus:border-blue-500`}
-                  value={studentData.spi_3}
+                  value={studentData.spi_3 || ''}
                   onChange={handleChange}
                 />
               </dd>
@@ -380,7 +380,7 @@ export default function Profile({ student, token }) {
                   className={`appearance-none border-1 ${
                     editCpi ? 'border-green-200' : 'border-gray-200'
                   } rounded w-full py-2 px-4 text-gray-900 text-sm leading-tight focus:outline-none focus:border-blue-500`}
-                  value={studentData.spi_4}
+                  value={studentData.spi_4 || ''}
                   onChange={handleChange}
                 />
               </dd>
@@ -400,7 +400,7 @@ export default function Profile({ student, token }) {
                   className={`appearance-none border-1 ${
                     editCpi ? 'border-green-200' : 'border-gray-200'
                   } rounded w-full py-2 px-4 text-gray-900 text-sm leading-tight focus:outline-none focus:border-blue-500`}
-                  value={studentData.spi_5}
+                  value={studentData.spi_5 || ''}
                   onChange={handleChange}
                 />
               </dd>
@@ -418,7 +418,7 @@ export default function Profile({ student, token }) {
                   className={`appearance-none border-1 ${
                     editCpi ? 'border-green-200' : 'border-gray-200'
                   } rounded w-full py-2 px-4 text-gray-900 text-sm leading-tight focus:outline-none focus:border-blue-500`}
-                  value={studentData.spi_6}
+                  value={studentData.spi_6 || ''}
                   onChange={handleChange}
                 />
               </dd>
@@ -438,7 +438,7 @@ export default function Profile({ student, token }) {
                   className={`appearance-none border-1 ${
                     editCpi ? 'border-green-200' : 'border-gray-200'
                   } rounded w-full py-2 px-4 text-gray-900 text-sm leading-tight focus:outline-none focus:border-blue-500`}
-                  value={studentData.spi_7}
+                  value={studentData.spi_7 || ''}
                   onChange={handleChange}
                 />
               </dd>
@@ -456,7 +456,7 @@ export default function Profile({ student, token }) {
                   className={`appearance-none border-1 ${
                     editCpi ? 'border-green-200' : 'border-gray-200'
                   } rounded w-full py-2 px-4 text-gray-900 text-sm leading-tight focus:outline-none focus:border-blue-500`}
-                  value={studentData.spi_8}
+                  value={studentData.spi_8 || ''}
                   onChange={handleChange}
                 />
               </dd>
@@ -481,12 +481,16 @@ export default function Profile({ student, token }) {
                 />
               </dd>
               <div>
-                <button
-                  type='submit'
-                  className='inline-flex items-center px-3.5 py-2 mt-2 border border-transparent text-sm leading-4 font-medium rounded-full shadow-sm text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500'
-                >
-                  Edit SPI/CPI
-                </button>
+                {editCpi ? (
+                  <button
+                    type='submit'
+                    className='inline-flex items-center px-3.5 py-2 mt-2 border border-transparent text-sm leading-4 font-medium rounded-full shadow-sm text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500'
+                  >
+                    Edit SPI/CPI
+                  </button>
+                ) : (
+                  ''
+                )}
               </div>
             </div>
           </form>

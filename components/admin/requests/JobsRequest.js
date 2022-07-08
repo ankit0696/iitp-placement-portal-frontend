@@ -29,6 +29,7 @@ export default function JobRequest({ token = '' }) {
     } else {
       toast.success('Successfully Approved')
     }
+    fetchData()
   }
   const handleReject = async (id) => {
     const res = await fetch(`${API_URL}/api/jobs/${id}`, {
@@ -49,20 +50,26 @@ export default function JobRequest({ token = '' }) {
     } else {
       toast.success('Successfully Rejected')
     }
+    fetchData()
   }
-  useEffect(() => {
-    fetch(
+  const fetchData = async () => {
+    const res = await fetch(
       `${API_URL}/api/jobs?filters[approval_status][$eq]=pending&populate=*`,
       {
         headers: {
-          'Content-Type': 'application/json',
           Authorization: `Bearer ${token}`,
         },
       }
     )
-      .then((res) => res.json())
-      .then((data) => setJobs(data.data))
-      .catch((err) => console.log(err))
+    const data = await res.json()
+    if (res.ok) {
+      setJobs(data.data)
+    } else {
+      toast.warning('Something Went Wrong!')
+    }
+  }
+  useEffect(() => {
+    fetchData()
   }, [])
 
   const [columnDefs] = useState([
