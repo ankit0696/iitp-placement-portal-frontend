@@ -1,21 +1,46 @@
 import Image from 'next/image'
-import AuthContext from '@/context/AuthContext'
-import { useContext, useState, useEffect } from 'react'
-import Link from 'next/link'
+import { useState } from 'react'
+import { toast } from 'react-toastify'
+import { API_URL } from '@/config/index'
+import 'react-toastify/dist/ReactToastify.css'
+import {useRouter} from 'next/router'
 
-export default function SignIn() {
-  const notificationMethods = [
-    { id: 'student', title: 'Student' },
-    { id: 'coordinator', title: 'Coordinator' },
-    { id: 'admin', title: 'Admin' },
-  ]
-  const { login, error } = useContext(AuthContext)
+export default function ForgotPassword() {
   const [username, setUsername] = useState('')
-  const [password, setPassword] = useState('')
+  const [email, setEmail] = useState('')
+
+  const router = useRouter();
 
   const handleSubmit = (e) => {
     e.preventDefault()
-    login({ username, password })
+
+    fetch(`${API_URL}/api/student/request-password-change`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ roll: username, institute_email_id: email })
+    })  
+    .then((res) => res.json())
+    .then((data) => {
+      console.log(data);
+      if (data.error) {
+	console.error(data.error);
+        toast.error(data.error.details[0].messages[0].id || data.error.message)
+      } else if(data.message.messages) {
+	// For eg. in case of "Too many requests", ie 429 this will happen
+	toast.error(data.message.messages[0].message);
+      } else {
+	toast.success('Successfully Requested. Wait for reply')
+        // redirect after 3 seconds
+        setTimeout(() => {
+          router.push('/')
+        }, 3000)
+      }
+    })
+    .catch((err) => {
+      console.log(err)
+    });
   }
 
   return (
@@ -39,12 +64,7 @@ export default function SignIn() {
             IIT Patna
           </h2>
           <p className='mt-2 text-center text-sm text-gray-600'>
-            Login Or{' '}
-            <Link href='/account/studentRegistration'>
-              <a className='font-medium text-indigo-600 hover:text-indigo-500'>
-                New Student Registration
-              </a>
-            </Link>
+	    Only for Students
           </p>
         </div>
 
@@ -61,65 +81,44 @@ export default function SignIn() {
                   htmlFor='username'
                   className='block text-sm font-medium text-gray-700'
                 >
-                  Username
-                </label>
+                  Roll Number
+               </label>
                 <div className='mt-1'>
                   <input
                     value={username}
                     onChange={(e) => setUsername(e.target.value.toLowerCase())}
                     id='username'
                     name='username'
+                    pattern='[0-9]{4}[a-zA-Z]{2}[0-9]{2}'
                     type='text'
                     autoComplete='username'
                     required
                     className='appearance-none block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm'
+                    placeholder='Roll Number'
                   />
                 </div>
               </div>
 
               <div>
                 <label
-                  htmlFor='password'
+                  htmlFor='email'
                   className='block text-sm font-medium text-gray-700'
                 >
-                  Password
+                  Institute Email Address
                 </label>
                 <div className='mt-1'>
                   <input
-                    value={password}
-                    onChange={(e) => setPassword(e.target.value)}
-                    id='password'
-                    name='password'
-                    type='password'
-                    autoComplete='current-password'
+                    value={email}
+                    onChange={(e) => setEmail(e.target.value.toLowerCase())}
+                    id='email'
+                    name='email'
+                    pattern='.+@iitp\.ac\.in'
+                    type='text'
+                    autoComplete='email'
                     required
                     className='appearance-none block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm'
+                    placeholder='Institute email address'
                   />
-                </div>
-              </div>
-
-              <div className='flex items-center justify-between'>
-                <div className='flex items-center'>
-                  <input
-                    id='remember-me'
-                    name='remember-me'
-                    type='checkbox'
-                    className='h-4 w-4 text-indigo-600 focus:ring-indigo-500 border-gray-300 rounded'
-                  />
-                  <label
-                    htmlFor='remember-me'
-                    className='ml-2 block text-sm text-gray-900'
-                  >
-                    Remember me
-                  </label>
-                </div>
-
-                <div className='text-sm'>
-		    <Link href='/account/forgotPassword'>
-		      <a className='font-medium text-indigo-600 hover:text-indigo-500'>
-		        Forgot your password?
-		      </a>
-	            </Link>
                 </div>
               </div>
 
@@ -128,7 +127,7 @@ export default function SignIn() {
                   type='submit'
                   className='w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500'
                 >
-                  Sign in
+                  Send Request to Admin
                 </button>
               </div>
             </form>
