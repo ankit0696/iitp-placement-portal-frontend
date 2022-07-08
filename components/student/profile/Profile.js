@@ -4,16 +4,86 @@ import { PaperClipIcon } from '@heroicons/react/solid'
 import Link from 'next/link'
 import Image from 'next/image'
 import { API_URL } from '@/config/index'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { toast } from 'react-toastify'
 import { useRouter } from 'next/router'
 
 export default function Profile({ student, token }) {
+  const [studentData, setStudentData] = useState(student)
   const router = useRouter()
   const [profilePic, setProfilePic] = useState(null)
+  const [editCpi, setEditCpi] = useState(false)
   const handleFileChange = (e) => {
     setProfilePic(e.target.files[0])
   }
+
+  const handleSubmitCpi = async (e) => {
+    e.preventDefault()
+    if (
+      confirm(
+        `
+        Are you sure you want to update CPI/SPI? 
+        Details:
+        CPI: ${studentData.cpi}
+        Sem 1 SPI: ${studentData.spi_1}
+        Sem 2 SPI: ${studentData.spi_2}
+        Sem 3 SPI: ${studentData.spi_3}
+        Sem 4 SPI: ${studentData.spi_4}
+        Sem 5 SPI: ${studentData.spi_5}
+        Sem 6 SPI: ${studentData.spi_6}
+        Sem 7 SPI: ${studentData.spi_7}
+        Sem 8 SPI: ${studentData.spi_8}
+        `
+      )
+    ) {
+      // formdata
+      const formData = new FormData()
+      formData.append('cpi', studentData.cpi)
+      formData.append('spi_1', studentData.spi_1)
+      formData.append('spi_2', studentData.spi_2)
+      formData.append('spi_3', studentData.spi_3)
+      formData.append('spi_4', studentData.spi_4)
+      formData.append('spi_5', studentData.spi_5)
+      formData.append('spi_6', studentData.spi_6)
+      formData.append('spi_7', studentData.spi_7)
+      formData.append('spi_8', studentData.spi_8)
+
+      const res = await fetch(`${API_URL}/api/student/modify`, {
+        method: 'PUT',
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+        body: formData,
+      })
+      if (res.ok) {
+        toast.success('Successfully Updated')
+      } else {
+        toast.error('Something Went Wrong')
+      }
+    }
+  }
+
+  const handleChange = (e) => {
+    e.preventDefault()
+    setStudentData({ ...studentData, [e.target.name]: e.target.value })
+  }
+
+  useEffect(() => {
+    fetch(`${API_URL}/api/setting`, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${token}`,
+      },
+    })
+      .then((res) => res.json())
+      .then((data) => {
+        setEditCpi(data.data.attributes.cpi_change_allowed)
+      })
+      .catch((err) => {
+        console.log(err)
+      })
+  }, [])
 
   const handleSubmit = async (e) => {
     e.preventDefault()
@@ -238,70 +308,188 @@ export default function Profile({ student, token }) {
               {student.course.course_name}
             </dd>
           </div>
-          <div className='py-4 sm:py-5 sm:grid sm:grid-cols-4 sm:gap-4 sm:px-6'>
-            <dt className='text-sm font-medium text-gray-500 sm:col-span-1'>
-              SPI Sem 1
-            </dt>
-            <dd className='mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-1'>
-              {student.spi_1}
-            </dd>
-            <dt className='text-sm font-medium text-gray-500 sm:col-span-1'>
-              SPI Sem 2
-            </dt>
-            <dd className='mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-1'>
-              {student.spi_2}
-            </dd>
-          </div>
-          <div className='py-4 sm:py-5 sm:grid sm:grid-cols-4 sm:gap-4 sm:px-6'>
-            <dt className='text-sm font-medium text-gray-500 sm:col-span-1'>
-              SPI Sem 3
-            </dt>
-            <dd className='mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-1'>
-              {student.spi_3}
-            </dd>
-            <dt className='text-sm font-medium text-gray-500 sm:col-span-1'>
-              SPI Sem 4
-            </dt>
-            <dd className='mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-1'>
-              {student.spi_4}
-            </dd>
-          </div>
-          <div className='py-4 sm:py-5 sm:grid sm:grid-cols-4 sm:gap-4 sm:px-6'>
-            <dt className='text-sm font-medium text-gray-500 sm:col-span-1'>
-              SPI Sem 5
-            </dt>
-            <dd className='mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-1'>
-              {student.spi_5}
-            </dd>
-            <dt className='text-sm font-medium text-gray-500 sm:col-span-1'>
-              SPI Sem 6
-            </dt>
-            <dd className='mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-1'>
-              {student.spi_6}
-            </dd>
-          </div>
-          <div className='py-4 sm:py-5 sm:grid sm:grid-cols-4 sm:gap-4 sm:px-6'>
-            <dt className='text-sm font-medium text-gray-500 sm:col-span-1'>
-              SPI Sem 7
-            </dt>
-            <dd className='mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-1'>
-              {student.spi_7}
-            </dd>
-            <dt className='text-sm font-medium text-gray-500 sm:col-span-1'>
-              SPI Sem 8
-            </dt>
-            <dd className='mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-1'>
-              {student.spi_8}
-            </dd>
-          </div>
-          <div className='py-4 sm:py-5 sm:grid sm:grid-cols-4 sm:gap-4 sm:px-6'>
-            <dt className='text-sm font-medium text-gray-500 sm:col-span-1'>
-              CPI
-            </dt>
-            <dd className='mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-1'>
-              {student.cpi}
-            </dd>
-          </div>
+          <form onSubmit={handleSubmitCpi}>
+            <div className='py-4 sm:py-5 sm:grid sm:grid-cols-4 sm:gap-4 sm:px-6'>
+              <dt className='text-sm font-medium text-gray-500 sm:col-span-1'>
+                SPI Sem 1
+              </dt>
+              <dd className='mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-1'>
+                <input
+                  //disable if editCpi is false
+                  disabled={!editCpi}
+                  type='number'
+                  name='spi_1'
+                  id='spi_1'
+                  // border red if editCPi is false
+                  className={`appearance-none border-1 ${
+                    editCpi ? 'border-green-200' : 'border-gray-200'
+                  } rounded w-full py-2 px-4 text-gray-900 text-sm leading-tight focus:outline-none focus:border-blue-500`}
+                  value={studentData.spi_1}
+                  onChange={handleChange}
+                />
+              </dd>
+              <dt className='text-sm font-medium text-gray-500 sm:col-span-1'>
+                SPI Sem 2
+              </dt>
+              <dd className='mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-1'>
+                <input
+                  //disable if editCpi is false
+                  disabled={!editCpi}
+                  type='number'
+                  name='spi_2'
+                  id='spi_2'
+                  // border red if editCPi is false
+                  className={`appearance-none border-1 ${
+                    editCpi ? 'border-green-200' : 'border-gray-200'
+                  } rounded w-full py-2 px-4 text-gray-900 text-sm leading-tight focus:outline-none focus:border-blue-500`}
+                  value={studentData.spi_2}
+                  onChange={handleChange}
+                />
+              </dd>
+            </div>
+            <div className='py-4 sm:py-5 sm:grid sm:grid-cols-4 sm:gap-4 sm:px-6'>
+              <dt className='text-sm font-medium text-gray-500 sm:col-span-1'>
+                SPI Sem 3
+              </dt>
+              <dd className='mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-1'>
+                <input
+                  //disable if editCpi is false
+                  disabled={!editCpi}
+                  type='number'
+                  name='spi_3'
+                  id='spi_3'
+                  // border red if editCPi is false
+                  className={`appearance-none border-1 ${
+                    editCpi ? 'border-green-200' : 'border-gray-200'
+                  } rounded w-full py-2 px-4 text-gray-900 text-sm leading-tight focus:outline-none focus:border-blue-500`}
+                  value={studentData.spi_3}
+                  onChange={handleChange}
+                />
+              </dd>
+              <dt className='text-sm font-medium text-gray-500 sm:col-span-1'>
+                SPI Sem 4
+              </dt>
+              <dd className='mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-1'>
+                <input
+                  //disable if editCpi is false
+                  disabled={!editCpi}
+                  type='number'
+                  name='spi_4'
+                  id='spi_4'
+                  // border red if editCPi is false
+                  className={`appearance-none border-1 ${
+                    editCpi ? 'border-green-200' : 'border-gray-200'
+                  } rounded w-full py-2 px-4 text-gray-900 text-sm leading-tight focus:outline-none focus:border-blue-500`}
+                  value={studentData.spi_4}
+                  onChange={handleChange}
+                />
+              </dd>
+            </div>
+            <div className='py-4 sm:py-5 sm:grid sm:grid-cols-4 sm:gap-4 sm:px-6'>
+              <dt className='text-sm font-medium text-gray-500 sm:col-span-1'>
+                SPI Sem 5
+              </dt>
+              <dd className='mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-1'>
+                <input
+                  //disable if editCpi is false
+                  disabled={!editCpi}
+                  type='number'
+                  name='spi_5'
+                  id='spi_5'
+                  // border red if editCPi is false
+                  className={`appearance-none border-1 ${
+                    editCpi ? 'border-green-200' : 'border-gray-200'
+                  } rounded w-full py-2 px-4 text-gray-900 text-sm leading-tight focus:outline-none focus:border-blue-500`}
+                  value={studentData.spi_5}
+                  onChange={handleChange}
+                />
+              </dd>
+              <dt className='text-sm font-medium text-gray-500 sm:col-span-1'>
+                SPI Sem 6
+              </dt>
+              <dd className='mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-1'>
+                <input
+                  //disable if editCpi is false
+                  disabled={!editCpi}
+                  type='number'
+                  name='spi_6'
+                  id='spi_6'
+                  // border red if editCPi is false
+                  className={`appearance-none border-1 ${
+                    editCpi ? 'border-green-200' : 'border-gray-200'
+                  } rounded w-full py-2 px-4 text-gray-900 text-sm leading-tight focus:outline-none focus:border-blue-500`}
+                  value={studentData.spi_6}
+                  onChange={handleChange}
+                />
+              </dd>
+            </div>
+            <div className='py-4 sm:py-5 sm:grid sm:grid-cols-4 sm:gap-4 sm:px-6'>
+              <dt className='text-sm font-medium text-gray-500 sm:col-span-1'>
+                SPI Sem 7
+              </dt>
+              <dd className='mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-1'>
+                <input
+                  //disable if editCpi is false
+                  disabled={!editCpi}
+                  type='number'
+                  name='spi_7'
+                  id='spi_7'
+                  // border red if editCPi is false
+                  className={`appearance-none border-1 ${
+                    editCpi ? 'border-green-200' : 'border-gray-200'
+                  } rounded w-full py-2 px-4 text-gray-900 text-sm leading-tight focus:outline-none focus:border-blue-500`}
+                  value={studentData.spi_7}
+                  onChange={handleChange}
+                />
+              </dd>
+              <dt className='text-sm font-medium text-gray-500 sm:col-span-1'>
+                SPI Sem 8
+              </dt>
+              <dd className='mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-1'>
+                <input
+                  //disable if editCpi is false
+                  disabled={!editCpi}
+                  type='number'
+                  name='spi_8'
+                  id='spi_8'
+                  // border red if editCPi is false
+                  className={`appearance-none border-1 ${
+                    editCpi ? 'border-green-200' : 'border-gray-200'
+                  } rounded w-full py-2 px-4 text-gray-900 text-sm leading-tight focus:outline-none focus:border-blue-500`}
+                  value={studentData.spi_8}
+                  onChange={handleChange}
+                />
+              </dd>
+            </div>
+            <div className='py-4 sm:py-5 sm:grid sm:grid-cols-4 sm:gap-4 sm:px-6'>
+              <dt className='text-sm font-medium text-gray-500 sm:col-span-1'>
+                CPI
+              </dt>
+              <dd className='mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-1'>
+                <input
+                  //disable if editCpi is false
+                  disabled={!editCpi}
+                  type='number'
+                  name='cpi'
+                  id='cpi'
+                  // border red if editCPi is false
+                  className={`appearance-none border-1 ${
+                    editCpi ? 'border-green-200' : 'border-gray-200'
+                  } rounded w-full py-2 px-4 text-gray-900 text-sm leading-tight focus:outline-none focus:border-blue-500`}
+                  value={studentData.cpi}
+                  onChange={handleChange}
+                />
+              </dd>
+              <div>
+                <button
+                  type='submit'
+                  className='inline-flex items-center px-3.5 py-2 mt-2 border border-transparent text-sm leading-4 font-medium rounded-full shadow-sm text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500'
+                >
+                  Edit SPI/CPI
+                </button>
+              </div>
+            </div>
+          </form>
           <div className='py-4 sm:py-5 sm:grid sm:grid-cols-4 sm:gap-4 sm:px-6'>
             <dt className='text-sm font-medium text-gray-500 sm:col-span-1'>
               X Marks
