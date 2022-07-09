@@ -368,7 +368,7 @@ export default function StudentRegistration({ token = '' }) {
                     htmlFor='rank'
                     className='block text-sm font-medium text-gray-700'
                   >
-                    GATE / JEE Rank
+                    GATE / JEE / JAM Rank
                   </label>
                   <input
                     value={values.rank}

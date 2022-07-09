@@ -331,7 +331,7 @@ export default function StudentProfileEdit({ token = '', student }) {
                     htmlFor='rank'
                     className='block text-sm font-medium text-gray-700'
                   >
-                    GATE / JEE Rank
+                    GATE / JEE / JAM Rank
                   </label>
                   <input
                     disabled
