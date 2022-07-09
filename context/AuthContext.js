@@ -18,31 +18,55 @@ export const AuthProvider = ({ children }) => {
 
   //register user
   const register = async (user) => {
-    fetch(`${NEXT_URL}/api/register`, {
+    const res = await fetch(`${API_URL}/api/student/register-student`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
       },
       body: JSON.stringify(user),
     })
-      .then((res) => res.json())
-      .then((data) => {
-        if (data.message.status === 400) {
-          toast.error(data.message.message)
-        } else {
-          setUser(data)
-          setRole(data.role)
-          toast.success('Successfully Registered')
-          // redirect after 3 seconds
-          setTimeout(() => {
-            router.push('/student/profile')
-          }, 3000)
-        }
-      })
-      .catch((err) => {
-        console.log(err)
-      })
+    if (res.ok) {
+      const data = await res.json()
+      setUser(data)
+      setRole(data.role)
+      toast.success('Registration Successful!')
+      // redirect after 3 seconds
+      setTimeout(() => {
+        router.push('/student/profile')
+      }, 3000)
+    } else {
+      console.log('res', res)
+      const data = await res.json()
+      console.log('data', data)
+      toast.error('Registration Failed!')
+      toast.error(data?.error?.message)
+    }
   }
+
+  // fetch(`${NEXT_URL}/api/register`, {
+  //   method: 'POST',
+  //   headers: {
+  //     'Content-Type': 'application/json',
+  //   },
+  //   body: JSON.stringify(user),
+  // })
+  //   .then((res) => res.json())
+  //   .then((data) => {
+  //     if (data.message.status === 400) {
+  //       toast.error(data.message.message)
+  //     } else {
+  //       setUser(data)
+  //       setRole(data.role)
+  //       toast.success('Successfully Registered')
+  //       // redirect after 3 seconds
+  //       setTimeout(() => {
+  //         router.push('/student/profile')
+  //       }, 3000)
+  //     }
+  //   })
+  //   .catch((err) => {
+  //     console.log(err)
+  //   }
 
   //login user
   const login = async ({ username: identifier, password }) => {
