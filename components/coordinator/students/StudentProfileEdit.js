@@ -238,12 +238,12 @@ export default function StudentProfileEdit({ token = '', student }) {
                     required
                     className='mt-1 block w-full py-2 px-3 border border-red-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-green-500 focus:border-green-500 sm:text-sm'
                   >
-                    <option>Select</option>
-                    <option>general</option>
-                    <option>obc</option>
-                    <option>sc</option>
-                    <option>st</option>
-                    <option>ews</option>
+                    <option value=''>Select</option>
+                    <option value='general'>General</option>
+                    <option value='obc'>OBC</option>
+                    <option value='sc'>SC</option>
+                    <option value='st'>ST</option>
+                    <option value='ews'>EWS</option>
                   </select>
                 </div>
 

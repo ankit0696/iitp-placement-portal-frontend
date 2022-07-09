@@ -280,11 +280,11 @@ export default function StudentRegistration({ token = '' }) {
                     className='mt-1 block w-full py-2 px-3 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm'
                   >
                     <option value=''>Select</option>
-                    <option value='general'>general</option>
-                    <option value='obc'>obc</option>
-                    <option value='sc'>sc</option>
-                    <option value='st'>st</option>
-                    <option value='ews'>ews</option>
+                    <option value='general'>General</option>
+                    <option value='obc'>OBC</option>
+                    <option value='sc'>SC</option>
+                    <option value='st'>ST</option>
+                    <option value='ews'>EWS</option>
                   </select>
                 </div>
 
