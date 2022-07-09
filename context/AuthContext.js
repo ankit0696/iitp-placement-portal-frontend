@@ -32,7 +32,7 @@ export const AuthProvider = ({ children }) => {
       toast.success('Registration Successful!')
       // redirect after 3 seconds
       setTimeout(() => {
-        router.push('/student/profile')
+        router.push('/')
       }, 3000)
     } else {
       console.log('res', res)
