@@ -184,7 +184,14 @@ export default function Profile({ student, token }) {
                 <div className='mt-1 flex justify-center px-6 pt-5 pb-6 border-2 border-gray-300 border-dashed rounded-md'>
                   <div className='space-y-1 text-center'>
                     {profilePic ? (
-                      <div className='text-gray-600 text-sm'>File Selected</div>
+                      <div className='text-gray-600 text-sm'>
+                        <Image
+                          src={URL.createObjectURL(profilePic)}
+                          width={70}
+                          height={90}
+                          objectFit='cover'
+                        />
+                      </div>
                     ) : (
                       <svg
                         className='mx-auto h-12 w-12 text-gray-400'
@@ -229,7 +236,7 @@ export default function Profile({ student, token }) {
                   type='submit'
                   className='inline-flex items-center px-3.5 py-2 mt-2 border border-transparent text-sm leading-4 font-medium rounded-full shadow-sm text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500'
                 >
-                  Upload
+                  Update
                 </button>
               </div>
             </div>
