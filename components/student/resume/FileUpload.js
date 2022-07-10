@@ -68,10 +68,18 @@ export default function FileUpload({ token }) {
               >
                 Upload resume
               </label>
-              <div className='mt-1 flex justify-center px-6 py-16 border-2 border-gray-300 border-dashed rounded-md'>
+              <div className='mt-1 flex justify-center px-6 py-24 border-2 border-gray-300 border-dashed rounded-md'>
                 <div className='space-y-1 text-center'>
                   {resume ? (
-                    <div className='text-gray-600 text-sm'>File Selected</div>
+                    <object
+                      className='w-full h-full'
+                      data={URL.createObjectURL(resume)}
+                      type='application/pdf'
+                      width='100%'
+                      height='100%'
+                    >
+                      <p>Resume preview is not supported in your browser.</p>
+                    </object>
                   ) : (
                     <svg
                       className='mx-auto h-12 w-12 text-gray-400'
@@ -88,7 +96,7 @@ export default function FileUpload({ token }) {
                       />
                     </svg>
                   )}
-                  <div className='flex text-sm text-gray-600'>
+                  <div className='pt-10 flex text-sm text-gray-600'>
                     <label
                       htmlFor='resume'
                       className='relative cursor-pointer bg-white rounded-md font-medium text-indigo-600 hover:text-indigo-500 focus-within:outline-none focus-within:ring-2 focus-within:ring-offset-2 focus-within:ring-indigo-500'
