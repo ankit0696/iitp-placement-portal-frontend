@@ -103,9 +103,17 @@ export default function Students({ data }) {
   ])
   const gridRef = useRef()
   const onBtExport = useCallback(() => {
-    gridRef.current.api.exportDataAsCsv({
-      onlySelected: true,
-    })
+    if (gridRef.current.api.getSelectedRows().length === 0) {
+      // If nothing is selected, export ALL
+      console.log("Nothing selected, exporting all students")
+      gridRef.current.api.exportDataAsCsv()
+    } else {
+      // Else, export selected
+      console.log("Exporting selected students")
+      gridRef.current.api.exportDataAsCsv({
+	onlySelected: true,
+      })
+    }
   }, [])
   return (
     <Layout>
