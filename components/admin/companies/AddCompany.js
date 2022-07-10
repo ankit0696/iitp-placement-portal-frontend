@@ -55,8 +55,11 @@ export default function AddCompany({ token = '' }) {
           toast.error('No token included')
           return
         }
-        const profile = await res.json()
-        toast.error(res.status)
+        const err = await res.json()
+        if (err.message) {
+          toast.error(err.message)
+        }
+        console.log(err)
         toast.error('Something Went Wrong')
       } else {
         const profile = await res.json()
@@ -213,7 +216,7 @@ export default function AddCompany({ token = '' }) {
                   <input
                     value={values.contact1.mail_id}
                     onChange={handleContactOneInputChange}
-                    type='text'
+                    type='email'
                     name='mail_id'
                     id='mail_id'
                     autoComplete='email'
@@ -300,7 +303,7 @@ export default function AddCompany({ token = '' }) {
                   <input
                     value={values.contact2.mail_id}
                     onChange={handleContactTwoInputChange}
-                    type='text'
+                    type='email'
                     name='mail_id'
                     id='mail_id'
                     autoComplete='email'
@@ -387,7 +390,7 @@ export default function AddCompany({ token = '' }) {
                   <input
                     value={values.contact3.mail_id}
                     onChange={handleContactThreeInputChange}
-                    type='text'
+                    type='email'
                     name='mail_id'
                     id='mail_id'
                     autoComplete='email'
