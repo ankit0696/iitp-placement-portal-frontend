@@ -12,6 +12,15 @@ export default function SignIn() {
   const { login, error } = useContext(AuthContext)
   const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
+  // Initialize a boolean state
+  const [passwordShown, setPasswordShown] = useState(false)
+
+  // Password toggle handler
+  const togglePassword = () => {
+    // When the handler is invoked
+    // inverse the boolean state of passwordShown
+    setPasswordShown(!passwordShown)
+  }
 
   const handleSubmit = (e) => {
     e.preventDefault()
@@ -84,17 +93,23 @@ export default function SignIn() {
                 >
                   Password
                 </label>
-                <div className='mt-1'>
+                <div className='mt-1 relative'>
                   <input
                     value={password}
                     onChange={(e) => setPassword(e.target.value)}
                     id='password'
                     name='password'
-                    type='password'
+                    type={passwordShown ? 'text' : 'password'}
                     autoComplete='current-password'
                     required
                     className='appearance-none block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm'
                   />
+                  <div
+                    onClick={togglePassword}
+                    className='absolute inset-y-0 right-2 flex items-center leading-5 cursor-pointer  text-indigo-600 px-2 py-1 rounded-md text-sm'
+                  >
+                    {passwordShown ? 'Hide' : 'Show'}
+                  </div>
                 </div>
               </div>
 
