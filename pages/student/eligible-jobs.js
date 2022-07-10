@@ -80,9 +80,21 @@ export default function EligibleJobs({ token = '' }) {
       filter: 'agTextColumnFilter',
     },
     {
-      headerName: 'Job Status',
-      field: 'job_status',
-      filter: 'agTextColumnFilter',
+      headerName: 'Apply',
+      field: 'id',
+      cellRenderer: function (params) {
+        return (
+          <div>
+            <button
+              type='button'
+              onClick={() => handleApply(params.value)}
+              className='inline-flex items-center px-3 py-1.5 border border-transparent text-xs font-medium rounded-full shadow-sm text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500'
+            >
+              Apply
+            </button>
+          </div>
+        )
+      },
     },
     {
       headerName: 'Company',
@@ -122,23 +134,6 @@ export default function EligibleJobs({ token = '' }) {
             <span className='text-sm'>
               {moment(params.value).local().format('yyyy-MM-DD hh:mm A')}
             </span>
-          </div>
-        )
-      },
-    },
-    {
-      headerName: 'Apply',
-      field: 'id',
-      cellRenderer: function (params) {
-        return (
-          <div>
-            <button
-              type='button'
-              onClick={() => handleApply(params.value)}
-              className='inline-flex items-center px-3 py-1.5 border border-transparent text-xs font-medium rounded-full shadow-sm text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500'
-            >
-              Apply
-            </button>
           </div>
         )
       },
