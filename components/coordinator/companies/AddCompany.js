@@ -55,8 +55,11 @@ export default function AddCompany({ token = '' }) {
           toast.error('No token included')
           return
         }
-        const profile = await res.json()
-        toast.error(res.status)
+        const err = await res.json()
+        if (err.error.message) {
+          toast.error(err.error.name + ': ' + err.error.message)
+        }
+        console.log('err', err)
         toast.error('Something Went Wrong')
       } else {
         const profile = await res.json()

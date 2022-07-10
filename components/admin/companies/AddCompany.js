@@ -56,8 +56,8 @@ export default function AddCompany({ token = '' }) {
           return
         }
         const err = await res.json()
-        if (err.message) {
-          toast.error(err.message)
+        if (err.error.message) {
+          toast.error(err.error.name + ': ' + err.error.message)
         }
         console.log('err', err)
         toast.error('Something Went Wrong')
