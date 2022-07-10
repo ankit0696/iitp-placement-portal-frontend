@@ -562,7 +562,7 @@ export default function Profile({ student, token }) {
                           rel='noreferrer'
                           className='font-medium text-indigo-600 hover:text-indigo-500'
                         >
-                          Google Drive Link
+                          Resume Link
                         </a>
                       </div>
                     ) : (
