@@ -75,6 +75,17 @@ export default function EligibleJobs({ token = '' }) {
 
   const [columnDefs] = useState([
     {
+      headerName: 'Job Title',
+      field: 'job_title',
+      filter: 'agTextColumnFilter',
+    },
+
+    {
+      headerName: 'Company',
+      field: 'company.company_name',
+      filter: 'agTextColumnFilter',
+    },
+    {
       headerName: 'Apply',
       field: 'id',
       cellRenderer: function (params) {
@@ -90,17 +101,6 @@ export default function EligibleJobs({ token = '' }) {
           </div>
         )
       },
-    },
-    {
-      headerName: 'Job Title',
-      field: 'job_title',
-      filter: 'agTextColumnFilter',
-    },
-
-    {
-      headerName: 'Company',
-      field: 'company.company_name',
-      filter: 'agTextColumnFilter',
     },
     {
       headerName: 'JAF',
