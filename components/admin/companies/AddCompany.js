@@ -59,7 +59,7 @@ export default function AddCompany({ token = '' }) {
         if (err.message) {
           toast.error(err.message)
         }
-        console.log(err)
+        console.log('err', err)
         toast.error('Something Went Wrong')
       } else {
         const profile = await res.json()
