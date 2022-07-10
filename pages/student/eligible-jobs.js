@@ -10,6 +10,7 @@ import { useRouter } from 'next/router'
 
 import { toast } from 'react-toastify'
 import NotApproved from '@/components/student/NotApproved'
+import moment from 'moment'
 
 export default function EligibleJobs({ token = '' }) {
   const router = useRouter()
@@ -112,7 +113,19 @@ export default function EligibleJobs({ token = '' }) {
       filter: 'agTextColumnFilter',
     },
 
-    { headerName: 'Deadline', field: 'last_date' },
+    {
+      headerName: 'Deadline',
+      field: 'last_date',
+      cellRenderer: function (params) {
+        return (
+          <div>
+            <span className='text-sm'>
+              {moment(params.value).local().format('yyyy-MM-DD hh:mm A')}
+            </span>
+          </div>
+        )
+      },
+    },
     {
       headerName: 'Apply',
       field: 'id',
