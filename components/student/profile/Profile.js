@@ -542,7 +542,7 @@ export default function Profile({ student, token }) {
                       aria-hidden='true'
                     />
                     <span className='ml-2 flex-1 w-0 truncate'>
-                      {student.resume ? 'resume.pdf' : 'No resume found'}
+                      {student.resume ? student.resume.name : 'No resume found'}
                     </span>
                   </div>
                   <div className='ml-4 flex-shrink-0 space-x-4'>
