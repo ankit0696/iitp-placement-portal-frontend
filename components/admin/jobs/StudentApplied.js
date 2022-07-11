@@ -1,5 +1,6 @@
 import { useCallback, useEffect, useRef, useState } from 'react'
 import { AgGridReact } from 'ag-grid-react'
+import { toast } from 'react-toastify'
 import 'ag-grid-community/dist/styles/ag-grid.css'
 import 'ag-grid-community/dist/styles/ag-theme-alpine.css'
 import { API_URL } from '@/config/index'
@@ -76,6 +77,11 @@ export default function StudentApplied({ token = '', id = '' }) {
   }
 
   const downloadCV = async (ids) => {
+    if (!ids || ids.trim().length === 0) {
+      toast.error('No row selected')
+      return;
+    }
+
     // download zip file
     fetch(`${API_URL}/api/admin/resume-zip?rolls=${ids}`, {
       headers: {
@@ -83,7 +89,16 @@ export default function StudentApplied({ token = '', id = '' }) {
         Authorization: `Bearer ${token}`,
       },
     })
-      .then((res) => res.blob())
+      .then(async (res) => {
+        if(res.status >= 400) {
+          const res_json = await res.json();
+          console.error(res_json)
+          toast.error(res_json.error.message)
+          throw res_json.error
+        }
+
+        return res.blob()
+      })
       .then((blob) => {
         const url = window.URL.createObjectURL(blob)
         const link = document.createElement('a')
