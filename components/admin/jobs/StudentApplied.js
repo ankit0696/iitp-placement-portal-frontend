@@ -6,32 +6,34 @@ import 'ag-grid-community/dist/styles/ag-theme-alpine.css'
 import { API_URL } from '@/config/index'
 import qs from 'qs'
 import Link from 'next/link'
-import { toast } from 'react-toastify'
 
 export default function StudentApplied({ token = '', id = '' }) {
   const [students, setStudents] = useState([])
   const gridRef = useRef()
   const onBtExport = useCallback(() => {
-    // See comment in pages/admin/students/index.js for logic behind this    
-      
-    const selected_and_visible_node = gridRef.current.api.getSelectedNodes().findIndex(node => node.displayed);      
-        
-    if (selected_and_visible_node == -1) {      
-      // If nothing is selected, export ALL      
-      gridRef.current.api.exportDataAsCsv()      
-    } else {      
-      // Else, export selected      
-      gridRef.current.api.exportDataAsCsv({      
-        onlySelected: true,      
-      })      
-    }      
+    // See comment in pages/admin/students/index.js for logic behind this
+
+    const selected_and_visible_node = gridRef.current.api
+      .getSelectedNodes()
+      .findIndex((node) => node.displayed)
+
+    if (selected_and_visible_node == -1) {
+      // If nothing is selected, export ALL
+      gridRef.current.api.exportDataAsCsv()
+    } else {
+      // Else, export selected
+      gridRef.current.api.exportDataAsCsv({
+        onlySelected: true,
+      })
+    }
   }, [])
 
   const handlePlaced = async () => {
     // Only use visible/filtered + selected rows
-    const selectedRows = gridRef.current.api.getSelectedNodes()
-                            .filter(node => node.displayed)
-                            .map(node => node.data)
+    const selectedRows = gridRef.current.api
+      .getSelectedNodes()
+      .filter((node) => node.displayed)
+      .map((node) => node.data)
     const selectedStudents = selectedRows.map(
       (row) => row.attributes.student.data.attributes.name
     )
@@ -70,22 +72,23 @@ export default function StudentApplied({ token = '', id = '' }) {
   }
 
   const getSelectedRowData = () => {
-    /**    
+    /**
      * Note: getSelectedRows() also returns rows that are not visible (ie. filtered)
-     *    
-     * Instead, using getSelectedNodes().map(node => node.data)    
-     *    
-     * node.data refers to exactly same object as returned by getSelectedRows    
-     * Can verify this by just comparing the objects, node.data and row in console    
-     */    
-    
-    // visible selected rows    
-    const selectedRows = gridRef.current.api.getSelectedNodes()    
-                          .filter(node => node.displayed)    
-                          .map(node => node.data)    
-    const selectedData = selectedRows.map(    
-      (node) => node.attributes.student.data.attributes.roll    
-    ).join()    
+     *
+     * Instead, using getSelectedNodes().map(node => node.data)
+     *
+     * node.data refers to exactly same object as returned by getSelectedRows
+     * Can verify this by just comparing the objects, node.data and row in console
+     */
+
+    // visible selected rows
+    const selectedRows = gridRef.current.api
+      .getSelectedNodes()
+      .filter((node) => node.displayed)
+      .map((node) => node.data)
+    const selectedData = selectedRows
+      .map((node) => node.attributes.student.data.attributes.roll)
+      .join()
     downloadCV(selectedData)
     return selectedData
   }
@@ -93,7 +96,7 @@ export default function StudentApplied({ token = '', id = '' }) {
   const downloadCV = async (ids) => {
     if (!ids || ids.trim().length === 0) {
       toast.error('No row selected')
-      return;
+      return
     }
 
     // download zip file
@@ -104,8 +107,8 @@ export default function StudentApplied({ token = '', id = '' }) {
       },
     })
       .then(async (res) => {
-        if(res.status >= 400) {
-          const res_json = await res.json();
+        if (res.status >= 400) {
+          const res_json = await res.json()
           console.error(res_json)
           toast.error(res_json.error.message)
           throw res_json.error
