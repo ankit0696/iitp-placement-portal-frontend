@@ -24,6 +24,8 @@ export default function Students({ data }) {
           </div>
         )
       },
+      headerCheckboxSelection: true,
+      headerCheckboxSelectionFilteredOnly: true,
       checkboxSelection: true,
     },
     {
