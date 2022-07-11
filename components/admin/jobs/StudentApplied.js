@@ -1,5 +1,6 @@
 import { useCallback, useEffect, useRef, useState } from 'react'
 import { AgGridReact } from 'ag-grid-react'
+import { toast } from 'react-toastify'
 import 'ag-grid-community/dist/styles/ag-grid.css'
 import 'ag-grid-community/dist/styles/ag-theme-alpine.css'
 import { API_URL } from '@/config/index'
@@ -27,7 +28,10 @@ export default function StudentApplied({ token = '', id = '' }) {
   }, [])
 
   const handlePlaced = async () => {
-    const selectedRows = gridRef.current.api.getSelectedRows()
+    // Only use visible/filtered + selected rows
+    const selectedRows = gridRef.current.api.getSelectedNodes()
+                            .filter(node => node.displayed)
+                            .map(node => node.data)
     const selectedStudents = selectedRows.map(
       (row) => row.attributes.student.data.attributes.name
     )
@@ -66,16 +70,32 @@ export default function StudentApplied({ token = '', id = '' }) {
   }
 
   const getSelectedRowData = () => {
-    const selectedRows = gridRef.current.api.getSelectedRows()
-    let selectedData = selectedRows.map(
-      (node) => node.attributes.student.data.attributes.roll
-    )
-    selectedData = selectedData.toString()
+    /**    
+     * Note: getSelectedRows() also returns rows that are not visible (ie. filtered)
+     *    
+     * Instead, using getSelectedNodes().map(node => node.data)    
+     *    
+     * node.data refers to exactly same object as returned by getSelectedRows    
+     * Can verify this by just comparing the objects, node.data and row in console    
+     */    
+    
+    // visible selected rows    
+    const selectedRows = gridRef.current.api.getSelectedNodes()    
+                          .filter(node => node.displayed)    
+                          .map(node => node.data)    
+    const selectedData = selectedRows.map(    
+      (node) => node.attributes.student.data.attributes.roll    
+    ).join()    
     downloadCV(selectedData)
     return selectedData
   }
 
   const downloadCV = async (ids) => {
+    if (!ids || ids.trim().length === 0) {
+      toast.error('No row selected')
+      return;
+    }
+
     // download zip file
     fetch(`${API_URL}/api/admin/resume-zip?rolls=${ids}`, {
       headers: {
@@ -83,7 +103,16 @@ export default function StudentApplied({ token = '', id = '' }) {
         Authorization: `Bearer ${token}`,
       },
     })
-      .then((res) => res.blob())
+      .then(async (res) => {
+        if(res.status >= 400) {
+          const res_json = await res.json();
+          console.error(res_json)
+          toast.error(res_json.error.message)
+          throw res_json.error
+        }
+
+        return res.blob()
+      })
       .then((blob) => {
         const url = window.URL.createObjectURL(blob)
         const link = document.createElement('a')

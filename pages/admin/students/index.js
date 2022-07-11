@@ -105,8 +105,8 @@ export default function Students({ data }) {
   ])
   const gridRef = useRef()
   const onBtExport = useCallback(() => {
-    // NOTE: getSelectedRows() also returns selected rows which are not visible on the screen, so not usable
-    // NOTE: getDisplayedRowCount() also returns non selected rows, so not usable either
+    // NOTE: getSelectedRows() and getDisplayedRowCount() also return filtered selected rows
+    // which are not visible on the screen, so not usable
 
     /**
      * @logic
