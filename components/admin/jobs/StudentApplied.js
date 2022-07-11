@@ -28,7 +28,10 @@ export default function StudentApplied({ token = '', id = '' }) {
   }, [])
 
   const handlePlaced = async () => {
-    const selectedRows = gridRef.current.api.getSelectedRows()
+    // Only use visible/filtered + selected rows
+    const selectedRows = gridRef.current.api.getSelectedNodes()
+                            .filter(node => node.displayed)
+                            .map(node => node.data)
     const selectedStudents = selectedRows.map(
       (row) => row.attributes.student.data.attributes.name
     )
@@ -67,11 +70,22 @@ export default function StudentApplied({ token = '', id = '' }) {
   }
 
   const getSelectedRowData = () => {
-    const selectedRows = gridRef.current.api.getSelectedRows()
-    let selectedData = selectedRows.map(
-      (node) => node.attributes.student.data.attributes.roll
-    )
-    selectedData = selectedData.toString()
+    /**    
+     * Note: getSelectedRows() also returns rows that are not visible (ie. filtered)
+     *    
+     * Instead, using getSelectedNodes().map(node => node.data)    
+     *    
+     * node.data refers to exactly same object as returned by getSelectedRows    
+     * Can verify this by just comparing the objects, node.data and row in console    
+     */    
+    
+    // visible selected rows    
+    const selectedRows = gridRef.current.api.getSelectedNodes()    
+                          .filter(node => node.displayed)    
+                          .map(node => node.data)    
+    const selectedData = selectedRows.map(    
+      (node) => node.attributes.student.data.attributes.roll    
+    ).join()    
     downloadCV(selectedData)
     return selectedData
   }

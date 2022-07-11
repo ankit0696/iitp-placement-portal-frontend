@@ -27,11 +27,15 @@ export default function StudentApplied({ token = '', id = '' }) {
   }, [])
 
   const getSelectedRowData = () => {
-    const selectedRows = gridRef.current.api.getSelectedRows()
-    let selectedData = selectedRows.map(
+    // For logic, see comment in components/admin/jobs/StudentApplied.js
+
+    // visible selected rows
+    const selectedRows = gridRef.current.api.getSelectedNodes()
+                          .filter(node => node.displayed)
+                          .map(node => node.data)
+    const selectedData = selectedRows.map(
       (node) => node.attributes.student.data.attributes.roll
-    )
-    selectedData = selectedData.toString()
+    ).join()
     downloadCV(selectedData)
     return selectedData
   }
