@@ -24,6 +24,8 @@ export default function Students({ data }) {
           </div>
         )
       },
+      headerCheckboxSelection: true,
+      headerCheckboxSelectionFilteredOnly: true,
       checkboxSelection: true,
     },
     {
@@ -157,3 +159,5 @@ export async function getServerSideProps({ req }) {
     props: { data: res.data, statusCode: res.status, token: token }, // will be passed to the page component as props
   }
 }
+
+// ex: shiftwidth=2 expandtab:

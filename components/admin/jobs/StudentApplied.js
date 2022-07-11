@@ -120,6 +120,8 @@ export default function StudentApplied({ token = '', id = '' }) {
     {
       headerName: 'S.No.',
       valueGetter: 'node.rowIndex + 1',
+      headerCheckboxSelection: true,
+      headerCheckboxSelectionFilteredOnly: true,
       checkboxSelection: true,
     },
     {

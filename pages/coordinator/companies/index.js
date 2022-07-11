@@ -20,6 +20,8 @@ export default function Company({ data }) {
   const [columnDefs] = useState([
     {
       headerName: 'S.No.',
+      headerCheckboxSelection: true,
+      headerCheckboxSelectionFilteredOnly: true,
       checkboxSelection: true,
       valueGetter: 'node.rowIndex + 1',
     },
