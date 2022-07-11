@@ -171,6 +171,7 @@ export default function Profile({ student, token }) {
                       width={140}
                       height={180}
                       objectFit='cover'
+                      alt='student profile'
                     />
                   </div>
                 ) : (
@@ -190,6 +191,7 @@ export default function Profile({ student, token }) {
                           width={70}
                           height={90}
                           objectFit='cover'
+                          alt='student profile pic preview'
                         />
                       </div>
                     ) : (

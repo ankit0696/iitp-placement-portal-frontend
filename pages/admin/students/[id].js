@@ -51,7 +51,7 @@ export default function StudentProfilePage({
       .catch((err) => {
         console.log(err)
       })
-  }, [])
+  }, [query, token])
 
   useEffect(() => {
     fetch(`${API_URL}/api/admin/eligiblejobs?roll=${student.attributes.roll}`, {
@@ -67,7 +67,7 @@ export default function StudentProfilePage({
       .catch((err) => {
         console.log(err)
       })
-  }, [])
+  }, [token])
 
   return (
     <Layout>
