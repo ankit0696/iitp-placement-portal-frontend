@@ -5,6 +5,8 @@ import {
   BriefcaseIcon,
   CalendarIcon,
   ChartBarIcon,
+  ClipboardCheckIcon,
+  ClipboardListIcon,
   DocumentTextIcon,
   FolderIcon,
   HomeIcon,
@@ -12,7 +14,8 @@ import {
   InboxIcon,
   LogoutIcon,
   MenuIcon,
-  UsersIcon,
+  ShieldCheckIcon,
+  UserIcon,
   XIcon,
 } from '@heroicons/react/outline'
 import Image from 'next/image'
@@ -24,22 +27,22 @@ const navigation = [
   {
     name: 'Profile',
     href: '/student/profile',
-    icon: IdentificationIcon,
+    icon: UserIcon,
   },
   {
     name: 'All Jobs',
     href: '/student/all-jobs',
-    icon: IdentificationIcon,
+    icon: ClipboardListIcon,
   },
   {
     name: 'Jobs Applied',
     href: '/student/jobs-applied',
-    icon: BriefcaseIcon,
+    icon: ClipboardCheckIcon,
   },
   {
     name: 'Eligible Jobs',
     href: '/student/eligible-jobs',
-    icon: FolderIcon,
+    icon: BriefcaseIcon,
   },
   {
     name: 'Resume',
@@ -49,7 +52,7 @@ const navigation = [
   {
     name: 'Reset Password',
     href: '/student/reset-password',
-    icon: DocumentTextIcon,
+    icon: ShieldCheckIcon,
   },
 ]
 
