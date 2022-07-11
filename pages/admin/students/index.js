@@ -103,9 +103,45 @@ export default function Students({ data }) {
   ])
   const gridRef = useRef()
   const onBtExport = useCallback(() => {
-    gridRef.current.api.exportDataAsCsv({
-      onlySelected: true,
-    })
+    // NOTE: getSelectedRows() also returns selected rows which are not visible on the screen, so not usable
+    // NOTE: getDisplayedRowCount() also returns non selected rows, so not usable either
+
+    /**
+     * @logic
+     *
+     * If some visible row is selected, then export ONLY those selected records, if no,
+     * then export all rows.
+     *
+     * Because we want to know if a row is selected, the most useful API 'COULD BE'
+     * getSelectedRows()
+     *
+     * BUT, there can be cases, where a row is selected, but when column filter was used,
+     * the row is not visible on the screen, but getSelectedRows() still returns those
+     *
+     * And, we think that some row is selected, while NO VISIBLE ROW may be selected.
+     * Example: Two rows, select 2nd row, then filter such that 2nd row is not visible.
+     * Then I have one row, not selected, so I should export ALL (ie. first row),
+     * but using getSelectedRows() it will return 1 row is selected, but exportDataAsCsv()
+     * will export NO rows.
+     *
+     * So, to handle this case:
+     * 1. Get all selected rows (using Nodes, since they have .displayed property)
+     * 2. If no selected row is visible, so KOI BHI ROW visible select NAHI hai,
+     *    so export ALL
+     */
+    const selected_and_visible_node = gridRef.current.api.getSelectedNodes().findIndex(node => node.displayed);
+
+    if (selected_and_visible_node == -1) {
+      // If nothing is selected, export ALL
+      console.log("Nothing selected, exporting all students")
+      gridRef.current.api.exportDataAsCsv()
+    } else {
+      // Else, export selected
+      console.log("Exporting selected students")
+      gridRef.current.api.exportDataAsCsv({
+	onlySelected: true,
+      })
+    }
   }, [])
   return (
     <Layout>
@@ -157,3 +193,5 @@ export async function getServerSideProps({ req }) {
     props: { data: res.data, statusCode: res.status, token: token }, // will be passed to the page component as props
   }
 }
+
+// ex: shiftwidth=2 expandtab:

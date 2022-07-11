@@ -103,9 +103,19 @@ export default function Students({ data }) {
   ])
   const gridRef = useRef()
   const onBtExport = useCallback(() => {
-    gridRef.current.api.exportDataAsCsv({
-      onlySelected: true,
-    })
+    // See comment in pages/admin/students/index.js for logic behind this    
+      
+    const selected_and_visible_node = gridRef.current.api.getSelectedNodes().findIndex(node => node.displayed);      
+        
+    if (selected_and_visible_node == -1) {      
+      // If nothing is selected, export ALL      
+      gridRef.current.api.exportDataAsCsv()      
+    } else {      
+      // Else, export selected      
+      gridRef.current.api.exportDataAsCsv({      
+        onlySelected: true,      
+      })      
+    }      
   }, [])
   return (
     <Layout>
@@ -157,3 +167,5 @@ export async function getServerSideProps({ req }) {
     props: { data: res.data, statusCode: res.status, token: token }, // will be passed to the page component as props
   }
 }
+
+// ex: shiftwidth=2 expandtab:
