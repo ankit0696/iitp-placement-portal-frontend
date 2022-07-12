@@ -333,7 +333,7 @@ export default function AddJob({ token = '' }) {
                     htmlFor='only_for_female'
                     className='block text-sm font-medium text-gray-700'
                   >
-                    Only for PWD
+                    Only for Females
                   </label>
                   <select
                     name='only_for_female'
