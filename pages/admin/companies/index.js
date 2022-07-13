@@ -2,13 +2,15 @@ import Layout from '@/components/admin/Layout'
 import { AgGridReact } from 'ag-grid-react'
 import 'ag-grid-community/dist/styles/ag-grid.css'
 import 'ag-grid-community/dist/styles/ag-theme-alpine.css'
-import { useCallback, useRef, useState } from 'react'
+import { useCallback, useRef, useState, useEffect } from 'react'
 import { parseCookies } from '@/helpers/index'
 import axios from 'axios'
 import { API_URL } from '@/config/index'
 import Link from 'next/link'
 
-export default function Students({ data }) {
+export default function Students({ token }) {
+  const [rowData, setRowData] = useState([])    
+
   const gridRef = useRef()
   const onBtExport = useCallback(() => {
     // See comment in pages/admin/students/index.js for logic behind this
@@ -25,7 +27,6 @@ export default function Students({ data }) {
       })
     }
   }, [])
-  const [rowData] = useState(data.data)
 
   const [columnDefs] = useState([
     {
@@ -65,6 +66,34 @@ export default function Students({ data }) {
       field: 'attributes.contact1.mobile_no',
     },
   ])
+
+  useEffect(() => {
+    const config = {
+      headers: { Authorization: `Bearer ${token}` },
+    };
+
+    // Get all students, for strapi's pagination, using count of 50 per page
+    const PAGE_SIZE = 100;
+
+    axios.get(`${API_URL}/api/companies?pagination[page]=1&pagination[pageSize]=${PAGE_SIZE}&populate=*`, config)
+      .then(async res => {
+        let fetched_data = res.data.data;
+        let total_cnt = res.data.meta.pagination.total;
+
+        while (fetched_data.length < total_cnt) {
+          const res = await axios.get(`${API_URL}/api/companies?pagination[page]=${fetched_data.length/PAGE_SIZE + 1}&pagination[pageSize]=${PAGE_SIZE}&populate=*`, config);
+          fetched_data = fetched_data.concat(res.data.data);
+          fetched_data.length += res.data.meta.pagination.pageSize;
+        }
+
+        setRowData(fetched_data);
+      })
+      .catch(err => {
+        toast.error("Error while fetching data");
+        console.error(err);
+      });
+  }, [])
+
   return (
     <Layout>
       <div className='flex-1'>
@@ -117,14 +146,8 @@ export default function Students({ data }) {
 export async function getServerSideProps({ req }) {
   const { token } = parseCookies(req)
 
-  const config = {
-    headers: { Authorization: `Bearer ${token}` },
-  }
-
-  const res = await axios.get(`${API_URL}/api/companies?populate=*`, config)
-
   return {
-    props: { data: res.data, statusCode: res.status, token: token }, // will be passed to the page component as props
+    props: { token: token }, // will be passed to the page component as props
   }
 }
 

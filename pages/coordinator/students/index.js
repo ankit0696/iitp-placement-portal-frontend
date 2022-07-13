@@ -111,18 +111,17 @@ export default function Students({ token }) {
     };
 
     // Get all students, for strapi's pagination, using count of 50 per page
-   const PAGE_SIZE = 50;
+   const PAGE_SIZE = 100;
 
     axios.get(`${API_URL}/api/students?pagination[page]=1&pagination[pageSize]=${PAGE_SIZE}&populate=*`, config)
       .then(async res => {
-        let fetched_cnt = 0;
         let fetched_data = res.data.data;
         let total_cnt = res.data.meta.pagination.total;
 
-        while (fetched_cnt < total_cnt) {
-          const res = await axios.get(`${API_URL}/api/students?pagination[page]=${fetched_cnt/PAGE_SIZE + 1}&pagination[pageSize]=${PAGE_SIZE}&populate=*`, config);
+        while (fetched_data.length < total_cnt) {
+          const res = await axios.get(`${API_URL}/api/students?pagination[page]=${fetched_data.length/PAGE_SIZE + 1}&pagination[pageSize]=${PAGE_SIZE}&populate=*`, config);
           fetched_data = fetched_data.concat(res.data.data);
-          fetched_cnt += res.data.meta.pagination.pageSize;
+          fetched_data.length += res.data.meta.pagination.pageSize;
         }
 
         setRowData(fetched_data);
