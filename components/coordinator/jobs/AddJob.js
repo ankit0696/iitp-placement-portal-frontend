@@ -70,7 +70,7 @@ export default function AddJob({ token = '' }) {
           'Content-Type': 'application/json',
           Authorization: `Bearer ${token}`,
         },
-        body: JSON.stringify({ values }),
+        body: JSON.stringify(values),
       })
 
       if (!res.ok) {
