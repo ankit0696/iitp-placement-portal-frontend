@@ -1,15 +1,16 @@
 import Layout from '@/components/admin/Layout'
 import { AgGridReact } from 'ag-grid-react'
+import { toast } from 'react-toastify'
 import 'ag-grid-community/dist/styles/ag-grid.css'
 import 'ag-grid-community/dist/styles/ag-theme-alpine.css'
-import { useState, useCallback, useRef } from 'react'
+import { useState, useCallback, useRef, useEffect } from 'react'
 import { parseCookies } from '@/helpers/index'
 import axios from 'axios'
 import { API_URL } from '@/config/index'
 import Link from 'next/link'
 
-export default function Students({ data }) {
-  const [rowData] = useState(data)
+export default function Students({ token }) {
+  const [rowData, setRowData] = useState([])
 
   const [columnDefs] = useState([
     {
@@ -103,6 +104,33 @@ export default function Students({ data }) {
       },
     },
   ])
+
+  useEffect(() => {
+    const config = {
+      headers: { Authorization: `Bearer ${token}` },
+    };
+
+    // Get all students, for strapi's pagination, using count of 50 per page
+    const PAGE_SIZE = 100;
+
+    axios.get(`${API_URL}/api/students?pagination[page]=1&pagination[pageSize]=${PAGE_SIZE}&populate=*`, config)
+      .then(async res => {
+        let fetched_data = res.data.data;
+        let total_cnt = res.data.meta.pagination.total;
+
+        while (fetched_data.length < total_cnt) {
+          const res = await axios.get(`${API_URL}/api/students?pagination[page]=${fetched_data.length/PAGE_SIZE + 1}&pagination[pageSize]=${PAGE_SIZE}&populate=*`, config);
+          fetched_data = fetched_data.concat(res.data.data);
+        }
+
+        setRowData(fetched_data);
+      })
+      .catch(err => {
+        toast.error("Error while fetching data");
+        console.error(err);
+      });
+  }, [])
+
   const gridRef = useRef()
   const onBtExport = useCallback(() => {
     // NOTE: getSelectedRows() and getDisplayedRowCount() also return filtered selected rows
@@ -184,28 +212,8 @@ export default function Students({ data }) {
 
 export async function getServerSideProps({ req }) {
   const { token } = parseCookies(req)
-
-  const config = {
-    headers: { Authorization: `Bearer ${token}` },
-  }
-
-  // Get all students, for pagination, using count of 50 per page
-  // In all this, it is rightly wrongly assumed that axios.get will not fail
-  const PAGE_SIZE = 50;
-  const res = await axios.get(`${API_URL}/api/students?pagination[page]=1&pagination[pageSize]=${PAGE_SIZE}&populate=*`, config)
-
-  let fetched_cnt = 0;
-  let fetched_data = res.data.data;
-  let total_cnt = res.data.meta.pagination.total;
-
-  while (fetched_cnt < total_cnt) {
-    const res = await axios.get(`${API_URL}/api/students?pagination[page]=${fetched_cnt/PAGE_SIZE + 1}&pagination[pageSize]=${PAGE_SIZE}&populate=*`, config);
-    fetched_data = fetched_data.concat(res.data.data);
-    fetched_cnt += res.data.meta.pagination.pageSize;
-  }
-
   return {
-    props: { data: fetched_data, statusCode: res.status, token: token }, // will be passed to the page component as props
+    props: { token: token }, // will be passed to the page component as props
   }
 }
 
