@@ -11,14 +11,16 @@ export default function EditJob({ token = '', job = '' }) {
     job.attributes
 
   if (newJob.start_date) {
-    newJob.start_date = moment(newJob.start_date)
-      .local()
-      .format('yyyy-MM-DDThh:mm:ss.SSS')
+    // newJob.start_date = moment(newJob.start_date)
+    //   .local()
+    //   .format('yyyy-MM-DDThh:mm:ss.SSS')
+    newJob.start_date = moment(newJob.start_date).utcOffset('+0530', true)
   }
   if (newJob.last_date) {
-    newJob.last_date = moment(newJob.last_date)
-      .local()
-      .format('yyyy-MM-DDThh:mm:ss.SSS')
+    // newJob.last_date = moment(newJob.last_date)
+    //   .local()
+    //   .format('yyyy-MM-DDThh:mm:ss.SSS')
+    newJob.last_date = moment(newJob.last_date).utcOffset('+0530', true)
   }
 
   const [values, setValues] = useState(newJob)

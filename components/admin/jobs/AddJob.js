@@ -20,8 +20,10 @@ export default function AddJob({ token = '' }) {
     company: '',
     approval_status: 'approved',
   })
+
   const [eligibleCourses, setEligibleCourses] = useState(new Set())
   const [programs, setPrograms] = useState([])
+  const [jaf, setJaf] = useState('')
 
   useEffect(() => {
     programs.map((program) => {
@@ -31,9 +33,15 @@ export default function AddJob({ token = '' }) {
     })
   }, [programs])
 
+  const handleFileChange = (e) => {
+    const file = e.target.files[0]
+    setJaf(file)
+  }
+
   const handleDateChange = (e) => {
     let { name, value } = e.target
-    value = moment(value).local().format('yyyy-MM-DDThh:mm:ss.SSS')
+    // value = moment(value).local().format('yyyy-MM-DDThh:mm:ss.SSS')
+    value = moment(value).utcOffset('+0530', true)
     console.log(value)
     setValues({ ...values, [name]: value === '' ? undefined : value })
   }
@@ -51,6 +59,10 @@ export default function AddJob({ token = '' }) {
 
   const handleSubmit = async (e) => {
     e.preventDefault()
+    values['eligible_courses'] = Array.from(eligibleCourses).toString()
+    const formData = new FormData()
+    formData.append('data', JSON.stringify(values))
+    formData.append('files.jaf', jaf, jaf.name)
 
     // Validation
     // const hasEmptyFields = Object.values(values).some((element) => {
@@ -62,15 +74,13 @@ export default function AddJob({ token = '' }) {
       return
     }
 
-    values['eligible_courses'] = Array.from(eligibleCourses).toString()
     if (confirm('Are you sure you add job?')) {
       const res = await fetch(`${API_URL}/api/jobs`, {
         method: 'POST',
         headers: {
-          'Content-Type': 'application/json',
           Authorization: `Bearer ${token}`,
         },
-        body: JSON.stringify({ data: values }),
+        body: formData,
       })
 
       console.log(JSON.stringify({ data: values }))
@@ -79,9 +89,9 @@ export default function AddJob({ token = '' }) {
           toast.error('No token included')
           return
         }
-        const profile = await res.json()
-        console.log(profile)
-        toast.error('Error: ' + profile.error.details.errors[0].message)
+        const err = await res.json()
+        console.log(err)
+        toast.error('Error: ' + err.error.details.errors[0].message)
       } else {
         toast.success('Job Added Successfully')
       }
@@ -169,6 +179,24 @@ export default function AddJob({ token = '' }) {
                     id='job_title'
                     autoComplete='job_title'
                     required
+                    className='mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md'
+                  />
+                </div>
+                {/* Add field to upload JAF */}
+                <div className='col-span-6 sm:col-span-3'>
+                  <label
+                    htmlFor='jaf'
+                    className='block text-sm font-medium text-gray-700'
+                  >
+                    JAF
+                  </label>
+                  <input
+                    value={values.jaf}
+                    onChange={handleFileChange}
+                    type='file'
+                    name='jaf'
+                    id='jaf'
+                    autoComplete='jaf'
                     className='mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md'
                   />
                 </div>

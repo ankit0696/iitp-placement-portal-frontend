@@ -106,18 +106,22 @@ export default function EligibleJobs({ token = '' }) {
       headerName: 'JAF',
       field: 'jaf.url',
       cellRenderer: function (params) {
-        return (
-          <div>
-            <a
-              href={API_URL + params.value}
-              target='_blank'
-              rel='noreferrer'
-              className='inline-flex items-center py-1.5 border border-transparent text-xs font-medium rounded-full shadow-sm text-indigo-600 hover:text-indigo-700 focus:text-indigo-800'
-            >
-              View JAF
-            </a>
-          </div>
-        )
+        if (params.value) {
+          return (
+            <div>
+              <a
+                href={API_URL + params.value}
+                target='_blank'
+                rel='noopener noreferrer'
+                className='inline-flex items-center px-3 py-1.5 border border-transparent text-xs font-medium rounded-full shadow-sm text-white bg-orange-600 hover:bg-orange-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-orange-500'
+              >
+                View JAF
+              </a>
+            </div>
+          )
+        } else {
+          return <div>No JAF</div>
+        }
       },
     },
     {
@@ -130,13 +134,11 @@ export default function EligibleJobs({ token = '' }) {
       headerName: 'Deadline',
       field: 'last_date',
       cellRenderer: function (params) {
-        return (
-          <div>
-            <span className='text-sm'>
-              {moment(params.value).local().format('yyyy-MM-DD hh:mm A')}
-            </span>
-          </div>
-        )
+        if (params.value) {
+          return moment(params.value).local().format('yyyy-MM-DD hh:mm A')
+        } else {
+          return 'N.A.'
+        }
       },
     },
   ])
