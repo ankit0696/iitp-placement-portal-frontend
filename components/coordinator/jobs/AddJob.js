@@ -70,10 +70,9 @@ export default function AddJob({ token = '' }) {
           'Content-Type': 'application/json',
           Authorization: `Bearer ${token}`,
         },
-        body: JSON.stringify({ data: values }),
+        body: JSON.stringify(values),
       })
 
-      console.log(JSON.stringify({ data: values }))
       if (!res.ok) {
         if (res.status === 403 || res.status === 401) {
           toast.error('No token included')
