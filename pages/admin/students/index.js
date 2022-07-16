@@ -9,7 +9,7 @@ import { API_URL } from '@/config/index'
 import Link from 'next/link'
 
 export default function Students({ data }) {
-  const [rowData] = useState(data.data)
+  const [rowData] = useState(data)
 
   const [columnDefs] = useState([
     {
@@ -189,10 +189,23 @@ export async function getServerSideProps({ req }) {
     headers: { Authorization: `Bearer ${token}` },
   }
 
-  const res = await axios.get(`${API_URL}/api/students?populate=*`, config)
+  // Get all students, for pagination, using count of 50 per page
+  // In all this, it is rightly wrongly assumed that axios.get will not fail
+  const PAGE_SIZE = 50;
+  const res = await axios.get(`${API_URL}/api/students?pagination[page]=1&pagination[pageSize]=${PAGE_SIZE}&populate=*`, config)
+
+  let fetched_cnt = 0;
+  let fetched_data = res.data.data;
+  let total_cnt = res.data.meta.pagination.total;
+
+  while (fetched_cnt < total_cnt) {
+    const res = await axios.get(`${API_URL}/api/students?pagination[page]=${fetched_cnt/PAGE_SIZE + 1}&pagination[pageSize]=${PAGE_SIZE}&populate=*`, config);
+    fetched_data = fetched_data.concat(res.data.data);
+    fetched_cnt += res.data.meta.pagination.pageSize;
+  }
 
   return {
-    props: { data: res.data, statusCode: res.status, token: token }, // will be passed to the page component as props
+    props: { data: fetched_data, statusCode: res.status, token: token }, // will be passed to the page component as props
   }
 }
 
