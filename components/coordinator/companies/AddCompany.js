@@ -62,7 +62,6 @@ export default function AddCompany({ token = '' }) {
         console.log('err', err)
         toast.error('Something Went Wrong')
       } else {
-        const res = await res.json()
         toast.success('Company Added Successfully')
       }
     }
