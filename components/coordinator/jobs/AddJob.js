@@ -63,7 +63,7 @@ export default function AddJob({ token = '' }) {
 
     values['eligible_courses'] = Array.from(eligibleCourses).toString()
     console.log(values.eligible_courses)
-    if (confirm('Are you sure you add job?')) {
+    if (confirm('Are you sure to add job?')) {
       const res = await fetch(`${API_URL}/api/job/register`, {
         method: 'POST',
         headers: {

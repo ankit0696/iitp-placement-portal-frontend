@@ -62,7 +62,9 @@ export default function AddJob({ token = '' }) {
     values['eligible_courses'] = Array.from(eligibleCourses).toString()
     const formData = new FormData()
     formData.append('data', JSON.stringify(values))
-    formData.append('files.jaf', jaf, jaf.name)
+    if (jaf && jaf !== '') {
+      formData.append('files.jaf', jaf, jaf.name)
+    }
 
     // Validation
     // const hasEmptyFields = Object.values(values).some((element) => {
