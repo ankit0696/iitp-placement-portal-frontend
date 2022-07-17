@@ -138,8 +138,8 @@ export default function StudentProfileEdit({ token = '', student }) {
                     onChange={handleInputChange}
                   >
                     <option value='unplaced'>Not Placed</option>
-                    <option value='placed_A1'>Placed in A1</option>
-                    <option value='placed_A2'>Placed in A2</option>
+                    <option value='placed_a1'>Placed in A1</option>
+                    <option value='placed_a2'>Placed in A2</option>
                   </select>
                 </div>
                 <div className='col-span-6 sm:col-span-3'>
