@@ -68,6 +68,51 @@ export default function StudentApplied({ token = '', id = '' }) {
             )
           })
       })
+      fetchData()
+    }
+  }
+
+  const handleUnplaced = async () => {
+    // Only use visible/filtered + selected rows
+    const selectedRows = gridRef.current.api
+      .getSelectedNodes()
+      .filter((node) => node.displayed)
+      .map((node) => node.data)
+    const selectedStudents = selectedRows.map(
+      (row) => row.attributes.student.data.attributes.name
+    )
+    if (
+      confirm(
+        `Are you sure you want to unplace these students? ${selectedStudents}`
+      )
+    ) {
+      selectedRows.map((row) => {
+        fetch(`${API_URL}/api/applications/${row.id}`, {
+          method: 'PUT',
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${token}`,
+          },
+          body: JSON.stringify({
+            data: {
+              status: 'applied',
+            },
+          }),
+        })
+          .then((res) => res.json())
+          .then((data) => {
+            toast.success(
+              `${row.attributes.student.data.attributes.name} marked as unplaced`
+            )
+          })
+          .catch((err) => {
+            console.log(err)
+            toast.error(
+              `${row.attributes.student.data.attributes.name} failed to unplace`
+            )
+          })
+      })
+      fetchData()
     }
   }
 
@@ -145,17 +190,19 @@ export default function StudentApplied({ token = '', id = '' }) {
     }
   )
 
-  useEffect(() => {
-    fetch(`${API_URL}/api/applications?${query}`, {
+  const fetchData = async () => {
+    const res = await fetch(`${API_URL}/api/applications?${query}`, {
       headers: {
         'Content-Type': 'application/json',
         Authorization: `Bearer ${token}`,
       },
     })
-      .then((res) => res.json())
-      .then((data) => {
-        setStudents(data.data)
-      })
+    const data = await res.json()
+    setStudents(data.data)
+  }
+
+  useEffect(() => {
+    fetchData()
   }, [])
 
   const [columnDefs] = useState([
@@ -255,6 +302,13 @@ export default function StudentApplied({ token = '', id = '' }) {
             className='order-1 ml-3 inline-flex items-center px-4 py-2 border border-gray-300 shadow-sm text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 sm:order-0 sm:ml-0'
           >
             Deactivate
+          </button>
+          <button
+            type='button'
+            onClick={handleUnplaced}
+            className='order-0 inline-flex items-center px-4 py-2 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-orange-600 hover:bg-orange-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-orange-500 sm:order-1 sm:ml-3'
+          >
+            UnMark as Placed
           </button>
           <button
             type='button'
