@@ -51,7 +51,6 @@ export default function EditJob({ token = '', job = '' }) {
       setTimeout(() => {
         router.reload()
       }, 3000)
-      router.reload()
     } else {
       toast.error('Error uploading JAF')
     }

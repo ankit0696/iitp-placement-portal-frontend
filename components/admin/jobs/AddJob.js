@@ -74,7 +74,7 @@ export default function AddJob({ token = '' }) {
       return
     }
 
-    if (confirm('Are you sure you add job?')) {
+    if (confirm('Are you sure to add job?')) {
       const res = await fetch(`${API_URL}/api/jobs`, {
         method: 'POST',
         headers: {
