@@ -65,6 +65,11 @@ export default function JobsApplied({ token = '' }) {
       filter: 'agTextColumnFilter',
     },
     {
+      headerName: 'Job Status',
+      field: 'job.job_status',
+      filter: 'agTextColumnFilter',
+    },
+    {
       headerName: 'JAF',
       field: 'job.jaf.url',
       cellRenderer: function (params) {
