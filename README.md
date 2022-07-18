@@ -1,3 +1,29 @@
+![Logo](https://upload.wikimedia.org/wikipedia/en/5/52/Indian_Institute_of_Technology%2C_Patna.svg)
+
+# IIT Patna | Centre for Career Development - Portal
+
+This web app is a portal for students to register themselves for the placement and apply for different job profiles.
+
+## Installation
+
+Install with npm
+
+```bash
+  cd iitp-placement-portal-frontend
+  npm install
+```
+
+Please install backend server as well
+https://github.com/ankit0696/placement-portal-backend
+
+## Used By
+
+This portal is used by the following companies:
+
+- Students
+- Placement Co-ordinators
+- Admin
+
 This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
 
 ## Getting Started
