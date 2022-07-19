@@ -42,7 +42,7 @@ export default function SignIn() {
           </div>
 
           <h2 className='mt-6 text-center text-3xl font-extrabold text-gray-900'>
-            Training and Placement Cell
+            Centre for Career Development (CCD)
           </h2>
           <h2 className='text-center font-extrabold text-3xl uppercase'>
             IIT Patna
