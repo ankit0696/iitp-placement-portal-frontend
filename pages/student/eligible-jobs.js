@@ -63,8 +63,36 @@ export default function EligibleJobs({ token = '' }) {
           toast.error('Invalid User')
           return
         }
-        console.log(res)
-        toast.error('Something Went Wrong')
+        console.debug(res)
+        let err_msg = 'Something Went Wrong'
+        try {
+          const data = await res.json();
+	  /* In case of error, from backend we should receive this structure:
+	   *
+	   * {
+	   *   data: null
+	   *   error: {
+	   *   	status: 400,
+	   *   	name: "BadRequestError",
+	   *   	message: "Bad Request",
+	   *   	details: [{
+	   *   	  messages: [{
+	   *	    id: "Not eligible"
+	   *   	  }]
+	   *   	}]
+	   *   }
+	   * }
+	   * */
+	  if(data.error && Array.isArray(data.error.details)) {
+	    const err_detail = data.error.details[0];
+	    if (err_detail && Array.isArray(err_detail.messages)) {
+	      if(err_detail.messages[0]) {
+		err_msg = err_detail.messages[0].id || err_msg;
+	      }
+	    }
+	  }
+	} catch(_e) {}
+        toast.error(err_msg)
       } else {
         const data = await res.json()
         toast.success('Successfully Applied')
