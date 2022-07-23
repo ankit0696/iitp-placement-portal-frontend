@@ -60,6 +60,18 @@ export default function Students({ token }) {
       field: 'attributes.mobile_number_1',
     },
     {
+      headerName: 'Alternate Mobile',
+      field: 'attributes.mobile_number_2',
+    },
+    {
+      headerName: 'Institute Email',
+      field: 'attributes.institute_email_id',
+    },
+    {
+      headerName: 'Personal Email',
+      field: 'attributes.personal_email_id',
+    },
+    {
       headerName: 'Resume',
       field: 'attributes.resume',
       cellRenderer: function (params) {
@@ -103,6 +115,22 @@ export default function Students({ token }) {
         )
       },
     },
+    {
+      headerName: 'Xth Marks',
+      field: 'attributes.X_marks',
+    },
+    {
+      headerName: 'XIIth Marks',
+      field: 'attributes.XII_marks',
+    },
+    {
+      headerName: 'Category',
+      field: 'attributes.category'
+    },
+    {
+      headerName: 'Gender',
+      field: 'attributes.gender'
+    }
   ])
 
   useEffect(() => {
@@ -123,6 +151,7 @@ export default function Students({ token }) {
           fetched_data = fetched_data.concat(res.data.data);
         }
 
+        console.log({fetched_data});
         setRowData(fetched_data);
       })
       .catch(err => {
