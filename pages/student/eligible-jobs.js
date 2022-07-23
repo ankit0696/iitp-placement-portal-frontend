@@ -10,11 +10,13 @@ import { useRouter } from 'next/router'
 
 import { toast } from 'react-toastify'
 import NotApproved from '@/components/student/NotApproved'
+import NoResume from '@/components/student/NoResume'
 import moment from 'moment'
 
 export default function EligibleJobs({ token = '' }) {
   const router = useRouter()
   const [approved, setApproved] = useState(false)
+  const [resume_set, setResumeSet] = useState(false)
   const [jobs, setJobs] = useState([])
   useEffect(() => {
     fetch(`${API_URL}/api/student/me`, {
@@ -27,6 +29,16 @@ export default function EligibleJobs({ token = '' }) {
         if (resp.approved === 'approved') {
           setApproved(true)
         }
+
+	if (!resp.resume) {
+	  toast.error('Please upload your resume, before applying for jobs')
+	  setResumeSet(false)
+	} else if (!resp.resume_link) {
+	  toast.error('Please set your resume_link, before applying for jobs')
+	  setResumeSet(false)
+	} else {
+	  setResumeSet(true)
+	}
       })
       .catch((err) => {
         console.log(err)
@@ -176,7 +188,14 @@ export default function EligibleJobs({ token = '' }) {
         <NotApproved />
       </Layout>
     )
+  } else if (!resume_set) {
+    return (
+      <Layout>
+      	<NoResume />
+      </Layout>
+    )
   }
+
   return (
     <Layout heading='Eligible Jobs'>
       <div className='ag-theme-alpine mt-4' style={{ height: 800 }}>
