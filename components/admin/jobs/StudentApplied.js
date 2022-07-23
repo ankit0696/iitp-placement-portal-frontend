@@ -305,10 +305,25 @@ export default function StudentApplied({ token = '', id = '' }) {
         'attributes.student.data.attributes.course.data.attributes.course_name',
     },
     {
+      headerName: 'Category',
+      field: 'attributes.student.data.attributes.category'
+    },
+    {
+      headerName: 'Gender',
+      field: 'attributes.student.data.attributes.gender'
+    },
+    {
+      headerName: 'Xth Marks',
+      field: 'attributes.student.data.attributes.X_marks',
+    },
+    {
+      headerName: 'XIIth Marks',
+      field: 'attributes.student.data.attributes.XII_marks',
+    },
+    {
       headerName: 'CPI',
       field: 'attributes.student.data.attributes.cpi',
     },
-
     {
       headerName: 'Classification',
       field: 'attributes.job.data.attributes.classification',
