@@ -72,6 +72,10 @@ export default function Students({ token }) {
       field: 'attributes.personal_email_id',
     },
     {
+      headerName: 'Registered For',
+      field: 'attributes.registered_for',
+    },
+    {
       headerName: 'Resume',
       field: 'attributes.resume',
       cellRenderer: function (params) {
