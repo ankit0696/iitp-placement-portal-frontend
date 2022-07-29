@@ -4,7 +4,6 @@ import CompaniesRequest from '@/components/admin/requests/CompaniesRequest'
 import { parseCookies } from '@/helpers/index'
 import JobRequest from '@/components/admin/requests/JobsRequest'
 import StudentRequest from '@/components/admin/requests/StudentRequest'
-import StudentPasswordReset from '@/components/admin/requests/StudentPasswordReset'
 
 export default function index({ token }) {
   return (
@@ -19,9 +18,6 @@ export default function index({ token }) {
           </div>
           <div className='py-3'>
             <StudentRequest token={token} />
-          </div>
-          <div className='py-3'>
-            <StudentPasswordReset token={token} />
           </div>
         </div>
       </div>
