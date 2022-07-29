@@ -4,44 +4,34 @@ import { toast } from 'react-toastify'
 import { API_URL } from '@/config/index'
 import 'react-toastify/dist/ReactToastify.css'
 import { useRouter } from 'next/router'
+import Link from 'next/link'
 
 export default function ForgotPassword() {
-  const [username, setUsername] = useState('')
   const [email, setEmail] = useState('')
 
-  const router = useRouter()
-
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault()
-
-    fetch(`${API_URL}/api/student/request-password-change`, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({ roll: username, institute_email_id: email }),
-    })
-      .then((res) => res.json())
-      .then((data) => {
-        if (data.error) {
-          console.error(data.error)
-          toast.error(
-            data.error.details[0].messages[0].id || data.error.message
-          )
-        } else if (data.message.messages) {
-          // For eg. in case of "Too many requests", ie 429 this will happen
-          toast.error(data.message.messages[0].message)
-        } else {
-          toast.success('Successfully Requested. Wait for reply')
-          // redirect after 5 seconds
-          setTimeout(() => {
-            router.push('/')
-          }, 5000)
-        }
+    if (confirm('Are you sure you want to reset your password?')) {
+      const res = await fetch(`${API_URL}/api/auth/forgot-password`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          email: email,
+        }),
       })
-      .catch((err) => {
-        console.log(err)
-      })
+      if (res.status === 200) {
+        toast.success(
+          'Password reset link has been sent to your email. Check spam folder if you do not see it in inbox.'
+        )
+      }
+      if (res.status === 400) {
+        console.log('error: ', res)
+        const error = await res.json()
+        toast.error(error.error.message)
+      }
+    }
   }
 
   return (
@@ -67,39 +57,16 @@ export default function ForgotPassword() {
           <p className='mt-2 text-center text-sm text-gray-600'>
             Forgot Password (Only for Students)
           </p>
+          <p className='mt-2 text-center text-sm text-indigo-600'>
+            <Link href='/' className='cursor-pointer text-indigo-600'>
+              <a>Go to Login</a>
+            </Link>
+          </p>
         </div>
 
         <div className='mt-8 sm:mx-auto sm:w-full sm:max-w-md'>
           <div className='bg-gray-50 py-8 px-4 shadow sm:rounded-lg sm:px-10'>
-            <form
-              className='space-y-6'
-              action='#'
-              method='POST'
-              onSubmit={handleSubmit}
-            >
-              <div>
-                <label
-                  htmlFor='username'
-                  className='block text-sm font-medium text-gray-700'
-                >
-                  Roll Number
-                </label>
-                <div className='mt-1'>
-                  <input
-                    value={username}
-                    onChange={(e) => setUsername(e.target.value.toLowerCase())}
-                    id='username'
-                    name='username'
-                    pattern='[0-9]{4}[a-zA-Z]{2}[0-9]{2}'
-                    type='text'
-                    autoComplete='username'
-                    required
-                    className='appearance-none block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm'
-                    placeholder='Roll Number'
-                  />
-                </div>
-              </div>
-
+            <form className='space-y-6' onSubmit={handleSubmit}>
               <div>
                 <label
                   htmlFor='email'
