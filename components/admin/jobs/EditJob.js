@@ -432,6 +432,11 @@ export default function EditJob({ token = '', job = '' }) {
                       autoComplete='start_date'
                       className='mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md'
                     />
+                    <small className='text-indigo-500 py-1 px-2 '>
+                      {moment(newJob.start_date)
+                        .local()
+                        .format('yyyy-MM-DD hh:mm A')}
+                    </small>
                   </div>
                   <div className='col-span-6 sm:col-span-2'>
                     <label
@@ -449,6 +454,11 @@ export default function EditJob({ token = '', job = '' }) {
                       autoComplete='last_date'
                       className='mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md'
                     />
+                    <small className='text-indigo-500 py-1 px-2 '>
+                      {moment(newJob.last_date)
+                        .local()
+                        .format('yyyy-MM-DD hh:mm A')}
+                    </small>
                   </div>
                   <div className='col-span-6 sm:col-span-2'>
                     <label
