@@ -13,12 +13,12 @@ export default function EditJob({ token = '', job = '' }) {
   if (newJob.start_date) {
     newJob.start_date = moment(newJob.start_date)
       .local()
-      .format('yyyy-MM-DDThh:mm:ss.SSS')
+      .format('yyyy-MM-DD hh:mm A')
   }
   if (newJob.last_date) {
     newJob.last_date = moment(newJob.last_date)
       .local()
-      .format('yyyy-MM-DDThh:mm:ss.SSS')
+      .format('yyyy-MM-DD hh:mm A')
   }
 
   const [values, setValues] = useState(newJob)
@@ -366,7 +366,7 @@ export default function EditJob({ token = '', job = '' }) {
                       disabled
                       defaultValue={values.start_date}
                       onChange={handleDateChange}
-                      type='datetime-local'
+                      type='text'
                       name='start_date'
                       id='start_date'
                       autoComplete='start_date'
@@ -384,7 +384,7 @@ export default function EditJob({ token = '', job = '' }) {
                       disabled
                       defaultValue={values.last_date}
                       onChange={handleDateChange}
-                      type='datetime-local'
+                      type='text'
                       name='last_date'
                       id='last_date'
                       autoComplete='last_date'
