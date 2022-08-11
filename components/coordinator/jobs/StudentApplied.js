@@ -11,31 +11,34 @@ export default function StudentApplied({ token = '', id = '' }) {
   const [students, setStudents] = useState([])
   const gridRef = useRef()
   const onBtExport = useCallback(() => {
-    // See comment in pages/admin/students/index.js for logic behind this    
-      
-    const selected_and_visible_node = gridRef.current.api.getSelectedNodes().findIndex(node => node.displayed);      
-        
-    if (selected_and_visible_node == -1) {      
-      // If nothing is selected, export ALL      
-      gridRef.current.api.exportDataAsCsv()      
-    } else {      
-      // Else, export selected      
-      gridRef.current.api.exportDataAsCsv({      
-        onlySelected: true,      
-      })      
-    }      
+    // See comment in pages/admin/students/index.js for logic behind this
+
+    const selected_and_visible_node = gridRef.current.api
+      .getSelectedNodes()
+      .findIndex((node) => node.displayed)
+
+    if (selected_and_visible_node == -1) {
+      // If nothing is selected, export ALL
+      gridRef.current.api.exportDataAsCsv()
+    } else {
+      // Else, export selected
+      gridRef.current.api.exportDataAsCsv({
+        onlySelected: true,
+      })
+    }
   }, [])
 
   const getSelectedRowData = () => {
     // For logic, see comment in components/admin/jobs/StudentApplied.js
 
     // visible selected rows
-    const selectedRows = gridRef.current.api.getSelectedNodes()
-                          .filter(node => node.displayed)
-                          .map(node => node.data)
-    const selectedData = selectedRows.map(
-      (node) => node.attributes.student.data.attributes.roll
-    ).join()
+    const selectedRows = gridRef.current.api
+      .getSelectedNodes()
+      .filter((node) => node.displayed)
+      .map((node) => node.data)
+    const selectedData = selectedRows
+      .map((node) => node.attributes.student.data.attributes.roll)
+      .join()
     downloadCV(selectedData)
     return selectedData
   }
@@ -43,7 +46,7 @@ export default function StudentApplied({ token = '', id = '' }) {
   const downloadCV = async (ids) => {
     if (!ids || ids.trim().length === 0) {
       toast.error('No row selected')
-      return;
+      return
     }
     // download zip file
     fetch(`${API_URL}/api/admin/resume-zip?rolls=${ids}`, {
@@ -53,8 +56,8 @@ export default function StudentApplied({ token = '', id = '' }) {
       },
     })
       .then(async (res) => {
-        if(res.status >= 400) {
-          const res_json = await res.json();
+        if (res.status >= 400) {
+          const res_json = await res.json()
           console.error(res_json)
           toast.error(res_json.error.message)
           throw res_json.error
@@ -160,6 +163,26 @@ export default function StudentApplied({ token = '', id = '' }) {
         'attributes.student.data.attributes.course.data.attributes.course_name',
     },
     {
+      headerName: 'Category',
+      field: 'attributes.student.data.attributes.category',
+    },
+    {
+      headerName: 'Gender',
+      field: 'attributes.student.data.attributes.gender',
+    },
+    {
+      headerName: 'Date of Birth',
+      field: 'attributes.student.data.attributes.date_of_birth',
+    },
+    {
+      headerName: 'Xth Marks',
+      field: 'attributes.student.data.attributes.X_marks',
+    },
+    {
+      headerName: 'XIIth Marks',
+      field: 'attributes.student.data.attributes.XII_marks',
+    },
+    {
       headerName: 'CPI',
       field: 'attributes.student.data.attributes.cpi',
     },
@@ -167,6 +190,26 @@ export default function StudentApplied({ token = '', id = '' }) {
     {
       headerName: 'Classification',
       field: 'attributes.job.data.attributes.classification',
+    },
+    {
+      headerName: 'GATE / JEE / JAM Rank',
+      field: 'attributes.job.data.attributes.rank',
+    },
+    {
+      headerName: 'GATE / JEE / JAM Category Rank',
+      field: 'attributes.job.data.attributes.categoryRank',
+    },
+    {
+      headerName: 'Bachelor Marks',
+      field: 'attributes.student.data.attributes.bachelor_marks',
+    },
+    {
+      headerName: 'Master Marks',
+      field: 'attributes.student.data.attributes.master_marks',
+    },
+    {
+      headerName: 'Address',
+      field: 'attributes.student.data.attributes.address',
     },
     {
       headerName: 'Resume Link',

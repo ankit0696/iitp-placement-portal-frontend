@@ -306,11 +306,15 @@ export default function StudentApplied({ token = '', id = '' }) {
     },
     {
       headerName: 'Category',
-      field: 'attributes.student.data.attributes.category'
+      field: 'attributes.student.data.attributes.category',
     },
     {
       headerName: 'Gender',
-      field: 'attributes.student.data.attributes.gender'
+      field: 'attributes.student.data.attributes.gender',
+    },
+    {
+      headerName: 'Date of Birth',
+      field: 'attributes.student.data.attributes.date_of_birth',
     },
     {
       headerName: 'Xth Marks',
@@ -327,6 +331,26 @@ export default function StudentApplied({ token = '', id = '' }) {
     {
       headerName: 'Classification',
       field: 'attributes.job.data.attributes.classification',
+    },
+    {
+      headerName: 'GATE / JEE / JAM Rank',
+      field: 'attributes.job.data.attributes.rank',
+    },
+    {
+      headerName: 'GATE / JEE / JAM Category Rank',
+      field: 'attributes.job.data.attributes.categoryRank',
+    },
+    {
+      headerName: 'Bachelor Marks',
+      field: 'attributes.student.data.attributes.bachelor_marks',
+    },
+    {
+      headerName: 'Master Marks',
+      field: 'attributes.student.data.attributes.master_marks',
+    },
+    {
+      headerName: 'Address',
+      field: 'attributes.student.data.attributes.address',
     },
     {
       headerName: 'Resume Link',
