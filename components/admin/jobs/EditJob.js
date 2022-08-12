@@ -68,8 +68,7 @@ export default function EditJob({ token = '', job = '' }) {
 
   const handleDateChange = (e) => {
     let { name, value } = e.target
-    value = moment(value).local().format('yyyy-MM-DDThh:mm:ss.SSS')
-    console.log(value)
+    value = moment(value).utcOffset('+0530', true)
     setValues({ ...values, [name]: value === '' ? undefined : value })
   }
 
