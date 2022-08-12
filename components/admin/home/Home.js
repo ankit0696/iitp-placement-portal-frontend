@@ -8,7 +8,7 @@ export default function Home({ token = '' }) {
         role='list'
         className='grid grid-cols-1 gap-6 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-3'
       >
-        <li className='col-span-1 flex flex-col text-center bg-white rounded-lg shadow divide-y divide-gray-200'>
+        <li className='col-span-1 flex flex-col text-center bg-white rounded-lg shadow divide-y divide-gray-200 p-4'>
           <RegisteredGraph token={token} />
         </li>
       </ul>
