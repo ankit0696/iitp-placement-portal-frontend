@@ -50,13 +50,11 @@ export default function RegisteredGraph({ token = '' }) {
             ++r[row.attributes.program.data.attributes.program_name] || 1
           return r
         }, {})
-        console.log('occurences', occurences)
 
         const result = Object.keys(occurences).map(function (key) {
           return { key: key, value: occurences[key] }
         })
         setResultMap(result)
-        console.log(result)
       })
       .catch((err) => {
         console.log(err)
@@ -65,6 +63,7 @@ export default function RegisteredGraph({ token = '' }) {
 
   return (
     <div>
+      <p className='text-center text-xl font-bold'>Students Registered</p>
       <Pie data={result} />
     </div>
   )
