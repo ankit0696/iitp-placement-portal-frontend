@@ -45,7 +45,7 @@ const navigation = [
     icon: BriefcaseIcon,
   },
   {
-    name: 'Resume',
+    name: 'Resume & Transcript',
     href: '/student/resume',
     icon: DocumentTextIcon,
   },
@@ -261,8 +261,10 @@ export default function Sidebar({ heading = '', children }) {
             <a href='#' className='flex-shrink-0 w-full group block'>
               <div className='flex items-center'>
                 <div>
-                  <img
+                  <Image
                     className='inline-block h-9 w-9 rounded-full'
+                    height={40}
+                    width={40}
                     src='/user.png'
                     alt=''
                   />
