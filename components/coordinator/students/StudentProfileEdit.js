@@ -68,7 +68,7 @@ export default function StudentProfileEdit({ token = '', student }) {
                     htmlFor='placed_status'
                     className='block text-sm font-medium text-gray-700'
                   >
-                    Off-Campus Placed Status
+                    Placed Status( For Off-Campus &amp; PPO Offers )
                   </label>
                   <select
                     disabled
