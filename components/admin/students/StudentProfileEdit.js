@@ -128,7 +128,7 @@ export default function StudentProfileEdit({ token = '', student }) {
                     htmlFor='placed_status'
                     className='block text-sm font-medium text-gray-700'
                   >
-                    Placed Status
+                    Off-Campus Placed Status
                   </label>
                   <select
                     name='placed_status'
