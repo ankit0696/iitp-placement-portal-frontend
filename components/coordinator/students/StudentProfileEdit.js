@@ -81,6 +81,7 @@ export default function StudentProfileEdit({ token = '', student }) {
                     <option value='unplaced'>Not Placed</option>
                     <option value='placed_a1'>Placed in A1</option>
                     <option value='placed_a2'>Placed in A2</option>
+                    <option value='placed_x'>Placed in X</option>
                   </select>
                 </div>
                 <div className='col-span-6 sm:col-span-3'>

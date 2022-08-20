@@ -251,6 +251,7 @@ export default function EditJob({ token = '', job = '' }) {
                       <option value='A1'>A1</option>
                       <option value='A2'>A2</option>
                       <option value='X'>X</option>
+                      <option value='none'>None (for Internship)</option>
                     </select>
                   </div>
                   <div className='col-span-6 sm:col-span-2'>
