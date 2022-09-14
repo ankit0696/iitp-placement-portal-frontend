@@ -53,6 +53,7 @@ export default function JobsApplied({ token = '' }) {
       headerName: 'Job Title',
       field: 'job.job_title',
       filter: 'agTextColumnFilter',
+      resizable: true,
     },
     {
       headerName: 'Student Status',
