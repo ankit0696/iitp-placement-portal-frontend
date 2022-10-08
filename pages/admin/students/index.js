@@ -43,11 +43,6 @@ export default function Students({ token }) {
       },
     },
     {
-      headerName: 'CPI',
-      field: 'attributes.cpi',
-      filter: 'agNumberColumnFilter',
-    },
-    {
       headerName: 'Placed Status',
       field: 'attributes.placed',
     },
@@ -58,6 +53,11 @@ export default function Students({ token }) {
     {
       headerName: 'Program',
       field: 'attributes.program.data.attributes.program_name',
+    },
+    {
+      headerName: 'CPI',
+      field: 'attributes.cpi',
+      filter: 'agNumberColumnFilter',
     },
     {
       headerName: 'Mobile',
