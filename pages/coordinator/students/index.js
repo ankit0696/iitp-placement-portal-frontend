@@ -48,6 +48,10 @@ export default function Students({ token }) {
       filter: 'agNumberColumnFilter',
     },
     {
+      headerName: 'Placed Status',
+      field: 'attributes.placed',
+    },
+    {
       headerName: 'Course',
       field: 'attributes.course.data.attributes.course_name',
     },
@@ -137,6 +141,33 @@ export default function Students({ token }) {
     },
   ])
 
+  const getPlacedStatus = useCallback(async (data) => {
+    const config = {
+      headers: { Authorization: `Bearer ${token}` },
+    }
+    const res = await axios.get(`${API_URL}/api/student/placed-status`, config)
+    const placed = res.data.placed
+    const placed_a1 = placed.placed_a1
+    const placed_a2 = placed.placed_a2
+    const placed_x = placed.placed_x
+
+    // Update placed status of students
+    const new_row_data = data.map((student) => {
+      if (placed_a1.includes(student.attributes.roll)) {
+        student.attributes.placed = 'A1'
+      } else if (placed_a2.includes(student.attributes.roll)) {
+        student.attributes.placed = 'A2'
+      } else if (placed_x.includes(student.attributes.roll)) {
+        student.attributes.placed = 'X'
+      } else {
+        student.attributes.placed = 'Not Placed'
+      }
+      return student
+    })
+
+    return new_row_data
+  }, [])
+
   useEffect(() => {
     const config = {
       headers: { Authorization: `Bearer ${token}` },
@@ -164,7 +195,7 @@ export default function Students({ token }) {
           fetched_data = fetched_data.concat(res.data.data)
           // fetched_data.length += res.data.meta.pagination.pageSize;
         }
-
+        getPlacedStatus(fetched_data)
         setRowData(fetched_data)
       })
       .catch((err) => {
@@ -222,6 +253,7 @@ export default function Students({ token }) {
           columnDefs={columnDefs}
           rowSelection='multiple'
           defaultColDef={{ sortable: true, filter: true }}
+          overlayNoRowsTemplate='Please wait while data is being fetched'
         ></AgGridReact>
       </div>
     </Layout>

@@ -48,6 +48,10 @@ export default function Students({ token }) {
       filter: 'agNumberColumnFilter',
     },
     {
+      headerName: 'Placed Status',
+      field: 'attributes.placed',
+    },
+    {
       headerName: 'Course',
       field: 'attributes.course.data.attributes.course_name',
     },
@@ -129,39 +133,41 @@ export default function Students({ token }) {
     },
     {
       headerName: 'Category',
-      field: 'attributes.category'
+      field: 'attributes.category',
     },
     {
       headerName: 'Gender',
-      field: 'attributes.gender'
-    }
+      field: 'attributes.gender',
+    },
   ])
 
-  useEffect(() => {
+  // Get placed status of students from /api/student/placed-status
+  // @Ouput: {placed: {placed_a1: [], placed_a2: [], placed_x: []}}
+  const getPlacedStatus = useCallback(async (data) => {
     const config = {
       headers: { Authorization: `Bearer ${token}` },
-    };
+    }
+    const res = await axios.get(`${API_URL}/api/student/placed-status`, config)
+    const placed = res.data.placed
+    const placed_a1 = placed.placed_a1
+    const placed_a2 = placed.placed_a2
+    const placed_x = placed.placed_x
 
-    // Get all students, for strapi's pagination, using count of 50 per page
-    const PAGE_SIZE = 100;
+    // Update placed status of students
+    const new_row_data = data.map((student) => {
+      if (placed_a1.includes(student.attributes.roll)) {
+        student.attributes.placed = 'A1'
+      } else if (placed_a2.includes(student.attributes.roll)) {
+        student.attributes.placed = 'A2'
+      } else if (placed_x.includes(student.attributes.roll)) {
+        student.attributes.placed = 'X'
+      } else {
+        student.attributes.placed = 'Not Placed'
+      }
+      return student
+    })
 
-    axios.get(`${API_URL}/api/students?pagination[page]=1&pagination[pageSize]=${PAGE_SIZE}&populate=*`, config)
-      .then(async res => {
-        let fetched_data = res.data.data;
-        let total_cnt = res.data.meta.pagination.total;
-
-        while (fetched_data.length < total_cnt) {
-          const res = await axios.get(`${API_URL}/api/students?pagination[page]=${fetched_data.length/PAGE_SIZE + 1}&pagination[pageSize]=${PAGE_SIZE}&populate=*`, config);
-          fetched_data = fetched_data.concat(res.data.data);
-        }
-
-        console.log({fetched_data});
-        setRowData(fetched_data);
-      })
-      .catch(err => {
-        toast.error("Error while fetching data");
-        console.error(err);
-      });
+    return new_row_data
   }, [])
 
   const gridRef = useRef()
@@ -192,20 +198,58 @@ export default function Students({ token }) {
      * 2. If no selected row is visible, so KOI BHI ROW visible select NAHI hai,
      *    so export ALL
      */
-    const selected_and_visible_node = gridRef.current.api.getSelectedNodes().findIndex(node => node.displayed);
+    const selected_and_visible_node = gridRef.current.api
+      .getSelectedNodes()
+      .findIndex((node) => node.displayed)
 
     if (selected_and_visible_node == -1) {
       // If nothing is selected, export ALL
-      console.log("Nothing selected, exporting all students")
+      console.log('Nothing selected, exporting all students')
       gridRef.current.api.exportDataAsCsv()
     } else {
       // Else, export selected
-      console.log("Exporting selected students")
+      console.log('Exporting selected students')
       gridRef.current.api.exportDataAsCsv({
-	onlySelected: true,
+        onlySelected: true,
       })
     }
   }, [])
+
+  useEffect(() => {
+    const config = {
+      headers: { Authorization: `Bearer ${token}` },
+    }
+
+    // Get all students, for strapi's pagination, using count of 50 per page
+    const PAGE_SIZE = 100
+
+    axios
+      .get(
+        `${API_URL}/api/students?pagination[page]=1&pagination[pageSize]=${PAGE_SIZE}&populate=*`,
+        config
+      )
+      .then(async (res) => {
+        let fetched_data = res.data.data
+        let total_cnt = res.data.meta.pagination.total
+
+        while (fetched_data.length < total_cnt) {
+          const res = await axios.get(
+            `${API_URL}/api/students?pagination[page]=${
+              fetched_data.length / PAGE_SIZE + 1
+            }&pagination[pageSize]=${PAGE_SIZE}&populate=*`,
+            config
+          )
+          fetched_data = fetched_data.concat(res.data.data)
+        }
+        getPlacedStatus(fetched_data)
+        setRowData(fetched_data)
+      })
+      .catch((err) => {
+        toast.error('Error while fetching data')
+        console.error(err)
+      })
+  }, [])
+
   return (
     <Layout>
       <div className='bg-white px-4 py-5 border-b border-gray-200 sm:px-6'>
@@ -236,6 +280,7 @@ export default function Students({ token }) {
           rowData={rowData}
           columnDefs={columnDefs}
           rowSelection='multiple'
+          overlayNoRowsTemplate='Please wait while data is being fetched'
           defaultColDef={{ sortable: true, filter: true }}
         ></AgGridReact>
       </div>
