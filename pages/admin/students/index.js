@@ -241,7 +241,7 @@ export default function Students({ token }) {
           )
           fetched_data = fetched_data.concat(res.data.data)
         }
-        getPlacedStatus(fetched_data)
+        fetched_data = await getPlacedStatus(fetched_data)
         setRowData(fetched_data)
       })
       .catch((err) => {

@@ -195,7 +195,7 @@ export default function Students({ token }) {
           fetched_data = fetched_data.concat(res.data.data)
           // fetched_data.length += res.data.meta.pagination.pageSize;
         }
-        getPlacedStatus(fetched_data)
+        fetched_data = await getPlacedStatus(fetched_data)
         setRowData(fetched_data)
       })
       .catch((err) => {
