@@ -47,6 +47,10 @@ export default function Students({ token }) {
       field: 'attributes.placed',
     },
     {
+      headerName: 'Internship Status',
+      field: 'attributes.internship',
+    },
+    {
       headerName: 'Course',
       field: 'attributes.course.data.attributes.course_name',
     },
@@ -168,6 +172,26 @@ export default function Students({ token }) {
     return new_row_data
   }, [])
 
+  const getInternshipStatus = useCallback(async (data) => {
+    const config = {
+      headers: { Authorization: `Bearer ${token}` },
+    }
+    const res = await axios.get(`${API_URL}/api/student/intern-status`, config)
+    const internship = res.data.internship
+
+    // Update internship status of students
+    const new_row_data = data.map((student) => {
+      if (internship.includes(student.attributes.roll)) {
+        student.attributes.internship = 'Got Internship'
+      } else {
+        student.attributes.internship = 'None'
+      }
+      return student
+    })
+    console.log(new_row_data)
+    return new_row_data
+  }, [])
+
   useEffect(() => {
     const config = {
       headers: { Authorization: `Bearer ${token}` },
@@ -196,6 +220,7 @@ export default function Students({ token }) {
           // fetched_data.length += res.data.meta.pagination.pageSize;
         }
         fetched_data = await getPlacedStatus(fetched_data)
+        fetched_data = await getInternshipStatus(fetched_data)
         setRowData(fetched_data)
       })
       .catch((err) => {
