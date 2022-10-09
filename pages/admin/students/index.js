@@ -248,7 +248,7 @@ export default function Students({ token }) {
         toast.error('Error while fetching data')
         console.error(err)
       })
-  }, [])
+  }, [token])
 
   return (
     <Layout>

@@ -2,7 +2,6 @@ import React, { useEffect, useState } from 'react'
 import { Chart as ChartJS, ArcElement, Tooltip, Legend } from 'chart.js'
 
 import { Pie } from 'react-chartjs-2'
-import { API_URL } from '@/config/index'
 ChartJS.register(ArcElement, Tooltip, Legend)
 
 export default function RegisteredGraph({ student = [] }) {
