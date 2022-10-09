@@ -113,10 +113,10 @@ export default function Home({ token = '' }) {
         className='grid grid-cols-1 gap-6 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-3'
       >
         <li className='col-span-1 flex flex-col text-center bg-white rounded-lg shadow divide-y divide-gray-200 p-4'>
-          <RegisteredGraph student={student} title='Registered Students' />
+          <NewRequest student={student} job={job} company={company} />
         </li>
         <li className='col-span-1 flex flex-col text-center bg-white rounded-lg shadow divide-y divide-gray-200 p-4'>
-          <NewRequest student={student} job={job} company={company} />
+          <RegisteredGraph student={student} title='Registered Students' />
         </li>
         <li className='col-span-1 flex flex-col text-center bg-white rounded-lg shadow divide-y divide-gray-200 p-4'>
           <RegisteredGraph student={ftestudent} title='FTE students' />

@@ -18,7 +18,6 @@ export const options = {
       text: 'FTE Placed Stats',
     },
   },
-  height: 300,
   scales: {
     x: {
       stacked: true,
@@ -104,6 +103,7 @@ export default function PlacedGraph({ student = [] }) {
     labels: label,
     datasets: [
       {
+        barPercentage: 0.5,
         label: 'A1',
         data: a1,
         backgroundColor: 'rgba(75, 192, 192, 0.8)',
@@ -112,6 +112,7 @@ export default function PlacedGraph({ student = [] }) {
         borderWidth: 1,
       },
       {
+        barPercentage: 0.5,
         label: 'A2',
         data: a2,
         backgroundColor: 'rgba(54, 162, 235, 0.8)',
@@ -119,6 +120,7 @@ export default function PlacedGraph({ student = [] }) {
         borderWidth: 1,
       },
       {
+        barPercentage: 0.5,
         label: 'X',
         data: x,
         backgroundColor: 'rgba(255, 206, 86, 0.8)',
@@ -126,6 +128,7 @@ export default function PlacedGraph({ student = [] }) {
         borderWidth: 1,
       },
       {
+        barPercentage: 0.5,
         label: 'Not Placed',
         data: unplaced,
         backgroundColor: 'rgba(255, 99, 132, 0.8)',
