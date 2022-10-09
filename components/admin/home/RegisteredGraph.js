@@ -4,7 +4,7 @@ import { Chart as ChartJS, ArcElement, Tooltip, Legend } from 'chart.js'
 import { Pie } from 'react-chartjs-2'
 ChartJS.register(ArcElement, Tooltip, Legend)
 
-export default function RegisteredGraph({ student = [] }) {
+export default function RegisteredGraph({ student = [], title = '' }) {
   const [resultMap, setResultMap] = useState([])
 
   useEffect(() => {
@@ -48,7 +48,7 @@ export default function RegisteredGraph({ student = [] }) {
 
   return (
     <div>
-      <p className='text-center text-xl font-bold'>Students Registered</p>
+      <p className='text-center text-xl font-bold'>{title}</p>
       <Pie data={result} />
     </div>
   )
