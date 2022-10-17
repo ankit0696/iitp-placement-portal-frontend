@@ -81,31 +81,39 @@ export default function Jobs({ token }) {
     },
   ])
 
-
   useEffect(() => {
     const config = {
       headers: { Authorization: `Bearer ${token}` },
-    };
+    }
 
     // Get all students, for strapi's pagination, using count of 50 per page
-    const PAGE_SIZE = 100;
+    const PAGE_SIZE = 100
 
-    axios.get(`${API_URL}/api/jobs?pagination[page]=1&pagination[pageSize]=${PAGE_SIZE}&populate=*`, config)
-      .then(async res => {
-        let fetched_data = res.data.data;
-        let total_cnt = res.data.meta.pagination.total;                     
+    axios
+      .get(
+        `${API_URL}/api/jobs?pagination[page]=1&pagination[pageSize]=${PAGE_SIZE}&populate=*&sort=id:desc`,
+        config
+      )
+      .then(async (res) => {
+        let fetched_data = res.data.data
+        let total_cnt = res.data.meta.pagination.total
 
         while (fetched_data.length < total_cnt) {
-          const res = await axios.get(`${API_URL}/api/jobs?pagination[page]=${fetched_data.length/PAGE_SIZE + 1}&pagination[pageSize]=${PAGE_SIZE}&populate=*`, config);
-          fetched_data = fetched_data.concat(res.data.data);
+          const res = await axios.get(
+            `${API_URL}/api/jobs?pagination[page]=${
+              fetched_data.length / PAGE_SIZE + 1
+            }&pagination[pageSize]=${PAGE_SIZE}&populate=*`,
+            config
+          )
+          fetched_data = fetched_data.concat(res.data.data)
         }
 
-        setRowData(fetched_data);
+        setRowData(fetched_data)
       })
-      .catch(err => {
-        toast.error("Error while fetching data");
-        console.error(err);
-      });
+      .catch((err) => {
+        toast.error('Error while fetching data')
+        console.error(err)
+      })
   }, [])
 
   return (
