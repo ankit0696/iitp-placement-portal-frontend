@@ -6,6 +6,7 @@ export default function FileUpload({ token }) {
   const [resume, setResume] = useState(null)
   const [resumeLink, setResumeLink] = useState('')
   const [transcriptLink, setTranscriptLink] = useState('')
+  const [coverLetterLink, setCoverLetterLink] = useState('')
 
   const handleSubmit = async (e) => {
     e.preventDefault()
@@ -42,6 +43,30 @@ export default function FileUpload({ token }) {
     })
 
     if (res.ok) {
+      toast.success('Successfully Updated')
+    } else {
+      toast.error('Something Went Wrong')
+    }
+  }
+
+  const coverSubmit = async (e) => {
+    e.preventDefault()
+    const formData = new FormData()
+    formData.append('cover_letter_link', coverLetterLink)
+
+    const res = await fetch(`${API_URL}/api/student/modify`, {
+      method: 'PUT',
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+      body: formData,
+    })
+
+    if (res.ok) {
+      for (var pair of formData.entries()) {
+        console.log(pair[0] + ', ' + pair[1])
+      }
+      console.log(await res.json())
       toast.success('Successfully Updated')
     } else {
       toast.error('Something Went Wrong')
@@ -155,6 +180,7 @@ export default function FileUpload({ token }) {
           </div>
         </div>
       </form>
+
       <form
         className='space-y-8 divide-y divide-gray-200'
         onSubmit={transciptSubmit}
@@ -196,6 +222,51 @@ export default function FileUpload({ token }) {
               className='ml-3 inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500'
             >
               Submit Transcript
+            </button>
+          </div>
+        </div>
+      </form>
+      <form
+        className='space-y-8 divide-y divide-gray-200'
+        onSubmit={coverSubmit}
+      >
+        <div className='space-y-8 divide-y divide-gray-200'>
+          <div>
+            <div className='mt-6 grid grid-cols-1 gap-y-6 gap-x-4 sm:grid-cols-6'>
+              <div className='sm:col-span-4'>
+                <label
+                  htmlFor='cover_letter_link'
+                  className='block text-sm font-medium text-gray-700'
+                >
+                  Cover letter Link
+                </label>
+                <div className='mt-1 flex rounded-md shadow-sm'>
+                  <span className='inline-flex items-center px-3 rounded-l-md border border-r-0 border-gray-300 bg-gray-50 text-gray-500 sm:text-sm'>
+                    Google Drive Link
+                  </span>
+                  <input
+                    value={coverLetterLink}
+                    onChange={(e) => setCoverLetterLink(e.target.value)}
+                    type='text'
+                    name='cover_letter_link'
+                    id='cover_letter_link'
+                    autoComplete='cover_letter_link'
+                    required
+                    className='flex-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full min-w-0 rounded-none rounded-r-md sm:text-sm border-gray-300'
+                  />
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div className='pt-5'>
+          <div className='flex justify-end'>
+            <button
+              type='submit'
+              className='ml-3 inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-orange-600 hover:bg-orange-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-orange-500'
+            >
+              Submit Cover Letter
             </button>
           </div>
         </div>

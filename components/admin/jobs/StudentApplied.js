@@ -390,6 +390,26 @@ export default function StudentApplied({ token = '', id = '' }) {
         )
       },
     },
+    {
+      headerName: 'Cover Letter Link',
+      field: 'attributes.student.data.attributes.cover_letter_link',
+      cellRenderer: function (params) {
+        return (
+          <div>
+            {params.value && (
+              <a
+                href={params.value}
+                target='_blank'
+                rel='noreferrer'
+                className='inline-flex items-center py-1.5 border border-transparent text-xs font-medium rounded-full shadow-sm text-indigo-600 hover:text-indigo-700 focus:text-indigo-800'
+              >
+                View Cover Letter
+              </a>
+            )}
+          </div>
+        )
+      },
+    },
   ])
   return (
     <div className='my-4'>
