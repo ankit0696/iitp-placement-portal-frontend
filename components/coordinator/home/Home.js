@@ -70,18 +70,18 @@ export default function Home({ token = '' }) {
     <div className='mt-4'>
       <ul
         role='list'
-        className='grid grid-cols-1 gap-6 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-3'
+        className='grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3'
       >
-        <li className='col-span-1 flex flex-col text-center bg-white rounded-lg shadow divide-y divide-gray-200 p-4'>
+        <li className='md:col-span-1 flex flex-col text-center bg-white rounded-lg shadow divide-y divide-gray-200 p-4'>
           <RegisteredGraph student={student} title='Registered Students' />
         </li>
-        <li className='col-span-1 flex flex-col text-center bg-white rounded-lg shadow divide-y divide-gray-200 p-4'>
+        <li className='md:col-span-1 flex flex-col text-center bg-white rounded-lg shadow divide-y divide-gray-200 p-4'>
           <RegisteredGraph student={ftestudent} title='FTE students' />
         </li>
-        <li className='col-span-1 flex flex-col text-center bg-white rounded-lg shadow divide-y divide-gray-200 p-4'>
+        <li className='md:col-span-1 flex flex-col text-center bg-white rounded-lg shadow divide-y divide-gray-200 p-4'>
           <RegisteredGraph student={internstudent} title='Intern students' />
         </li>
-        <li className='col-span-2 flex flex-col text-center bg-white rounded-lg shadow divide-y divide-gray-200 p-4'>
+        <li className='md:col-span-2 flex flex-col text-center bg-white rounded-lg shadow divide-y divide-gray-200 p-4'>
           <PlacedGraph student={student} />
         </li>
       </ul>

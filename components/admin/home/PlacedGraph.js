@@ -51,52 +51,39 @@ export default function PlacedGraph({ student = [] }) {
     )
     const labelSet = new Set(label)
     setLabel(Array.from(labelSet))
-    // Create dataset for placed a1 students
-    const a1student = ftestudent.filter(
-      (item) => item.attributes.placed === 'A1'
-    )
-    a1occurences = a1student.reduce(function (r, row) {
-      r[row.attributes.program.data.attributes.program_name] =
-        ++r[row.attributes.program.data.attributes.program_name] || 1
-      return r
-    }, {})
-    const a1count = Object.values(a1occurences)
-    setA1(a1count)
-
-    // Create dataset for placed a2 students
-    const a2student = ftestudent.filter(
-      (item) => item.attributes.placed === 'A2'
-    )
-    a2occurences = a2student.reduce(function (r, row) {
-      r[row.attributes.program.data.attributes.program_name] =
-        ++r[row.attributes.program.data.attributes.program_name] || 1
-      return r
-    }, {})
-    const a2count = Object.values(a2occurences)
-    setA2(a2count)
-
-    // Create dataset for place x students
-    const xstudent = ftestudent.filter((item) => item.attributes.placed === 'X')
-    xoccurences = xstudent.reduce(function (r, row) {
-      r[row.attributes.program.data.attributes.program_name] =
-        ++r[row.attributes.program.data.attributes.program_name] || 1
-      return r
-    }, {})
-    const xcount = Object.values(xoccurences)
-    setX(xcount)
-
-    // Create dataset for unplaced students
-    const unplacedstudent = ftestudent.filter(
+    // Create dataset for placed a1, a2, x, unplaced
+    const a1 = ftestudent.filter((item) => item.attributes.placed === 'A1')
+    const a2 = ftestudent.filter((item) => item.attributes.placed === 'A2')
+    const x = ftestudent.filter((item) => item.attributes.placed === 'X')
+    const unplaced = ftestudent.filter(
       (item) => item.attributes.placed === 'Not Placed'
     )
-    unplacedoccurences = unplacedstudent.reduce(function (r, row) {
-      r[row.attributes.program.data.attributes.program_name] =
-        ++r[row.attributes.program.data.attributes.program_name] || 1
-      return r
-    }, {})
-
-    const unplacedcount = Object.values(unplacedoccurences)
-    setUnplaced(unplacedcount)
+    // Count occurences of each program
+    a1.forEach((item) => {
+      a1occurences[item.attributes.program.data.attributes.program_name] =
+        (a1occurences[item.attributes.program.data.attributes.program_name] ||
+          0) + 1
+    })
+    a2.forEach((item) => {
+      a2occurences[item.attributes.program.data.attributes.program_name] =
+        (a2occurences[item.attributes.program.data.attributes.program_name] ||
+          0) + 1
+    })
+    x.forEach((item) => {
+      xoccurences[item.attributes.program.data.attributes.program_name] =
+        (xoccurences[item.attributes.program.data.attributes.program_name] ||
+          0) + 1
+    })
+    unplaced.forEach((item) => {
+      unplacedoccurences[item.attributes.program.data.attributes.program_name] =
+        (unplacedoccurences[
+          item.attributes.program.data.attributes.program_name
+        ] || 0) + 1
+    })
+    setA1(a1occurences)
+    setA2(a2occurences)
+    setX(xoccurences)
+    setUnplaced(unplacedoccurences)
   }, [student])
 
   let result = {
