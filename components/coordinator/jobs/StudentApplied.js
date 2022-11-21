@@ -186,11 +186,6 @@ export default function StudentApplied({ token = '', id = '' }) {
       headerName: 'CPI',
       field: 'attributes.student.data.attributes.cpi',
     },
-
-    {
-      headerName: 'Classification',
-      field: 'attributes.job.data.attributes.classification',
-    },
     {
       headerName: 'GATE / JEE / JAM Rank',
       field: 'attributes.job.data.attributes.rank',
