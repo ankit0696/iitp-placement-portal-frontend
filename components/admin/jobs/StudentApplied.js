@@ -271,7 +271,9 @@ export default function StudentApplied({ token = '', id = '' }) {
       cellRenderer: function (params) {
         return (
           <div>
-            <Link href={`/admin/students/${params.data.id}`}>
+            <Link
+              href={`/admin/students/${params.data.attributes.student.data.id}`}
+            >
               <a>{params.value}</a>
             </Link>
           </div>
