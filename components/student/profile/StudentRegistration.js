@@ -473,7 +473,7 @@ export default function StudentRegistration({ token = '' }) {
                     htmlFor='cpi'
                     className='block text-sm font-medium text-gray-700'
                   >
-                    CPI
+                    CPI (Current)
                   </label>
                   <input
                     required
@@ -496,7 +496,7 @@ export default function StudentRegistration({ token = '' }) {
                     htmlFor='spi_1'
                     className='block text-sm font-medium text-gray-700'
                   >
-                    SPI-1
+                    SPI-1 (Current, leave blank if not applicable)
                   </label>
                   <input
                     value={values.spi_1}
@@ -518,7 +518,7 @@ export default function StudentRegistration({ token = '' }) {
                     htmlFor='spi_2'
                     className='block text-sm font-medium text-gray-700'
                   >
-                    SPI-2
+                    SPI-2 (Current, leave blank if not applicable)
                   </label>
                   <input
                     value={values.spi_2}
@@ -540,7 +540,7 @@ export default function StudentRegistration({ token = '' }) {
                     htmlFor='spi_3'
                     className='block text-sm font-medium text-gray-700'
                   >
-                    SPI-3
+                    SPI-3 (Current, leave blank if not applicable)
                   </label>
                   <input
                     value={values.spi_3}
@@ -561,7 +561,7 @@ export default function StudentRegistration({ token = '' }) {
                     htmlFor='spi_4'
                     className='block text-sm font-medium text-gray-700'
                   >
-                    SPI-4
+                    SPI-4 (Current, leave blank if not applicable)
                   </label>
                   <input
                     value={values.spi_4}
@@ -582,7 +582,7 @@ export default function StudentRegistration({ token = '' }) {
                     htmlFor='spi_5'
                     className='block text-sm font-medium text-gray-700'
                   >
-                    SPI-5
+                    SPI-5 (Current, leave blank if not applicable)
                   </label>
                   <input
                     value={values.spi_5}
@@ -603,7 +603,7 @@ export default function StudentRegistration({ token = '' }) {
                     htmlFor='spi_6'
                     className='block text-sm font-medium text-gray-700'
                   >
-                    SPI-6
+                    SPI-6 (Current, leave blank if not applicable)
                   </label>
                   <input
                     value={values.spi_6}
@@ -624,7 +624,7 @@ export default function StudentRegistration({ token = '' }) {
                     htmlFor='spi_7'
                     className='block text-sm font-medium text-gray-700'
                   >
-                    SPI-7
+                    SPI-7 (Current, leave blank if not applicable)
                   </label>
                   <input
                     value={values.spi_7}
@@ -645,7 +645,7 @@ export default function StudentRegistration({ token = '' }) {
                     htmlFor='spi_8'
                     className='block text-sm font-medium text-gray-700'
                   >
-                    SPI-8
+                    SPI-8 (Current, leave blank if not applicable)
                   </label>
                   <input
                     value={values.spi_8}
@@ -711,7 +711,7 @@ export default function StudentRegistration({ token = '' }) {
                     htmlFor='bachelor_marks'
                     className='block text-sm font-medium text-gray-700'
                   >
-                    Bachelor&apos;s Marks
+                    Bachelor&apos;s Marks (if completed)
                   </label>
                   <input
                     value={values.bachelor_marks}
@@ -732,7 +732,8 @@ export default function StudentRegistration({ token = '' }) {
                     htmlFor='master_marks'
                     className='block text-sm font-medium text-gray-700'
                   >
-                    Master&apos;s Marks
+                    {/* Master marks for those who have completed */}
+                    Master&apos;s Marks (if completed)
                   </label>
                   <input
                     value={values.master_marks}

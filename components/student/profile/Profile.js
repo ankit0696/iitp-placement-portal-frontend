@@ -319,7 +319,7 @@ export default function Profile({ student, token }) {
           <form onSubmit={handleSubmitCpi}>
             <div className='py-4 sm:py-5 sm:grid sm:grid-cols-4 sm:gap-4 sm:px-6'>
               <dt className='text-sm font-medium text-gray-500 sm:col-span-1'>
-                SPI Sem 1
+                SPI Sem 1 (Current, leave blank if not applicable)
               </dt>
               <dd className='mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-1'>
                 <input
@@ -337,7 +337,7 @@ export default function Profile({ student, token }) {
                 />
               </dd>
               <dt className='text-sm font-medium text-gray-500 sm:col-span-1'>
-                SPI Sem 2
+                SPI Sem 2 (Current, leave blank if not applicable)
               </dt>
               <dd className='mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-1'>
                 <input
@@ -357,7 +357,7 @@ export default function Profile({ student, token }) {
             </div>
             <div className='py-4 sm:py-5 sm:grid sm:grid-cols-4 sm:gap-4 sm:px-6'>
               <dt className='text-sm font-medium text-gray-500 sm:col-span-1'>
-                SPI Sem 3
+                SPI Sem 3 (Current, leave blank if not applicable)
               </dt>
               <dd className='mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-1'>
                 <input
@@ -375,7 +375,7 @@ export default function Profile({ student, token }) {
                 />
               </dd>
               <dt className='text-sm font-medium text-gray-500 sm:col-span-1'>
-                SPI Sem 4
+                SPI Sem 4 (Current, leave blank if not applicable)
               </dt>
               <dd className='mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-1'>
                 <input
@@ -395,7 +395,7 @@ export default function Profile({ student, token }) {
             </div>
             <div className='py-4 sm:py-5 sm:grid sm:grid-cols-4 sm:gap-4 sm:px-6'>
               <dt className='text-sm font-medium text-gray-500 sm:col-span-1'>
-                SPI Sem 5
+                SPI Sem 5 (Current, leave blank if not applicable)
               </dt>
               <dd className='mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-1'>
                 <input
@@ -413,7 +413,7 @@ export default function Profile({ student, token }) {
                 />
               </dd>
               <dt className='text-sm font-medium text-gray-500 sm:col-span-1'>
-                SPI Sem 6
+                SPI Sem 6 (Current, leave blank if not applicable)
               </dt>
               <dd className='mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-1'>
                 <input
@@ -433,7 +433,7 @@ export default function Profile({ student, token }) {
             </div>
             <div className='py-4 sm:py-5 sm:grid sm:grid-cols-4 sm:gap-4 sm:px-6'>
               <dt className='text-sm font-medium text-gray-500 sm:col-span-1'>
-                SPI Sem 7
+                SPI Sem 7 (Current, leave blank if not applicable)
               </dt>
               <dd className='mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-1'>
                 <input
@@ -451,7 +451,7 @@ export default function Profile({ student, token }) {
                 />
               </dd>
               <dt className='text-sm font-medium text-gray-500 sm:col-span-1'>
-                SPI Sem 8
+                SPI Sem 8 (Current, leave blank if not applicable)
               </dt>
               <dd className='mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-1'>
                 <input
@@ -471,7 +471,7 @@ export default function Profile({ student, token }) {
             </div>
             <div className='py-4 sm:py-5 sm:grid sm:grid-cols-4 sm:gap-4 sm:px-6'>
               <dt className='text-sm font-medium text-gray-500 sm:col-span-1'>
-                CPI
+                CPI (Current)
               </dt>
               <dd className='mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-1'>
                 <input
@@ -518,13 +518,13 @@ export default function Profile({ student, token }) {
           </div>
           <div className='py-4 sm:py-5 sm:grid sm:grid-cols-4 sm:gap-4 sm:px-6'>
             <dt className='text-sm font-medium text-gray-500 sm:col-span-1'>
-              Bachelor&apos;s Marks
+              Bachelor&apos;s Marks (if completed)
             </dt>
             <dd className='mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-1'>
               {student.bachelor_marks}
             </dd>
             <dt className='text-sm font-medium text-gray-500 sm:col-span-1'>
-              Master&apos;s Marks
+              Master&apos;s Marks (if completed)
             </dt>
             <dd className='mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-1'>
               {student.master_marks}
