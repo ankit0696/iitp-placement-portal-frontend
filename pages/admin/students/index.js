@@ -143,6 +143,10 @@ export default function Students({ token }) {
       headerName: 'Gender',
       field: 'attributes.gender',
     },
+    {
+      headerName: 'Date of Birth',
+      field: 'attributes.date_of_birth',
+    },
   ])
 
   // Get placed status of students from /api/student/placed-status

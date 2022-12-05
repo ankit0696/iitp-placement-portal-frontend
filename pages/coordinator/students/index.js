@@ -143,6 +143,10 @@ export default function Students({ token }) {
       headerName: 'Gender',
       field: 'attributes.gender',
     },
+    {
+      headerName: 'Date of Birth',
+      field: 'attributes.date_of_birth',
+    },
   ])
 
   const getPlacedStatus = useCallback(async (data) => {
