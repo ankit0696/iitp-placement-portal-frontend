@@ -124,7 +124,7 @@ export default function Slideover({ open = false, setOpen }) {
                                   {notification.attributes.title}
                                 </p>
                                 {/* Notification description */}
-                                <p className='truncate text-sm text-gray-500'>
+                                <p className='text-sm text-gray-500'>
                                   {notification.attributes.description}
                                 </p>
 
