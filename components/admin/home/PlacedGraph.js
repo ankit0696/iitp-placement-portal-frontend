@@ -15,7 +15,7 @@ export const options = {
   plugins: {
     title: {
       display: true,
-      text: 'FTE Placed Stats',
+      text: 'FTE Placed Statistics',
     },
   },
   scales: {
@@ -128,6 +128,7 @@ export default function PlacedGraph({ student = [] }) {
   return (
     <div>
       <p className='text-center text-xl font-bold'>Students Placed</p>
+      {/* Always show tooltip */}
       <Bar data={result} options={options} />
     </div>
   )
