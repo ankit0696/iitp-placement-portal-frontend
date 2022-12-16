@@ -119,12 +119,12 @@ export default function Slideover({ open = false, setOpen }) {
                                   aria-hidden='true'
                                 />
                               </span>
-                              <div className='ml-4 truncate'>
+                              <div className='ml-4'>
                                 <p className='truncate text-sm font-medium text-gray-900'>
                                   {notification.attributes.title}
                                 </p>
                                 {/* Notification description */}
-                                <p className='truncate text-sm text-gray-500 capitalize'>
+                                <p className='truncate text-sm text-gray-500'>
                                   {notification.attributes.description}
                                 </p>
 
