@@ -1,60 +1,52 @@
-import { useState } from 'react'
-import Slideover from './Slideover'
-
-/*
-  This example requires Tailwind CSS v2.0+ 
-  
-  This example requires some changes to your config:
-  
-  ```
-  // tailwind.config.js
-  module.exports = {
-    // ...
-    plugins: [
-      // ...
-      require('@tailwindcss/forms'),
-    ],
-  }
-  ```
-*/
-const tabs = [
-  //   { name: 'Guidelines', href: '#', current: true },
-  //   { name: 'Team', href: '#', current: false },
-  { name: 'Notifications', href: '#', current: false },
-]
+import { useState, useEffect } from 'react'
+import Slideover from '@/components/Slideover'
+import { toast } from 'react-toastify'
+import { API_URL } from '../config'
+import axios from 'axios'
 
 function classNames(...classes) {
   return classes.filter(Boolean).join(' ')
 }
 
 export default function Nav() {
+  const tabs = [
+    { name: 'TPC Guidelines', fn: openTpcGuidelines, current: false },
+    //   { name: 'Team', href: '#', current: false },
+    { name: 'Notifications', fn: toggleSlideover, current: false },
+  ]
+
   // Add slideover on click
   const [open, setOpen] = useState(false)
   const [selected, setSelected] = useState(null)
+  const [tpcGuidelines, setTpcGuidelines] = useState('')
 
   function toggleSlideover() {
     setOpen(!open)
   }
+
+  function openTpcGuidelines() {
+    // open tpc guidelines in new tab
+    window.open(API_URL + tpcGuidelines, '_blank', 'noopener,noreferrer')
+  }
+
+  const fetchSettings = async () => {
+    try {
+      const res = await axios.get(`${API_URL}/api/setting?populate=*`)
+      const data = res.data.data
+      console.log(res)
+      setTpcGuidelines(data.attributes.tpc_guidelines.data.attributes.url)
+    } catch (err) {
+      // toast.error('Error fetching TPC Guidelines')
+      console.log(err)
+    }
+  }
+  useEffect(() => {
+    fetchSettings()
+  }, [])
+
   return (
     <div>
       <Slideover open={open} setOpen={setOpen} />
-      <div className='sm:hidden'>
-        <label htmlFor='tabs' className='sr-only'>
-          Select a tab
-        </label>
-        {/* Use an "onChange" listener to redirect the user to the selected tab URL. */}
-        <select
-          id='tabs'
-          name='tabs'
-          className='block w-full pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm rounded-md'
-          //   defaultValue={tabs.find((tab) => tab.current).name}
-          onChange={(e) => setOpen(true)}
-        >
-          {tabs.map((tab) => (
-            <option key={tab.name}>{tab.name}</option>
-          ))}
-        </select>
-      </div>
       <div className='hidden sm:block'>
         <div className='border-b border-gray-200 px-4'>
           <nav className='-mb-px flex space-x-8' aria-label='Tabs'>
@@ -62,7 +54,7 @@ export default function Nav() {
               <a
                 key={tab.name}
                 // toggle slideover on click
-                onClick={toggleSlideover}
+                onClick={tab.fn}
                 className={classNames(
                   tab.current
                     ? 'border-indigo-500 text-indigo-600'
