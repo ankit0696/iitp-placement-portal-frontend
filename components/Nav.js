@@ -16,7 +16,7 @@ export default function Nav() {
   ]
 
   // Add slideover on click
-  const [open, setOpen] = useState(false)
+  const [open, setOpen] = useState(true)
   const [selected, setSelected] = useState(null)
   const [tpcGuidelines, setTpcGuidelines] = useState('')
 
