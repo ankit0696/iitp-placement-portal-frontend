@@ -56,7 +56,7 @@ export default function Nav() {
                 // toggle slideover on click
                 onClick={tab.fn}
                 className={classNames(
-                  tab.current
+                  open && tab.name === 'Notifications'
                     ? 'border-indigo-500 text-indigo-600'
                     : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300',
                   'whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm cursor-pointer transition duration-150 ease-in-out select-none focus:outline-none focus:text-indigo-800 focus:border-indigo-700'
