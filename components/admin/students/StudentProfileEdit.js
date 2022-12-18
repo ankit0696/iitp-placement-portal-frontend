@@ -165,7 +165,7 @@ export default function StudentProfileEdit({ token = '', student }) {
                       id='placed_status'
                       className='block w-full px-3 py-2 rounded-md text-gray-700 bg-white border border-gray-300 focus:outline-none focus:shadow-outline-blue focus:border-blue-300 sm:text-sm sm:leading-5'
                       onChange={(e) => setPlacedStatus(e.target.value)}
-                      defaultValue={placed_status}
+                      value={placedStatus}
                     >
                       <option value='unplaced'>Not Placed</option>
                       <option value='placed_a1'>Placed in A1</option>
