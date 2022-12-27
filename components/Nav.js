@@ -3,6 +3,7 @@ import Slideover from '@/components/Slideover'
 import { toast } from 'react-toastify'
 import { API_URL } from '../config'
 import axios from 'axios'
+import { BellIcon } from '@heroicons/react/outline'
 
 function classNames(...classes) {
   return classes.filter(Boolean).join(' ')
@@ -12,11 +13,10 @@ export default function Nav() {
   const tabs = [
     { name: 'TPC Guidelines', fn: openTpcGuidelines, current: false },
     //   { name: 'Team', href: '#', current: false },
-    { name: 'Notifications', fn: toggleSlideover, current: false },
   ]
 
   // Add slideover on click
-  const [open, setOpen] = useState(true)
+  const [open, setOpen] = useState(false)
   const [selected, setSelected] = useState(null)
   const [tpcGuidelines, setTpcGuidelines] = useState('')
 
@@ -66,6 +66,15 @@ export default function Nav() {
                 {tab.name}
               </a>
             ))}
+            {/* Notification icon at the right */}
+            <div className='flex-grow' />
+            <a
+              onClick={toggleSlideover}
+              className='whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm cursor-pointer transition duration-150 ease-in-out select-none focus:outline-none focus:text-indigo-800 focus:border-indigo-700'
+            >
+              {/* Animate bell icon */}
+              <BellIcon className='h-6 w-6 text-gray-500 hover:text-indigo-700 hover:animate-pulse' />
+            </a>
           </nav>
         </div>
       </div>
