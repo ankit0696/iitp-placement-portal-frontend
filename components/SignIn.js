@@ -1,8 +1,9 @@
 import Image from 'next/image'
 import AuthContext from '@/context/AuthContext'
-import { useContext, useState, useEffect } from 'react'
+import { useContext, useState } from 'react'
 import Link from 'next/link'
 import Nav from '@/components/Nav'
+import Footer from "@/components/Footer";
 
 export default function SignIn() {
   const notificationMethods = [
@@ -31,19 +32,19 @@ export default function SignIn() {
   return (
     <>
       <Nav />
-      <div className='min-h-full flex flex-col justify-center py-12 sm:px-6 lg:px-8'>
+      <div className='flex flex-col justify-center py-4 sm:px-6 lg:px-8'>
         <div className='sm:mx-auto sm:w-full sm:max-w-md'>
           <div className='mx-auto text-center'>
             <Image
               className='mx-auto'
-              width={100}
-              height={100}
+              width={80}
+              height={80}
               alt='IIT Patna'
               src='/images/logo.svg'
             />
           </div>
 
-          <h2 className='mt-6 text-center text-3xl font-extrabold text-gray-900'>
+          <h2 className='mt-4 text-center text-3xl font-extrabold text-gray-900'>
             Centre for Career Development (CCD)
           </h2>
           <h2 className='text-center font-extrabold text-3xl uppercase'>
@@ -152,6 +153,7 @@ export default function SignIn() {
           </div>
         </div>
       </div>
+      <Footer />
     </>
   )
 }
